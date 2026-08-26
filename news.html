@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News — SER Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="pagehead">
+  <div class="wrap">
+    <h1>News</h1>
+    <p>Milestones, publications, and lab life.</p>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:28px">
+  <div class="wrap" id="news-list"></div>
+</section>
+
+<script src="site-data.js"></script>
+<script src="common.js"></script>
+<script>
+"use strict";
+// 뉴스는 site-data.js 의 SITE.news 배열 맨 위에 항목을 추가하면 됩니다.
+const list = window.SITE.news;
+document.getElementById("news-list").innerHTML = list.length
+  ? list.map(n => `
+    <div class="news-item">
+      <div class="dt">${n.date}</div>
+      <div>
+        <h3>${n.title}</h3>
+        <p>${n.text || ""}</p>
+        ${n.img ? `<img src="${n.img}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+      </div>
+    </div>`).join("")
+  : `<p style="color:var(--sub)">No news yet.</p>`;
+</script>
+</body>
+</html>

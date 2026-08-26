@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alumni — SER Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="pagehead">
+  <div class="wrap">
+    <h1>Alumni</h1>
+    <p>Where SER Lab members go next.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="grid c2" id="alumni-cards"></div>
+  </div>
+</section>
+
+<script src="site-data.js"></script>
+<script src="common.js"></script>
+<script>
+"use strict";
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("alumni-cards").innerHTML = window.SITE.alumni.map(a => `
+    <div class="card person">
+      <div class="nm">${a.name} <span style="font-weight:400;color:var(--sub)">(${a.kor})</span></div>
+      <div class="role">${a.degree}</div>
+      <div class="info">${a.now || ""}${a.now && a.email ? "<br>" : ""}${a.email ? `<a href="mailto:${a.email}">${a.email}</a>` : ""}</div>
+    </div>`).join("");
+});
+</script>
+</body>
+</html>

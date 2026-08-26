@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undergraduate — SER Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="pagehead">
+  <div class="wrap">
+    <h1>Undergraduate</h1>
+    <p>Undergraduate researchers and interns.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="grid c3" id="cards"></div>
+  </div>
+</section>
+
+<script src="site-data.js"></script>
+<script src="common.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () =>
+  renderMembers(window.SITE.bs, "cards",
+    'We are always looking for motivated undergraduate interns — see <a href="contact.html">Join Us</a>.'));
+</script>
+</body>
+</html>
