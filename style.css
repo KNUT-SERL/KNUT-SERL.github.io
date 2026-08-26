@@ -125,6 +125,12 @@ img { max-width: 100%; }
 .person .nm { font-size: 17px; font-weight: 700; }
 .person .role { color: var(--accent); font-size: 13px; font-weight: 700; margin: 2px 0 8px; }
 .person .info { font-size: 13.5px; color: var(--sub); }
+/* 벽돌식(masonry) 배치: 열린 카드만 길어지고 나머지는 빈 자리를 채움 */
+.masonry { position: relative; display: block !important; }
+.masonry .person {
+  position: absolute; box-sizing: border-box;
+  transition: top 0.35s ease, left 0.35s ease;
+}
 /* 상세 패널이 있는 카드 표시 */
 .person .hint {
   margin-top: 12px; font-size: 11.5px; color: #aab2bf; letter-spacing: 0.4px;

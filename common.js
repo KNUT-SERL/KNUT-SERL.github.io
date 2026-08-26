@@ -90,7 +90,7 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
 
-  // 터치 기기: 탭으로 열고 닫기 (링크·다른 카드 터치는 방해하지 않음)
+  // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
   el.querySelectorAll(".person.hasdetail").forEach(card => {
     card.addEventListener("click", e => {
       if (e.target.closest("a")) return;
@@ -99,4 +99,38 @@ function renderMembers(list, elId, emptyMsg) {
       if (!wasOpen) card.classList.add("open");
     });
   });
+
+  if (list.length) masonryLayout(el);
+}
+
+/* ---- 벽돌식(masonry) 배치 ----
+   카드가 열려 길어지면 그 카드만 아래로 늘어나고,
+   다음 카드들이 빈 자리를 채우며 재배치됩니다.
+   (1 2 3 / 4 5 6  →  1이 열리면  1 2 3 / 1 4 5 / 6 ...) */
+function masonryLayout(el) {
+  el.classList.add("masonry");
+  const cards = [...el.querySelectorAll(".person")];
+  const gap = 22;
+  const twoCol = el.classList.contains("c2");   // alumni 페이지는 2열
+
+  function layout() {
+    const cw = el.clientWidth;
+    const n = cw <= 560 ? 1 : (cw <= 860 || twoCol) ? 2 : 3;   // 화면 폭에 따른 열 수
+    const w = (cw - gap * (n - 1)) / n;
+    const colH = Array(n).fill(0);
+    for (const c of cards) {
+      c.style.width = w + "px";
+      const i = colH.indexOf(Math.min(...colH));   // 가장 짧은 열에 배치
+      c.style.left = i * (w + gap) + "px";
+      c.style.top = colH[i] + "px";
+      colH[i] += c.offsetHeight + gap;
+    }
+    el.style.height = (Math.max(...colH) - gap) + "px";
+  }
+
+  // 카드 높이가 변할 때(패널 열림/닫힘, 사진 로딩)마다 자동 재배치
+  const ro = new ResizeObserver(layout);
+  cards.forEach(c => ro.observe(c));
+  window.addEventListener("resize", layout);
+  layout();
 }
