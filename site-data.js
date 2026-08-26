@@ -59,28 +59,28 @@ window.SITE = {
     {
       title: "Soft Robot & Electronics",
       icon: "🤖",                              // 이모지 아이콘 (자유롭게 교체)
-      img: "soft-robot.jpg?v=5",
+      img: "soft-robot.jpg?v=6",
       desc: "Bioinspired soft sensors and actuators — pneumatic soft grippers with haptic "
           + "recognition frameworks and dome-structured tactile sensing arrays."
     },
     {
       title: "Bioinspired Haptic Sensors",
       icon: "🖐️",
-      img: "haptic.jpg?v=5",
+      img: "haptic.jpg?v=6",
       desc: "Haptic sensor systems inspired by human skin mechanoreceptors — from receptor-level "
           + "signal pathways to fingertip-integrated haptic sensing systems."
     },
     {
       title: "XR Skin-Adhesive Interfaces",
       icon: "🥽",
-      img: "xr.jpg?v=5",
+      img: "xr.jpg?v=6",
       desc: "Vibration-resistive, sweat-tolerant skin-adhesive haptic interfaces that deliver "
           + "realistic tactile feedback for immersive XR experiences."
     },
     {
       title: "Wearable Sensors for Biosignal Monitoring",
       icon: "⌚",
-      img: "wearable.jpg?v=5",
+      img: "wearable.jpg?v=6",
       desc: "Skin-conformal adhesive soft electronics with minimal residue and conformal contact "
           + "for long-term EMG and biosignal monitoring."
     }
@@ -123,7 +123,7 @@ window.SITE = {
     {
       name: "Junwon Jang", kor: "장준원", role: "M.S. Student",
       email: "wertt1027@gmail.com", photo: "jang-junwon.jpg",
-      interests: "Soft grippers, tactile sensing",
+      interests: "Tactile sensors, soft grippers",
       bio: "Octopus-inspired soft grippers and their sensing frameworks for intelligent object handling.",
       pubs: [
         "Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence — <i>Biomimetics</i>, 2025 (co-first author)",
@@ -135,7 +135,7 @@ window.SITE = {
     {
       name: "Junho Lee", kor: "이준호", role: "M.S. Student",
       email: "wnsgh1916@naver.com", photo: "lee-junho.jpg",
-      interests: "Soft grippers, bioinspired interfaces",
+      interests: "Soft robotics, soft grippers",
       bio: "Bioinspired suction interfaces for strain-guided, adaptive object handling.",
       pubs: [
         "Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — 2025 (first author)",
@@ -147,7 +147,7 @@ window.SITE = {
     {
       name: "Subi Jeon", kor: "전수비", role: "M.S. Student",
       email: "jxxnsub@gmail.com", photo: "jeon-subi.jpg",
-      interests: "",                                    // TODO: 연구 키워드 입력
+      interests: "Flexible electronic devices (patch type), conductive masks",
       bio: "",
       pubs: [
         "Amphibian toe pad-mimicking wearable plant gas sensor for nitrogen dioxide detection — 2025"
@@ -158,7 +158,7 @@ window.SITE = {
     {
       name: "Taeyoung Chang", kor: "장태영", role: "M.S. Student",
       email: "changtae0329@gmail.com", photo: "chang-taeyoung.jpg",
-      interests: "",                                    // TODO: 연구 키워드 입력
+      interests: "Robot vision, manipulation, tactile sensors",
       bio: "",
       pubs: [
         "Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — 2025"
@@ -169,13 +169,13 @@ window.SITE = {
     {
       name: "Sangyoon Kang", kor: "강상윤", role: "M.S. Student",
       email: "kanghan2000@naver.com", photo: "kang-sangyoon.jpg",
-      interests: "",                                    // TODO: 연구 키워드 입력
+      interests: "Soft robotic gripper development, entrepreneurship activities",
       bio: "", pubs: [], patents: [], awards: []
     },
     {
       name: "Seunghwan Lee", kor: "이승환", role: "M.S. Student (B.S.–M.S. Combined)",  // 학석사 연계과정
       email: "saa4563123@naver.com", photo: "lee-seunghwan.jpg",
-      interests: "",                                    // TODO: 연구 키워드 입력
+      interests: "Robot control, bio-inspired robotics",
       bio: "", pubs: [], patents: [], awards: []
     }
   ],
@@ -184,22 +184,22 @@ window.SITE = {
     {
       name: "Younghun Kim", kor: "김영훈", role: "Undergraduate Researcher",
       email: "tommy102030@naver.com", photo: "kim-younghun.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
+      interests: "Bio-inspired robots (limpet), microfluidic control systems, soft electronic patch fabrication",
     },
     {
       name: "Kangmin Lee", kor: "이강민", role: "Undergraduate Researcher",
       email: "ckkm1112@gmail.com", photo: "lee-kangmin.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
+      interests: "Bioelectronics",
     },
     {
       name: "Yeonwoo Choi", kor: "최연우", role: "Undergraduate Researcher",
       email: "choiyeonwoo12@naver.com", photo: "choi-yeonwoo.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
+      interests: "Wearable sensing systems",
     },
     {
       name: "Jinseo Kim", kor: "김진서", role: "Undergraduate Researcher",
       email: "sky201210@naver.com", photo: "kim-jinseo.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
+      interests: "Software testing",
     },
     {
       name: "Jihyeon Byeon", kor: "변지현", role: "Undergraduate Researcher",
@@ -224,7 +224,7 @@ window.SITE = {
      ========================================================================== */
   alumni: [
     { name: "Junyoung Sim", kor: "심준영", degree: "B.S. (Electronics)",
-      email: "shimjuny123@gmail.com", now: "" },        // TODO: 현재 소속 입력
+      email: "shimjuny123@gmail.com", now: "KRISS — UST Tactile Standards Research Group (촉감표준연구단)" },
     { name: "Jongheon Jang", kor: "장종헌", degree: "B.S. (Electronics)",
       email: "qkdkew123@naver.com", now: "Yukyung — Control S/W Development" },
     { name: "Hyeokjun Gwon", kor: "권혁준", degree: "B.S. (Electronics)",
