@@ -59,28 +59,28 @@ window.SITE = {
     {
       title: "Soft Robot & Electronics",
       icon: "🤖",                              // 이모지 아이콘 (자유롭게 교체)
-      img: "soft-robot.jpg",
+      img: "soft-robot.jpg?v=3",
       desc: "Bioinspired soft sensors and actuators — pneumatic soft grippers with haptic "
           + "recognition frameworks and dome-structured tactile sensing arrays."
     },
     {
       title: "Bioinspired Haptic Sensors",
       icon: "🖐️",
-      img: "haptic.jpg",
+      img: "haptic.jpg?v=3",
       desc: "Haptic sensor systems inspired by human skin mechanoreceptors — from receptor-level "
           + "signal pathways to fingertip-integrated haptic sensing systems."
     },
     {
       title: "XR Skin-Adhesive Interfaces",
       icon: "🥽",
-      img: "xr.jpg",
+      img: "xr.jpg?v=3",
       desc: "Vibration-resistive, sweat-tolerant skin-adhesive haptic interfaces that deliver "
           + "realistic tactile feedback for immersive XR experiences."
     },
     {
       title: "Wearable Sensors for Biosignal Monitoring",
       icon: "⌚",
-      img: "wearable.jpg",
+      img: "wearable.jpg?v=3",
       desc: "Skin-conformal adhesive soft electronics with minimal residue and conformal contact "
           + "for long-term EMG and biosignal monitoring."
     }
