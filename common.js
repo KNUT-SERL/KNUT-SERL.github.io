@@ -85,7 +85,7 @@ function renderMembers(list, elId, emptyMsg) {
       <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
       <div class="role">${s.role || ""}</div>
       <div class="info">${s.interests || ""}${s.email ? `<br><a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
-      ${d ? `<div class="hint">▾ HOVER FOR DETAILS</div>` : ""}
+      ${d ? `<div class="hint">▾ CLICK FOR DETAILS</div>` : ""}
       ${d}
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;

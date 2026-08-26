@@ -110,8 +110,8 @@ img { max-width: 100%; }
 .card p { font-size: 14px; color: var(--sub); }
 .card .ico { font-size: 30px; margin-bottom: 12px; }
 .card img.fig {
-  width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 10px;
-  background: var(--soft); margin-bottom: 14px;
+  width: 100%; height: auto; display: block; border-radius: 10px;
+  background: #fff; margin-bottom: 14px;   /* 원본 비율 그대로 — 잘리지 않음 */
 }
 
 /* ---------- 멤버 카드 (호버 시 상세 패널 확장) ---------- */
@@ -131,23 +131,19 @@ img { max-width: 100%; }
   transition: opacity 0.2s;
 }
 .person.hasdetail { cursor: pointer; }
-.person.hasdetail:hover, .person.hasdetail.open {
-  z-index: 6; border-color: var(--accent);
-  border-bottom-left-radius: 0; border-bottom-right-radius: 0;
-  box-shadow: 0 10px 30px rgba(20,40,80,0.14); transform: translateY(-2px);
+.person.hasdetail:hover { border-color: var(--accent); }
+.person.hasdetail.open {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(20,40,80,0.14);
 }
-.person.hasdetail:hover .hint, .person.hasdetail.open .hint { opacity: 0; }
-/* 떠오르는 상세 패널 — 레이아웃을 밀지 않고 아래 콘텐츠 위로 자연스럽게 확장 */
+.person.hasdetail.open .hint { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+/* 상세 패널 — 카드 안에서 펼쳐지며 아래 카드들이 같은 간격으로 자연스럽게 밀려남 */
 .person .detail {
-  position: absolute; top: 100%; left: -1px; right: -1px; z-index: 6;
-  background: #fff; border: 1px solid var(--accent); border-top: none;
-  border-radius: 0 0 14px 14px; padding: 4px 24px 20px;
-  box-shadow: 0 18px 34px rgba(20,40,80,0.16);
-  opacity: 0; transform: translateY(-8px); pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
 }
-.person.hasdetail:hover .detail, .person.hasdetail.open .detail {
-  opacity: 1; transform: translateY(0); pointer-events: auto;
+.person.hasdetail.open .detail {
+  max-height: 1200px; opacity: 1; margin-top: 10px;
 }
 .person .detail h4 {
   font-size: 11px; font-weight: 800; color: var(--accent);

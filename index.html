@@ -41,7 +41,7 @@
   <div class="wrap">
     <h2>Research Areas</h2>
     <p class="sub">Four directions, one goal: electronics and robots that work naturally with people.</p>
-    <div class="grid c4" id="research-cards"></div>
+    <div class="grid c2" id="research-cards"></div>
     <p style="margin-top:22px"><a class="more" href="research.html">Explore our research →</a></p>
   </div>
 </section>
@@ -65,11 +65,10 @@
 <script src="common.js"></script>
 <script>
 "use strict";
-// 연구 분야 카드 (site-data.js 의 SITE.research)
+// 연구 분야 카드 — 대표 이미지 + 설명 (site-data.js 의 SITE.research)
 document.getElementById("research-cards").innerHTML = window.SITE.research.map(r => `
   <a class="card" href="research.html" style="color:inherit;text-decoration:none">
-    <div class="ico">${r.icon}</div>
-    <h3>${r.title}</h3>
+    <img class="fig" src="${r.img}" alt="${r.title}" onerror="this.remove()" loading="lazy">
     <p>${r.desc}</p>
   </a>`).join("");
 
