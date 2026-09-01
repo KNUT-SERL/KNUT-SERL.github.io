@@ -181,11 +181,24 @@ document.addEventListener("DOMContentLoaded", () => {
   load();
   const bPub = document.getElementById("tab-pub"), bPat = document.getElementById("tab-pat");
   const vPub = document.getElementById("pub-list"), vPat = document.getElementById("pat-list");
+  /* 탭에 맞춰 페이지 상단 제목·설명도 함께 바꾼다
+     (특허는 OpenAlex 와 무관하므로 그 안내 문구를 보여주지 않음) */
+  const HEAD = {
+    pub: { title: "Publications",
+           sub: "Journal papers are loaded automatically from OpenAlex — always up to date." },
+    pat: { title: "Patents",
+           sub: "Registered and filed patents." }
+  };
   function show(which) {
     bPub.classList.toggle("on", which === "pub");
     bPat.classList.toggle("on", which === "pat");
     vPub.style.display = which === "pub" ? "" : "none";
     vPat.style.display = which === "pat" ? "" : "none";
+    const head = HEAD[which];
+    const t = document.getElementById("pub-title"), sub = document.getElementById("pub-sub");
+    if (t) t.textContent = head.title;
+    if (sub) sub.textContent = head.sub;
+    document.title = head.title + " — SER Lab";
   }
   bPub.onclick = () => show("pub");
   bPat.onclick = () => show("pat");
