@@ -1,6 +1,6 @@
 /* ============================================================
-   Publications 자동 로딩 (OpenAlex API)
-   설정은 data/site-data.js 의 SITE.pub 에서 관리합니다.
+   Publications 자동 로딩 (OpenAlex API) + 특허 탭 (data/patents.txt)
+   논문 설정은 data/site-data.js 의 SITE.pub 에서 관리합니다.
    ============================================================ */
 "use strict";
 (function () {
@@ -149,11 +149,18 @@ function item(w) {
   </div>`;
 }
 
-/* ---- 특허 탭 ---- */
-function renderPatents() {
+/* ---- 특허 탭 ----
+   목록은 data/patents.txt 에서 옵니다. 파일 맨 아래에 이어 붙이면 최신이 위로. */
+async function renderPatents() {
   const $p = document.getElementById("pat-list");
+  let pats = [];
+  try { pats = await loadPatents(); }
+  catch (e) {
+    $p.innerHTML = `<div class="notice">특허 목록(data/patents.txt)을 읽지 못했습니다 (${esc(e.message)}).</div>`;
+    return;
+  }
   const byYear = {};
-  window.SITE.patents.forEach(p => (byYear[p.year] ??= []).push(p));
+  pats.forEach(p => (byYear[p.year] ??= []).push(p));
   const years = Object.keys(byYear).sort((a, b) => b - a);
   $p.innerHTML = years.map(y => `
     <div class="yearhead"><b>${y}</b></div>

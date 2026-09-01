@@ -165,6 +165,13 @@ img { max-width: 100%; }
   width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
 }
 
+/* 과정 페이지의 소그룹 제목 (포닥/박사/연계과정 등) */
+.subhead {
+  font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase;
+  letter-spacing: 1.2px; margin: 34px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+}
+.subhead:first-child { margin-top: 0; }
+
 /* ---------- 교수 프로필 ---------- */
 .prof { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; }
 @media (max-width: 720px) { .prof { grid-template-columns: 1fr; } }
@@ -197,14 +204,57 @@ img { max-width: 100%; }
 .news-item h3 { font-size: 16.5px; font-weight: 700; }
 .news-item p { font-size: 14.5px; color: var(--sub); margin-top: 4px; }
 .news-item img { margin-top: 10px; border-radius: 10px; max-height: 260px; }
+/* 링크가 달린 소식: 내용 칸 전체가 클릭 영역이 됨 */
+.news-item a.body { color: inherit; text-decoration: none; display: block; border-radius: 10px; }
+.news-item.linked { cursor: pointer; transition: background 0.15s; }
+.news-item.linked:hover { background: var(--soft); }
+.news-item.linked:hover h3 { color: var(--accent); }
+.news-item .ext {
+  display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 20px;
+  background: var(--soft); color: var(--accent); font-size: 11px; font-weight: 800;
+  letter-spacing: 0.5px; vertical-align: 2px;
+}
 
 /* ---------- 갤러리 ---------- */
 .gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 860px) { .gal { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .gal { grid-template-columns: 1fr; } }
-.gal figure { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+.gal figure {
+  border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff;
+  cursor: zoom-in; transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.gal figure:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(20,40,80,0.12); }
 .gal img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-.gal figcaption { padding: 10px 14px; font-size: 13px; color: var(--sub); }
+.gal figcaption { padding: 11px 14px 12px; font-size: 13px; color: var(--sub); }
+.gal figcaption b { display: block; font-size: 14px; color: var(--ink); }
+.gal figcaption .d { font-size: 11.5px; color: var(--accent); font-weight: 700; letter-spacing: 0.4px; }
+.gal figcaption p { margin-top: 3px; }
+
+/* 갤러리 확대 보기(라이트박스) */
+.lightbox {
+  position: fixed; inset: 0; z-index: 90; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 30px 16px 22px;
+  background: rgba(11, 21, 38, 0.92); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.lightbox.on { opacity: 1; pointer-events: auto; }
+.lightbox img {
+  max-width: min(1100px, 94vw); max-height: 74vh; border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: #fff;
+}
+.lightbox .cap { color: #fff; text-align: center; margin-top: 16px; max-width: 760px; }
+.lightbox .cap b { font-size: 16px; }
+.lightbox .cap .d { color: #9fb4d8; font-size: 12.5px; font-weight: 700; letter-spacing: 0.5px; margin-right: 8px; }
+.lightbox .cap p { color: #c6d2e8; font-size: 13.5px; margin-top: 4px; }
+.lightbox button {
+  position: absolute; border: 0; cursor: pointer; color: #fff; background: rgba(255,255,255,0.12);
+  border-radius: 50%; width: 44px; height: 44px; font-size: 20px; line-height: 1;
+  transition: background 0.15s;
+}
+.lightbox button:hover { background: rgba(255,255,255,0.28); }
+.lightbox .x { top: 18px; right: 18px; }
+.lightbox .prev { left: 14px; top: 50%; transform: translateY(-50%); }
+.lightbox .next { right: 14px; top: 50%; transform: translateY(-50%); }
+@media (max-width: 560px) { .lightbox .prev, .lightbox .next { top: auto; bottom: 14px; transform: none; } }
 
 /* ---------- 연락처 ---------- */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: start; }

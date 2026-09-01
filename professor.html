@@ -6,7 +6,7 @@
 <title>Professor — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -20,9 +20,8 @@
 <section class="sec">
   <div class="wrap">
     <div class="prof">
-      <!-- 사진 3단 폴백: images/members/professor.jpg → 같은 이름 .png → 이니셜(DW) -->
-      <img class="photo" src="images/members/professor.jpg?v=7" alt="Prof. Da Wan Kim"
-           data-fallback="images/members/professor.png?v=7" data-initials="DW">
+      <!-- 교수 사진: images/professor.jpg(또는 .png)를 올리면 자동 표시, 없으면 이니셜(DW) -->
+      <img class="photo" id="prof-photo" alt="Prof. Da Wan Kim" data-initials="DW">
       <div>
         <h3>Da Wan Kim, Ph.D. <span style="font-weight:400;color:var(--sub);font-size:17px">(김다완)</span></h3>
         <div class="role">Associate Professor · Department of Electronics Engineering<br>
@@ -52,7 +51,8 @@
   </div>
 </section>
 
-<script src="data/site-data.js?v=7"></script>
-<script src="js/common.js?v=7"></script>
+<script src="data/site-data.js?v=8"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/common.js?v=8"></script>
 </body>
 </html>

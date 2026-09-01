@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=7";
+const ASSET_V = "?v=8";
 
 const MENU = [
   ["index.html", "Home"],
@@ -60,67 +60,38 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>`;
   document.body.append(foot);
 
-  initPhotoFallback(document);   // 페이지에 직접 넣은 사진(교수 프로필 등)의 폴백 처리
+  /* 교수 사진(#prof-photo): 목록(manifest)에 있는 실제 파일을 그대로 표시.
+     사진이 하나도 없으면 이니셜(DW)로 대체합니다. */
+  const prof = document.getElementById("prof-photo");
+  if (prof) {
+    const toInitials = () => {
+      const d = document.createElement("div");
+      d.className = prof.className;
+      d.textContent = prof.dataset.initials || "";
+      prof.replaceWith(d);
+    };
+    loadManifest().then(mf => {
+      if (!mf.professor) return toInitials();
+      prof.onerror = toInitials;
+      prof.src = encodeURI(mf.professor);
+    }).catch(toInitials);
+  }
 });
 
-/* ---- 사진 3단 폴백 ----
-   images/members/성-이름.jpg 가 없으면 같은 이름의 .png 를 쓰고,
-   그것도 없으면 이니셜 동그라미(또는 이니셜 사각형)로 대체합니다.
-   HTML 에서는 아래 두 속성만 붙이면 됩니다:
-     data-fallback="다음에 시도할 이미지 경로"   data-initials="표시할 이니셜" */
-function initPhotoFallback(root) {
-  root.querySelectorAll("img[data-fallback]").forEach(img => {
-    const nextStep = () => {
-      const png = img.getAttribute("data-fallback");
-      if (png) {                      // 2단계 — 같은 이름의 .png 를 시도
-        img.removeAttribute("data-fallback");
-        img.src = png;
-        return;
-      }
-      const box = document.createElement("div");   // 3단계 — 이니셜로 대체
-      box.className = img.className;               // .avatar / .photo 모양을 그대로 물려받음
-      box.textContent = img.getAttribute("data-initials") || "";
-      img.replaceWith(box);
-    };
-    img.addEventListener("error", nextStep);
-    // 리스너를 붙이기 전에 이미 실패했을 수도 있으므로 한 번 확인
-    if (img.complete && img.naturalWidth === 0) nextStep();
-  });
-}
-
-/* ---- 구성원 데이터 로딩 ----
-   구성원 한 명 = data/members/ 안의 파일 하나.
-   data/members-list.js 에 적힌 순서 그대로 읽어
-   { phd, ms, bs, alumni } 그룹별 배열로 모아 돌려줍니다.
-   사용법:  loadMembers().then(M => renderMembers(M.ms, "cards", "...")) */
-window.MEMBERS = { phd: [], ms: [], bs: [], alumni: [] };
-
-// data/members/*.js 파일들이 자기 자신을 등록할 때 부르는 함수
-function MEMBER(person) {
-  const g = person.group || "bs";
-  (window.MEMBERS[g] ??= []).push(person);
-}
-
-function loadScript(src) {
-  return new Promise(resolve => {
-    const el = document.createElement("script");
-    el.src = src;
-    el.onload = () => resolve(true);
-    el.onerror = () => { console.warn("구성원 파일을 읽지 못했습니다:", src); resolve(false); };
-    document.head.append(el);
-  });
-}
-
-let membersPromise = null;          // 한 페이지에서 두 번 읽지 않도록 기억해 둠
-function loadMembers() {
-  if (membersPromise) return membersPromise;
-  membersPromise = (async () => {
-    await loadScript("data/members-list.js" + ASSET_V);
-    for (const file of window.MEMBER_FILES || [])   // 목록에 적힌 순서를 그대로 지킴
-      await loadScript(file + ASSET_V);
-    return window.MEMBERS;
-  })();
-  return membersPromise;
+/* ---- 과정 페이지 렌더링 ----
+   한 페이지에 여러 소그룹(예: 박사 코스 = 포닥 → 박사 → 석박사 연계)을
+   순서대로 배치합니다. 사람이 있는 소그룹이 2개 이상일 때만 소제목을 답니다. */
+function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
+  const wrap = document.getElementById(wrapId);
+  const filled = subgroups.filter(g => groups[g.prefix]?.length);
+  if (!filled.length) {
+    wrap.innerHTML = `<p style="color:var(--sub)">${emptyMsg}</p>`;
+    return;
+  }
+  wrap.innerHTML = filled.map((g, i) => `
+    ${filled.length > 1 ? `<h3 class="subhead">${g.label}</h3>` : ""}
+    <div class="grid c3" id="${wrapId}-g${i}"></div>`).join("");
+  filled.forEach((g, i) => renderMembers(groups[g.prefix], `${wrapId}-g${i}`, ""));
 }
 
 /* ---- 멤버 카드 렌더링 (professor 제외 각 멤버 페이지에서 사용) ----
@@ -143,11 +114,9 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }
 
-  // 사진: images/members/<slug>.jpg → 같은 이름 .png → 이니셜 아바타
-  const photoHtml = s => s.slug
-    ? `<img class="avatar" src="images/members/${s.slug}.jpg${ASSET_V}" alt="${s.name}"
-           data-fallback="images/members/${s.slug}.png${ASSET_V}"
-           data-initials="${initials(s.name)}">`
+  // 사진: 목록(manifest)이 알려 준 실제 파일을 그대로 사용. 없으면 이니셜 아바타.
+  const photoHtml = s => s.image
+    ? `<img class="avatar" src="${encodeURI(s.image)}" alt="${s.name}" data-initials="${initials(s.name)}">`
     : `<div class="avatar">${initials(s.name)}</div>`;
 
   el.innerHTML = list.length ? list.map(s => {
@@ -163,7 +132,13 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
 
-  initPhotoFallback(el);   // 방금 만든 카드 사진에 3단 폴백 연결
+  // 파일이 깨졌을 때 등 만약의 로딩 실패 시 이니셜로 대체
+  el.querySelectorAll("img.avatar").forEach(img => img.addEventListener("error", () => {
+    const d = document.createElement("div");
+    d.className = "avatar";
+    d.textContent = img.dataset.initials || "";
+    img.replaceWith(d);
+  }));
 
   // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
   el.querySelectorAll(".person.hasdetail").forEach(card => {

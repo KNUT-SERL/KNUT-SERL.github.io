@@ -6,7 +6,7 @@
 <title>News — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -21,23 +21,33 @@
   <div class="wrap" id="news-list"></div>
 </section>
 
-<script src="data/site-data.js?v=7"></script>
-<script src="js/common.js?v=7"></script>
+<script src="data/site-data.js?v=8"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/common.js?v=8"></script>
 <script>
 "use strict";
-// 뉴스는 site-data.js 의 SITE.news 배열 맨 위에 항목을 추가하면 됩니다.
-const list = window.SITE.news;
-document.getElementById("news-list").innerHTML = list.length
-  ? list.map(n => `
-    <div class="news-item">
-      <div class="dt">${n.date}</div>
-      <div>
-        <h3>${n.title}</h3>
+/* 뉴스 = data/news.txt. 파일 맨 아래에 소식을 이어 붙이면 여기에는 최신순으로 표시됩니다.
+   '링크:' 를 채운 소식은 제목 옆에 LINK 표시가 붙고, 내용 칸을 누르면 그 주소로 이동합니다. */
+document.addEventListener("DOMContentLoaded", async () => {
+  const el = document.getElementById("news-list");
+  let list = [];
+  try { list = await loadNews(); }
+  catch (e) { el.innerHTML = `<p style="color:var(--sub)">뉴스 목록(data/news.txt)을 읽지 못했습니다.</p>`; return; }
+
+  el.innerHTML = list.length ? list.map(n => {
+    const inner = `
+        <h3>${n.title}${n.link ? `<span class="ext">LINK ↗</span>` : ""}</h3>
         <p>${n.text || ""}</p>
-        ${n.img ? `<img src="${n.img}" alt="" loading="lazy" onerror="this.remove()">` : ""}
-      </div>
-    </div>`).join("")
-  : `<p style="color:var(--sub)">No news yet.</p>`;
+        ${n.img ? `<img src="${encodeURI(n.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}`;
+    return `
+    <div class="news-item${n.link ? " linked" : ""}">
+      <div class="dt">${n.date}</div>
+      ${n.link
+        ? `<a class="body" href="${n.link}" target="_blank" rel="noopener">${inner}</a>`
+        : `<div>${inner}</div>`}
+    </div>`;
+  }).join("") : `<p style="color:var(--sub)">No news yet.</p>`;
+});
 </script>
 </body>
 </html>

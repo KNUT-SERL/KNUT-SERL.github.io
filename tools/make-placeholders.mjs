@@ -1,16 +1,13 @@
 /* ============================================================================
    구성원 사진 자리표시(placeholder) 이미지 만들기
 
-   실제 사진이 준비되기 전까지 카드에 표시할 일러스트 PNG를 만듭니다.
-   사람마다 다른 파스텔 배경 + 흰색 사람 실루엣이며,
-   결과물은 images/members/<성-이름>.png 로 저장됩니다.
+   members/ 안의 프로필(.txt) 중 이미지가 없는 사람에게
+   파스텔 배경 + 흰 실루엣 PNG(같은 이름 .png)를 만들어 줍니다.
+   교수 사진(images/professor.*)이 없으면 그것도 만듭니다.
+   이미 이미지가 있는 사람은 절대 건드리지 않습니다.
 
-   실행 방법 (저장소 최상위에서):
-       node tools/make-placeholders.mjs
-
-   data/members-list.js 를 읽어 만들기 때문에, 구성원을 추가한 뒤 다시 실행하면
-   새 사람의 자리표시 이미지도 함께 만들어집니다.
-   ※ 실제 사진(.jpg)을 images/members/ 에 올리면 그 사진이 우선 표시됩니다.
+   GitHub Actions 가 파일이 올라올 때마다 자동 실행하므로 평소 손댈 일 없음.
+   수동 실행:  node tools/make-placeholders.mjs
    ============================================================================ */
 import zlib from "node:zlib";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -120,23 +117,28 @@ function drawFigure({ w, h, head, body }, hue, tint = 0) {
   return encodePNG(w, h, out);
 }
 
-/* ---------- 구성원 목록 읽기 ---------- */
-const win = {};
-new Function("window", readFileSync("data/members-list.js", "utf8"))(win);
-const people = [];
-global.MEMBER = p => people.push(p);
-for (const file of win.MEMBER_FILES) new Function("MEMBER", readFileSync(file, "utf8"))(p => people.push(p));
+/* ---------- 이미지가 없는 구성원 찾기 ---------- */
+import { readdirSync, existsSync } from "node:fs";
+const IMG_EXTS = ["jpg", "jpeg", "webp", "png"];
+const files = (() => { try { return readdirSync("members"); } catch { return []; } })();
+const txts = files.filter(f => /\.txt$/i.test(f) && /^(PHD|DR|DRMS|MS|MSBS|BS|INT|ALU)-\d{3}-/i.test(f));
+const hasImage = base => IMG_EXTS.some(x => files.some(f => f.toLowerCase() === (base + "." + x).toLowerCase()));
 
-/* ---------- 만들기 ---------- */
-mkdirSync("images/members", { recursive: true });
-const GOLDEN = 137.508;          // 황금각 — 사람 수가 늘어도 색이 골고루 퍼짐
-let n = 0;
-for (const p of people) {
-  if (!p.slug) continue;
-  writeFileSync(`images/members/${p.slug}.png`, drawFigure(STUDENT, 24 + n * GOLDEN, n));
-  console.log(`  images/members/${p.slug}.png  (${STUDENT.w}×${STUDENT.h})  ${p.kor || p.name}`);
-  n++;
+/* 이름을 숫자로 바꿔(해시) 그 사람만의 고정된 파스텔 색을 고릅니다 */
+const hashOf = str => { let h = 0; for (const c of str) h = (h * 31 + c.codePointAt(0)) >>> 0; return h; };
+
+let made = 0;
+for (const t of txts) {
+  const base = t.replace(/\.txt$/i, "");
+  if (hasImage(base)) continue;
+  const h = hashOf(base);
+  writeFileSync(`members/${base}.png`, drawFigure(STUDENT, h % 360, h % 3));
+  console.log(`  members/${base}.png  (${STUDENT.w}×${STUDENT.h}) 생성`);
+  made++;
 }
-writeFileSync("images/members/professor.png", drawFigure(PROFESSOR, 210, 0));
-console.log(`  images/members/professor.png  (${PROFESSOR.w}×${PROFESSOR.h})  교수`);
-console.log(`\n총 ${n + 1}개 생성 완료.`);
+if (!IMG_EXTS.some(x => existsSync(`images/professor.${x}`))) {
+  writeFileSync("images/professor.png", drawFigure(PROFESSOR, 210, 0));
+  console.log(`  images/professor.png  (${PROFESSOR.w}×${PROFESSOR.h}) 생성`);
+  made++;
+}
+console.log(made ? `\n${made}개 생성 완료.` : "모든 구성원에게 이미지가 있어 만들 것이 없습니다.");

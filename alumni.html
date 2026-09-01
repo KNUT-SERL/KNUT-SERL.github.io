@@ -6,7 +6,7 @@
 <title>Alumni — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -23,13 +23,14 @@
   </div>
 </section>
 
-<script src="data/site-data.js?v=7"></script>
-<script src="js/common.js?v=7"></script>
+<script src="data/site-data.js?v=8"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/common.js?v=8"></script>
 <script>
 "use strict";
-// 졸업생 명단도 data/members/ 안의 파일들에서 옵니다 (group: "alumni")
+// 졸업생 = members/ 폴더의 ALU- 파일들. 순번(001, 002…)이 곧 졸업 순서입니다.
 document.addEventListener("DOMContentLoaded", () => loadMembers().then(M => {
-  document.getElementById("alumni-cards").innerHTML = M.alumni.map(a => `
+  document.getElementById("alumni-cards").innerHTML = M.ALU.map(a => `
     <div class="card person">
       <div class="nm">${a.name} <span style="font-weight:400;color:var(--sub)">(${a.kor})</span></div>
       <div class="role">${a.degree}</div>

@@ -6,7 +6,7 @@
 <title>Gallery — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -18,27 +18,80 @@
 </section>
 
 <section class="sec" style="padding-top:28px">
-  <div class="wrap">
-    <div class="gal" id="gal-grid"></div>
+  <div class="wrap" id="gal-wrap">
     <p id="gal-empty" style="display:none;color:var(--sub)">Photos coming soon.</p>
   </div>
 </section>
 
-<script src="data/site-data.js?v=7"></script>
-<script src="js/common.js?v=7"></script>
+<!-- 사진 확대 보기 -->
+<div class="lightbox" id="lb" aria-hidden="true">
+  <button class="x" aria-label="close">✕</button>
+  <button class="prev" aria-label="previous">‹</button>
+  <img alt="">
+  <div class="cap"></div>
+  <button class="next" aria-label="next">›</button>
+</div>
+
+<script src="data/site-data.js?v=8"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/common.js?v=8"></script>
 <script>
 "use strict";
-// 사진을 GitHub 저장소에 올리고 site-data.js 의 SITE.gallery 에 한 줄 추가하세요.
-const g = window.SITE.gallery;
-if (g.length) {
-  document.getElementById("gal-grid").innerHTML = g.map(x => `
-    <figure>
-      <img src="${x.src}" alt="${x.caption || ""}" loading="lazy" onerror="this.closest('figure').remove()">
-      ${x.caption ? `<figcaption>${x.caption}</figcaption>` : ""}
-    </figure>`).join("");
-} else {
-  document.getElementById("gal-empty").style.display = "block";
-}
+/* 갤러리 = gallery/ 폴더의 파일들.
+   'G-2026_09_01-001-연구실OT.png' 처럼 이름을 지어 올리면 자동으로 나타나고,
+   같은 이름의 .txt 를 함께 올리면 제목·설명이 붙습니다 (README.md 참고). */
+document.addEventListener("DOMContentLoaded", async () => {
+  const wrap = document.getElementById("gal-wrap");
+  const items = await loadGallery();          // 최신 날짜가 앞
+  if (!items.length) { document.getElementById("gal-empty").style.display = "block"; return; }
+
+  const fmt = d => d.replaceAll("-", ".");
+  const byYear = {};
+  items.forEach((g, i) => { g._i = i; (byYear[g.date.slice(0, 4)] ??= []).push(g); });
+
+  wrap.insertAdjacentHTML("afterbegin", Object.keys(byYear).sort((a, b) => b - a).map(y => `
+    <div class="yearhead"><b>${y}</b></div>
+    <div class="gal" style="margin-bottom:34px">
+      ${byYear[y].map(g => `
+      <figure data-i="${g._i}">
+        <img src="${encodeURI(g.image)}" alt="${g.title}" loading="lazy"
+             onerror="this.closest('figure').remove()">
+        <figcaption>
+          <span class="d">${fmt(g.date)}</span>
+          <b>${g.title}</b>
+          ${g.desc ? `<p>${g.desc}</p>` : ""}
+        </figcaption>
+      </figure>`).join("")}
+    </div>`).join(""));
+
+  /* ---- 확대 보기 (클릭 → 크게, ←/→ 이동, ESC 닫기) ---- */
+  const lb = document.getElementById("lb");
+  const lbImg = lb.querySelector("img"), lbCap = lb.querySelector(".cap");
+  let cur = 0;
+  const show = i => {
+    cur = (i + items.length) % items.length;
+    const g = items[cur];
+    lbImg.src = encodeURI(g.image);
+    lbCap.innerHTML = `<b><span class="d">${fmt(g.date)}</span>${g.title}</b>${g.desc ? `<p>${g.desc}</p>` : ""}`;
+    lb.classList.add("on");
+    lb.setAttribute("aria-hidden", "false");
+  };
+  const hide = () => { lb.classList.remove("on"); lb.setAttribute("aria-hidden", "true"); lbImg.src = ""; };
+  wrap.addEventListener("click", e => {
+    const f = e.target.closest("figure[data-i]");
+    if (f) show(+f.dataset.i);
+  });
+  lb.querySelector(".x").onclick = hide;
+  lb.querySelector(".prev").onclick = e => { e.stopPropagation(); show(cur - 1); };
+  lb.querySelector(".next").onclick = e => { e.stopPropagation(); show(cur + 1); };
+  lb.addEventListener("click", e => { if (e.target === lb || e.target === lbImg) hide(); });
+  document.addEventListener("keydown", e => {
+    if (!lb.classList.contains("on")) return;
+    if (e.key === "Escape") hide();
+    if (e.key === "ArrowLeft") show(cur - 1);
+    if (e.key === "ArrowRight") show(cur + 1);
+  });
+});
 </script>
 </body>
 </html>

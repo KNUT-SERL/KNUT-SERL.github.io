@@ -1,0 +1,22 @@
+# ═════════════════════════════════════════════════════
+# 뉴스 목록  →  news.html
+# ─────────────────────────────────────────────────────
+# · 소식 한 건 = '날짜:' 로 시작하는 한 묶음입니다.
+# · 새 소식은 이 파일 "맨 아래"에 묶음을 이어 붙이세요.
+#   (화면에는 아래에 있는 것, 즉 최신 소식이 맨 위에 표시됩니다)
+# · 링크: 를 채우면 제목 옆에 링크 표시가 붙고, 그 소식 칸을 누르면 해당 주소로 이동합니다.
+# · 사진: 에는 저장소에 올린 이미지 경로를 적습니다 (예: images/news/2026-01.jpg)
+# · 링크·사진이 없으면 그 줄을 비워 두거나 지워도 됩니다.
+# ═════════════════════════════════════════════════════
+
+날짜: 2023-03
+제목: SER Lab opens at Korea National University of Transportation
+내용: The Soft Electronics & Robotics Lab. begins its journey in the Department of Electronics Engineering.
+링크:
+사진: 
+
+날짜: 2025-01
+제목: Paper published in Biomimetics
+내용: "Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence" has been published.
+링크:
+사진: 
