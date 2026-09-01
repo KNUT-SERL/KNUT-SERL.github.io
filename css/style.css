@@ -116,7 +116,7 @@ img { max-width: 100%; }
 
 /* ---------- 연구 분야 (Research 페이지: 좌측 이미지 + 우측 제목·요약) ---------- */
 .rrow {
-  display: grid; grid-template-columns: 290px 1fr; gap: 34px; align-items: center;
+  display: grid; grid-template-columns: 290px 1fr; gap: 34px; align-items: start;
   padding: 28px 0; border-bottom: 1px solid var(--line);
 }
 .rrow:first-child { padding-top: 0; }
