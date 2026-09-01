@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=8";
+const ASSET_V = "?v=9";
 
 const MENU = [
   ["index.html", "Home"],
@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <p>Smart ICT Building E17, Room 507 · 50, Daehak-ro, Daesowon-myeon, Chungju-si,
          Chungcheongbuk-do, Republic of Korea<br>
          Tel. +82-43-841-5327 · <a href="mailto:dawankim@ut.ac.kr">dawankim@ut.ac.kr</a></p>
+      <p>웹페이지 관리자: <a href="mailto:saa4563123@naver.com">saa4563123@naver.com</a>
+         — 버그나 수정 사항이 있으면 이 주소로 연락해 주세요.</p>
       <p>Copyright © 2026 Soft Electronics &amp; Robotics Lab., Korea National University of
          Transportation. All rights reserved.</p>
     </div>`;
@@ -72,7 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     loadManifest().then(mf => {
       if (!mf.professor) return toInitials();
-      prof.onerror = toInitials;
+      prof.onerror = () => {
+        if (!prof.dataset.retried) {   // 일시적 실패면 한 번만 다시 시도
+          prof.dataset.retried = "1";
+          setTimeout(() => { prof.src = encodeURI(mf.professor) + "?r=" + Date.now(); }, 900);
+          return;
+        }
+        toInitials();
+      };
       prof.src = encodeURI(mf.professor);
     }).catch(toInitials);
   }
@@ -132,8 +141,14 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
 
-  // 파일이 깨졌을 때 등 만약의 로딩 실패 시 이니셜로 대체
+  // 로딩 실패 시: 배포 직후처럼 일시적인 문제일 수 있어 한 번만 다시 시도하고,
+  // 그래도 안 되면 이니셜 아바타로 대체합니다
   el.querySelectorAll("img.avatar").forEach(img => img.addEventListener("error", () => {
+    if (!img.dataset.retried) {
+      img.dataset.retried = "1";
+      setTimeout(() => { img.src = img.src.split("?")[0] + "?r=" + Date.now(); }, 900);
+      return;
+    }
     const d = document.createElement("div");
     d.className = "avatar";
     d.textContent = img.dataset.initials || "";
