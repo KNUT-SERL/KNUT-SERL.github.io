@@ -5,4 +5,4 @@
 # ─────────────────────────────────────────────────────
 
 제목: High-Fidelity Tactile Feedback with Kirigami-Based Flexible Substrates
-요약: Skin-attachable actuator systems built on kirigami-patterned flexible substrates — conformal skin attachment with octopus suction-cup structures, vivid haptic feedback from array actuators, and stress-dissipating auxetic patterns for dynamic detachment resistance.
+요약: Skin-attachable actuator systems on kirigami-patterned flexible substrates — octopus-suction conformal attachment and array actuators for vivid, high-fidelity tactile feedback.
