@@ -67,8 +67,9 @@
 <script>
 "use strict";
 // 연구 분야 카드 — research/ 폴더의 파일에서 자동으로 (Research 페이지와 같은 출처)
+// 홈에는 순번이 빠른 4개(R-001~004)만 표시하고, 전체 목록은 Research 페이지에서 보여줍니다
 loadResearch().then(list => {
-  document.getElementById("research-cards").innerHTML = list.map(r => `
+  document.getElementById("research-cards").innerHTML = list.slice(0, 4).map(r => `
     <a class="card" href="research.html" style="color:inherit;text-decoration:none">
       ${r.image ? `<img class="fig" src="${encodeURI(r.image)}" alt="${r.title}" onerror="this.remove()" loading="lazy">` : ""}
       <h3 class="rt">${r.title}</h3>
