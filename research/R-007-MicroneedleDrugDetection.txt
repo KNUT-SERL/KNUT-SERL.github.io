@@ -5,4 +5,4 @@
 # ─────────────────────────────────────────────────────
 
 제목: Skin-Attachable Adhesive Microneedle Platform for ISF-Based Drug Detection
-요약: An integrated skin-attachable adhesive platform for interstitial-fluid-based drug detection — combining bioinspired 3D microstructures such as octopus suction cups and tree-frog moisture channels with swellable microneedle arrays.
+요약: A skin-attachable adhesive platform combining bioinspired 3D microstructures and swellable microneedle arrays for interstitial-fluid-based drug detection.

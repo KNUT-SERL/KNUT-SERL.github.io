@@ -180,21 +180,21 @@
    "order": 5,
    "title": "KirigamiHapticActuator",
    "txt": "research/R-005-KirigamiHapticActuator.txt",
-   "image": null
+   "image": "research/R-005-KirigamiHapticActuator.png"
   },
   {
    "base": "R-006-PetTactileSensor",
    "order": 6,
    "title": "PetTactileSensor",
    "txt": "research/R-006-PetTactileSensor.txt",
-   "image": null
+   "image": "research/R-006-PetTactileSensor.png"
   },
   {
    "base": "R-007-MicroneedleDrugDetection",
    "order": 7,
    "title": "MicroneedleDrugDetection",
    "txt": "research/R-007-MicroneedleDrugDetection.txt",
-   "image": null
+   "image": "research/R-007-MicroneedleDrugDetection.webp"
   }
  ],
  "gallery": []
