@@ -132,7 +132,15 @@ img { max-width: 100%; }
 .card h3.rt { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
 
 /* ---------- 멤버 카드 (호버 시 상세 패널 확장) ---------- */
-.person { text-align: left; position: relative; }
+.person { text-align: left; position: relative; display: flex; flex-direction: column; }
+/* 직책 태그 (랩장·부랩장·페이지 관리자 등) — 이름 옆의 작은 배지 */
+.person .tag {
+  display: inline-block; margin-left: 7px; padding: 2px 9px 3px; border-radius: 20px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; vertical-align: 2px;
+  background: var(--soft); color: var(--accent); white-space: nowrap;
+}
+.person .tag.lead { background: var(--accent); color: #fff; }
+.person .tag.vice { background: #fff; color: var(--accent); box-shadow: inset 0 0 0 1.5px var(--accent); }
 .person .avatar {
   width: 108px; height: 108px; border-radius: 50%; object-fit: cover;
   background: var(--soft); margin-bottom: 14px;
@@ -141,13 +149,7 @@ img { max-width: 100%; }
 }
 .person .nm { font-size: 17px; font-weight: 700; }
 .person .role { color: var(--accent); font-size: 13px; font-weight: 700; margin: 2px 0 8px; }
-.person .info { font-size: 13.5px; color: var(--sub); }
-/* 벽돌식(masonry) 배치: 열린 카드만 길어지고 나머지는 빈 자리를 채움 */
-.masonry { position: relative; display: block !important; }
-.masonry .person {
-  position: absolute; box-sizing: border-box;
-  transition: top 0.35s ease, left 0.35s ease;
-}
+.person .info { font-size: 13.5px; color: var(--sub); min-height: 44px; flex: 1; }
 /* 상세 패널이 있는 카드 표시 */
 .person .hint {
   margin-top: 12px; font-size: 11.5px; color: #aab2bf; letter-spacing: 0.4px;
@@ -181,13 +183,6 @@ img { max-width: 100%; }
   content: ""; position: absolute; left: 0; top: 11px;
   width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
 }
-
-/* 과정 페이지의 소그룹 제목 (포닥/박사/연계과정 등) */
-.subhead {
-  font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase;
-  letter-spacing: 1.2px; margin: 34px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
-}
-.subhead:first-child { margin-top: 0; }
 
 /* ---------- 교수 프로필 ---------- */
 .prof { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; }
@@ -333,6 +328,8 @@ img { max-width: 100%; }
 .pubw .bdg.if { background: #c0392b; }
 .pubw .bdg.top { background: #b8860b; }
 .pubw .bdg.man { background: #34495e; }
+/* 특허 항목 줄 안의 뱃지는 앞 내용과 살짝 띄운다 */
+.pubw .pat-item p .bdg { margin-left: 8px; vertical-align: 1px; }
 .pubw .cites { color: #8a93a2; font-size: 12px; font-style: normal; font-weight: 400; }
 .pubw .quick { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
 .pubw .quick a, .pubw .quick button {

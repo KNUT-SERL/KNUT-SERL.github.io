@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=10";
+const ASSET_V = "?v=11";
 
 const MENU = [
   ["index.html", "Home"],
@@ -87,20 +87,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/* ---- 카드 높이 통일 ----
+   내용 길이가 달라도 모든 카드를 가장 큰 카드 높이에 맞춰
+   줄마다 들쭉날쭉해 보이지 않게 합니다. (상세 패널이 열린 카드는 예외) */
+function equalizeCards(el) {
+  const cards = [...el.querySelectorAll(".person")];
+  if (cards.length < 2) return;
+  const apply = () => {
+    const closed = cards.filter(c => !c.classList.contains("open"));
+    closed.forEach(c => { c.style.minHeight = ""; });
+    const h = Math.max(...closed.map(c => c.offsetHeight));
+    cards.forEach(c => { c.style.minHeight = h + "px"; });
+  };
+  apply();
+  window.addEventListener("resize", apply);            // 창 크기가 바뀌면 다시 계산
+  if (document.fonts?.ready) document.fonts.ready.then(apply);   // 글꼴 로딩 후 재계산
+}
+
 /* ---- 과정 페이지 렌더링 ----
-   한 페이지에 여러 소그룹(예: 박사 코스 = 포닥 → 박사 → 석박사 연계)을
-   순서대로 배치합니다. 사람이 있는 소그룹이 2개 이상일 때만 소제목을 답니다. */
+   한 페이지의 여러 과정(예: 박사 코스 = 포닥 → 박사 → 석박사 연계)을
+   구분선 없이 하나의 목록으로 이어 붙입니다. 연계과정은 그 과정의 맨 뒤에 이어짐. */
 function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
   const wrap = document.getElementById(wrapId);
-  const filled = subgroups.filter(g => groups[g.prefix]?.length);
-  if (!filled.length) {
-    wrap.innerHTML = `<p style="color:var(--sub)">${emptyMsg}</p>`;
-    return;
-  }
-  wrap.innerHTML = filled.map((g, i) => `
-    ${filled.length > 1 ? `<h3 class="subhead">${g.label}</h3>` : ""}
-    <div class="grid c3" id="${wrapId}-g${i}"></div>`).join("");
-  filled.forEach((g, i) => renderMembers(groups[g.prefix], `${wrapId}-g${i}`, ""));
+  const list = subgroups.flatMap(g => groups[g.prefix] || []);
+  wrap.innerHTML = `<div class="grid c3" id="${wrapId}-list"></div>`;
+  renderMembers(list, `${wrapId}-list`, emptyMsg);
 }
 
 /* ---- 멤버 카드 렌더링 (professor 제외 각 멤버 페이지에서 사용) ----
@@ -128,15 +139,20 @@ function renderMembers(list, elId, emptyMsg) {
     ? `<img class="avatar" src="${encodeURI(s.image)}" alt="${s.name}" data-initials="${initials(s.name)}">`
     : `<div class="avatar">${initials(s.name)}</div>`;
 
+  // 직책 태그(랩장·부랩장·페이지 관리자 등) — 종류에 따라 모양을 달리해 한눈에 보이게
+  const tagHtml = t =>
+    `<span class="tag${t === "랩장" ? " lead" : t === "부랩장" ? " vice" : ""}">${t}</span>`;
+
   el.innerHTML = list.length ? list.map(s => {
     const d = detailHtml(s);
+    // 힌트 줄은 모든 카드에 같은 높이로 자리만 잡아 두어 카드 크기가 서로 같아지게 함
     return `
     <div class="card person${d ? " hasdetail" : ""}">
       ${photoHtml(s)}
-      <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
+      <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}${(s.tags || []).map(tagHtml).join("")}</div>
       <div class="role">${s.role || ""}</div>
       <div class="info">${s.interests || ""}${s.email ? `<br><a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
-      ${d ? `<div class="hint">▾ CLICK FOR DETAILS</div>` : ""}
+      <div class="hint">${d ? "▾ CLICK FOR DETAILS" : "&nbsp;"}</div>
       ${d}
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
@@ -155,6 +171,8 @@ function renderMembers(list, elId, emptyMsg) {
     img.replaceWith(d);
   }));
 
+  equalizeCards(el);   // 모든 카드를 같은 높이로
+
   // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
   el.querySelectorAll(".person.hasdetail").forEach(card => {
     card.addEventListener("click", e => {
@@ -165,37 +183,4 @@ function renderMembers(list, elId, emptyMsg) {
     });
   });
 
-  if (list.length) masonryLayout(el);
-}
-
-/* ---- 벽돌식(masonry) 배치 ----
-   카드가 열려 길어지면 그 카드만 아래로 늘어나고,
-   다음 카드들이 빈 자리를 채우며 재배치됩니다.
-   (1 2 3 / 4 5 6  →  1이 열리면  1 2 3 / 1 4 5 / 6 ...) */
-function masonryLayout(el) {
-  el.classList.add("masonry");
-  const cards = [...el.querySelectorAll(".person")];
-  const gap = 22;
-  const twoCol = el.classList.contains("c2");   // alumni 페이지는 2열
-
-  function layout() {
-    const cw = el.clientWidth;
-    const n = cw <= 560 ? 1 : (cw <= 860 || twoCol) ? 2 : 3;   // 화면 폭에 따른 열 수
-    const w = (cw - gap * (n - 1)) / n;
-    const colH = Array(n).fill(0);
-    for (const c of cards) {
-      c.style.width = w + "px";
-      const i = colH.indexOf(Math.min(...colH));   // 가장 짧은 열에 배치
-      c.style.left = i * (w + gap) + "px";
-      c.style.top = colH[i] + "px";
-      colH[i] += c.offsetHeight + gap;
-    }
-    el.style.height = (Math.max(...colH) - gap) + "px";
-  }
-
-  // 카드 높이가 변할 때(패널 열림/닫힘, 사진 로딩)마다 자동 재배치
-  const ro = new ResizeObserver(layout);
-  cards.forEach(c => ro.observe(c));
-  window.addEventListener("resize", layout);
-  layout();
 }
