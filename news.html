@@ -6,7 +6,7 @@
 <title>News — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=15">
+<link rel="stylesheet" href="css/style.css?v=16">
 </head>
 <body>
 
@@ -21,9 +21,9 @@
   <div class="wrap" id="news-list"></div>
 </section>
 
-<script src="data/site-data.js?v=15"></script>
-<script src="js/content.js?v=15"></script>
-<script src="js/common.js?v=15"></script>
+<script src="data/site-data.js?v=16"></script>
+<script src="js/content.js?v=16"></script>
+<script src="js/common.js?v=16"></script>
 <script>
 "use strict";
 /* 뉴스 = data/news.txt. 파일 맨 아래에 소식을 이어 붙이면 여기에는 최신순으로 표시됩니다.
@@ -34,18 +34,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   try { list = await loadNews(); }
   catch (e) { el.innerHTML = `<p style="color:var(--sub)">뉴스 목록(data/news.txt)을 읽지 못했습니다.</p>`; return; }
 
-  // 연도별로 묶어 표시 (Publications 페이지와 같은 형식, 최신 연도가 위)
+  // 연도별로 묶어 표시 (Publications 페이지와 같은 형식, 최신 연도가 위).
+  // 사진이 있으면 왼쪽에 일정한 규격의 썸네일로, 본문·사진이 있는 소식은
+  // (멤버 카드처럼) 칸을 누르면 아래로 펼쳐지며 원본 사진과 전체 내용이 보입니다.
   const item = n => {
-    const subDate = n.date && n.date.length > 4 ? `<span class="when">${n.date}</span>` : "";
-    const inner = `
-        <h3>${n.title}${subDate}${n.link ? `<span class="ext">LINK ↗</span>` : ""}</h3>
+    const expandable = !!(n.body || n.img);
+    // 펼쳐지는 소식에서는 LINK 표시 자체가 링크가 되고, 칸 클릭은 펼침이 됩니다
+    const badge = asLink => !n.link ? "" : asLink
+      ? `<a class="ext" href="${n.link}" target="_blank" rel="noopener">LINK ↗</a>`
+      : `<span class="ext">LINK ↗</span>`;
+    const head = asLink => `
+      ${n.img ? `<img class="thumb" src="${encodeURI(n.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+      <div>
+        <h3>${n.title}${badge(asLink)}</h3>
         <p>${n.text || ""}</p>
-        ${n.img ? `<img src="${encodeURI(n.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}`;
-    return `
+        ${expandable ? `<div class="hint">▾ CLICK FOR DETAILS</div>` : ""}
+      </div>`;
+    if (!expandable) {
+      // 펼칠 내용이 없으면 예전처럼: 링크가 있을 때 칸 전체가 링크
+      return `
     <div class="news-item${n.link ? " linked" : ""}">
       ${n.link
-        ? `<a class="body" href="${n.link}" target="_blank" rel="noopener">${inner}</a>`
-        : `<div>${inner}</div>`}
+        ? `<a class="body" href="${n.link}" target="_blank" rel="noopener"><div class="row">${head(false)}</div></a>`
+        : `<div class="row">${head(false)}</div>`}
+    </div>`;
+    }
+    return `
+    <div class="news-item hasmore">
+      <div class="row${n.img ? " withthumb" : ""}">${head(true)}</div>
+      <div class="more">
+        ${n.img ? `<img class="full" src="${encodeURI(n.img)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+        ${n.body ? `<p>${n.body}</p>` : ""}
+      </div>
     </div>`;
   };
   const byYear = {};
@@ -57,6 +77,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   el.innerHTML = list.length ? years.map(y => `
     <div class="news-year"><b>${y}</b></div>
     ${byYear[y].map(item).join("")}`).join("") : `<p style="color:var(--sub)">No news yet.</p>`;
+
+  // 클릭으로 펼치고 닫기 — 한 번에 하나만 열림 (링크 클릭은 방해하지 않음)
+  el.querySelectorAll(".news-item.hasmore").forEach(card => {
+    card.addEventListener("click", e => {
+      if (e.target.closest("a")) return;
+      const wasOpen = card.classList.contains("open");
+      el.querySelectorAll(".news-item.open").forEach(c => c.classList.remove("open"));
+      if (!wasOpen) card.classList.add("open");
+    });
+  });
 });
 </script>
 </body>
