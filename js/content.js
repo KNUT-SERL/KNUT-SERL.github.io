@@ -200,9 +200,10 @@ async function loadPatents() {
 /* ---- 뉴스: 파일 맨 아래(최신)가 앞 ---- */
 async function loadNews() {
   const recs = parseBlocks(await fetchText("data/news.txt"),
-    "날짜", ["날짜", "제목", "내용", "링크", "사진"]);
+    "날짜", ["날짜", "제목", "내용", "본문", "링크", "사진"]);
   return recs.map(r => ({
     date: r["날짜"] || "", title: r["제목"] || "", text: r["내용"] || "",
+    body: r["본문"] || "",   // 펼쳤을 때 보이는 전체 내용 (선택)
     link: r["링크"] || "", img: r["사진"] || ""
   })).reverse();
 }
