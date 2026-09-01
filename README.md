@@ -20,7 +20,7 @@
 | 뉴스 | `data/news.txt` | [3장](#3-뉴스--datanewstxt) |
 | 특허 | `data/patents.txt` | [4장](#4-특허--datapatentstxt) |
 | 논문 목록·배지 | 자동 (설정: `data/site-data.js`) | [5장](#5-논문--자동) |
-| 연구 분야 4개 카드 | `data/site-data.js` + `images/research/` | [6장](#6-연구-분야-카드) |
+| 연구 분야 | `research/` 폴더 | [6장](#6-연구-분야--research-폴더) |
 | 협력기관 로고 배너 | `data/site-data.js` + `images/partners/` | [7장](#7-협력기관-배너) |
 | 교수 프로필(글·사진) | `professor.html` + `images/professor.jpg` | [8장](#8-교수-프로필) |
 | 홈 화면 문구 | `index.html` | [9장](#9-홈-화면-문구) |
@@ -207,13 +207,30 @@ Publications의 논문 목록은 **OpenAlex에서 자동으로** 불러오므로
 
 ---
 
-## 6. 연구 분야 카드
+## 6. 연구 분야 — `research/` 폴더
 
-홈 화면과 Research 페이지에 함께 나오는 4개 카드입니다.
+Research 페이지(왼쪽 사진 + 오른쪽 제목·요약의 세로 나열)와 홈 화면의 연구 카드가
+**같은 파일**에서 나옵니다. 구성원·갤러리와 똑같이 파일만 올리면 됩니다.
 
-- **글 수정**: `data/site-data.js`의 `research:` 부분 — `title`(제목)·`desc`(설명)·`icon`(이모지)
-- **사진 교체**: `images/research/` 폴더에 새 사진을 올리고, `img:` 값의 파일 이름을 맞추기
-  (같은 이름으로 덮어쓰면 값은 그대로 두되, [13장](#13-문제-해결)의 캐시 번호를 올려 주세요)
+### 파일 이름 규칙: `R-순번-영문이름`
+
+```
+R-001-SoftRobotElectronics.jpg     ← 왼쪽에 표시될 대표 사진 (.png 도 가능)
+R-001-SoftRobotElectronics.txt     ← 제목과 요약
+```
+
+- **순번(001, 002…)이 곧 표시 순서**입니다 (위에서 아래로)
+- `.txt` 내용:
+
+  ```
+  제목: Soft Robot & Electronics
+  요약: 한두 문장의 연구 분야 소개.
+  ```
+
+- **내용만 고칠 때**: 해당 `.txt` 를 열어 수정
+- **사진 교체**: 같은 이름으로 다시 업로드 (덮어쓰기)
+- **분야 추가**: 다음 순번으로 두 파일 업로드 / **삭제**: 두 파일 삭제
+- **순서 변경**: 파일 이름의 순번을 바꾸면 됩니다
 
 ---
 
@@ -289,12 +306,12 @@ Publications의 논문 목록은 **OpenAlex에서 자동으로** 불러오므로
 
 **고쳤는데 화면이 그대로예요**
 - 1~2분 기다린 뒤 `Ctrl+F5` (Mac: `Cmd+Shift+R`)
-- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=9` → `?v=10`,
-  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=9"` → `"?v=10"`
+- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=10` → `?v=11`,
+  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=10"` → `"?v=11"`
 
 **구성원/갤러리 파일을 올렸는데 안 나와요**
 - 파일 이름이 규칙과 정확히 같은지 확인 (붙임표 `-` 위치, 순번 세 자리 `001`, 확장자 소문자)
-- 올바른 폴더(`members/`, `gallery/`) 안에 올렸는지 확인
+- 올바른 폴더(`members/`, `research/`, `gallery/`) 안에 올렸는지 확인
 - 저장소 **Actions 탭**을 열어 `update-manifest`가 초록색 ✓인지 확인.
   빨간 ✗이면 그 실행을 눌러 로그를 확인하고, 되면 **Re-run jobs**를 눌러 재실행
 - Actions 탭에서 `update-manifest` → **Run workflow** 버튼으로 언제든 수동 실행할 수 있습니다
@@ -314,7 +331,7 @@ Publications의 논문 목록은 **OpenAlex에서 자동으로** 불러오므로
 
 ## (참고) 사이트가 자동으로 돌아가는 원리
 
-`members/`·`gallery/`에 파일이 올라오면 GitHub Actions(`update-manifest`)가 폴더를 훑어
+`members/`·`research/`·`gallery/`에 파일이 올라오면 GitHub Actions(`update-manifest`)가 폴더를 훑어
 사이트가 읽는 목록(`data/manifest.json`)을 자동으로 갱신하고, 사진 없는 구성원에게
 자리표시 그림을 만들어 줍니다. 이 과정은 자동이므로 **`data/manifest.json`과
 `tools/`, `js/`, `.github/` 안의 파일은 직접 고칠 필요가 없습니다.**

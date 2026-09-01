@@ -1,0 +1,8 @@
+# ─────────────────────────────────────────────────────
+# 연구 분야 — Research 페이지의 한 항목
+# 같은 이름의 이미지(R-번호-이름.jpg/.png)가 왼쪽에, 아래 내용이 오른쪽에 표시됩니다.
+# 순번(001, 002…)이 곧 표시 순서입니다. 항목 추가는 README.md 참고.
+# ─────────────────────────────────────────────────────
+
+제목: XR Skin-Adhesive Interfaces
+요약: Vibration-resistive, sweat-tolerant skin-adhesive haptic interfaces that deliver realistic tactile feedback for immersive XR experiences.

@@ -1,12 +1,12 @@
 /* ============================================================================
-   ★★★  SER Lab 데이터 파일 — 논문 설정·연구분야·협력기관  ★★★
+   ★★★  SER Lab 데이터 파일 — 논문 설정·협력기관  ★★★
 
    [수정 방법]
    1) 이 파일을 메모장(또는 GitHub 웹의 연필 아이콘)으로 연다
    2) 아래 섹션 중 바꿀 부분을 찾아 형식 그대로 고친다
    3) 저장 후 GitHub 저장소에 다시 업로드(덮어쓰기) → 1분 내 사이트 반영
 
-   [이 파일에 없는 것] 구성원(members/) · 갤러리(gallery/) ·
+   [이 파일에 없는 것] 구성원(members/) · 연구분야(research/) · 갤러리(gallery/) ·
    특허(data/patents.txt) · 뉴스(data/news.txt) — 자세한 방법은 README.md
 
    [형식 규칙 — 이것만 지키면 안 깨집니다]
@@ -54,40 +54,10 @@ window.SITE = {
   },
 
   /* ==========================================================================
-     [2] 연구 분야  →  research.html 카드 + 홈 화면의 4개 카드
-     title(제목)·desc(설명)를 고치면 두 페이지에 동시에 반영됨
-     img 에 지정된 경로(images/research/)로 사진을 올리면 카드 상단에 표시
+     [2] 연구 분야 → 이 파일에서 분리되었습니다
+     research/ 폴더에 'R-001-이름.jpg' + 같은 이름 .txt(제목·요약)를 올리면
+     Research 페이지와 홈 화면 카드에 자동 반영됩니다. 방법은 README.md 참고.
      ========================================================================== */
-  research: [
-    {
-      title: "Soft Robot & Electronics",
-      icon: "🤖",                              // 이모지 아이콘 (자유롭게 교체)
-      img: "images/research/soft-robot.jpg?v=7",
-      desc: "Bioinspired soft sensors and actuators — pneumatic soft grippers with haptic "
-          + "recognition frameworks and dome-structured tactile sensing arrays."
-    },
-    {
-      title: "Bioinspired Haptic Sensors",
-      icon: "🖐️",
-      img: "images/research/haptic.jpg?v=7",
-      desc: "Haptic sensor systems inspired by human skin mechanoreceptors — from receptor-level "
-          + "signal pathways to fingertip-integrated haptic sensing systems."
-    },
-    {
-      title: "XR Skin-Adhesive Interfaces",
-      icon: "🥽",
-      img: "images/research/xr.jpg?v=7",
-      desc: "Vibration-resistive, sweat-tolerant skin-adhesive haptic interfaces that deliver "
-          + "realistic tactile feedback for immersive XR experiences."
-    },
-    {
-      title: "Wearable Sensors for Biosignal Monitoring",
-      icon: "⌚",
-      img: "images/research/wearable.jpg?v=7",
-      desc: "Skin-conformal adhesive soft electronics with minimal residue and conformal contact "
-          + "for long-term EMG and biosignal monitoring."
-    }
-  ],
 
   /* ==========================================================================
      [3] 구성원·갤러리·특허·뉴스는 이 파일에 없습니다

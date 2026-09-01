@@ -114,6 +114,23 @@ img { max-width: 100%; }
   background: #fff; margin-bottom: 14px;   /* 원본 비율 그대로 — 잘리지 않음 */
 }
 
+/* ---------- 연구 분야 (Research 페이지: 좌측 이미지 + 우측 제목·요약) ---------- */
+.rrow {
+  display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: center;
+  padding: 28px 0; border-bottom: 1px solid var(--line);
+}
+.rrow:first-child { padding-top: 0; }
+.rrow:last-child { border-bottom: 0; }
+.rrow img {
+  width: 100%; height: auto; display: block; border-radius: 14px;
+  background: #fff; border: 1px solid var(--line);
+}
+.rrow h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+.rrow p { font-size: 15px; color: var(--sub); line-height: 1.75; }
+@media (max-width: 760px) { .rrow { grid-template-columns: 1fr; gap: 14px; } }
+/* 홈 화면 연구 카드의 제목 */
+.card h3.rt { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+
 /* ---------- 멤버 카드 (호버 시 상세 패널 확장) ---------- */
 .person { text-align: left; position: relative; }
 .person .avatar {

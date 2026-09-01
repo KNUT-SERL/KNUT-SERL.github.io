@@ -14,6 +14,7 @@ const PREFIX_ORDER = ["PHD", "DR", "DRMS", "MS", "MSBS", "BS", "INT", "ALU"];
 const IMG_EXTS = ["jpg", "jpeg", "webp", "png"];
 const MEMBER_RE = new RegExp(`^(${PREFIX_ORDER.join("|")})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
 const GALLERY_RE = new RegExp(`^G-(\\d{4})_(\\d{2})_(\\d{2})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
+const RESEARCH_RE = new RegExp(`^R-(?:\\d{4}_\\d{2}_\\d{2}-)?(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
 
 /* 접두사 → 기본 직함 (프로필의 '직함:' 을 비워 두면 이 값이 쓰임) */
 const DEFAULT_ROLE = {
@@ -108,7 +109,7 @@ async function manifestFromApi() {
       return { ...rest, image: IMG_EXTS.map(x => images[x]).find(Boolean) || null };
     });
   };
-  const [mem, gal, img] = await Promise.all([ls("members"), ls("gallery"), ls("images")]);
+  const [mem, gal, res, img] = await Promise.all([ls("members"), ls("gallery"), ls("research"), ls("images")]);
   const members = collect(mem, MEMBER_RE, "members",
       (m, base) => ({ base, prefix: m[1].toUpperCase(), order: +m[2], name: m[3] }))
     .sort((a, b) => PREFIX_ORDER.indexOf(a.prefix) - PREFIX_ORDER.indexOf(b.prefix) || a.order - b.order);
@@ -116,8 +117,11 @@ async function manifestFromApi() {
       (m, base) => ({ base, date: `${m[1]}-${m[2]}-${m[3]}`, order: +m[4], title: m[5] }))
     .filter(e => e.image)
     .sort((a, b) => b.date.localeCompare(a.date) || a.order - b.order);
+  const research = collect(res, RESEARCH_RE, "research",
+      (m, base) => ({ base, order: +m[1], title: m[2] }))
+    .sort((a, b) => a.order - b.order);
   const profFile = IMG_EXTS.map(x => `professor.${x}`).find(x => img.includes(x));
-  return { professor: profFile ? `images/${profFile}` : null, members, gallery };
+  return { professor: profFile ? `images/${profFile}` : null, members, research, gallery };
 }
 
 /* ---- 구성원 ----
@@ -160,6 +164,22 @@ async function loadGallery() {
     }
     return { image: e.image, date: e.date, order: e.order,
              title: t["제목"] || e.title, desc: t["설명"] || "" };
+  }));
+}
+
+/* ---- 연구 분야: [{ image, order, title, desc }] (순번 001 이 맨 위) ---- */
+async function loadResearch() {
+  const mf = await loadManifest();
+  return Promise.all((mf.research || []).map(async e => {
+    let t = {};
+    if (e.txt) {
+      try { t = parseKV(await fetchText(e.txt), ["제목", "요약", "설명"]); }
+      catch (err) { console.warn("연구 분야 설명을 읽지 못했습니다:", e.txt, err.message); }
+    }
+    // 파일명 "SoftRobotElectronics" → 제목이 비었을 때 "Soft Robot Electronics" 로 복원
+    const fallbackTitle = e.title.replace(/([a-z])([A-Z])/g, "$1 $2");
+    return { image: e.image, order: e.order,
+             title: t["제목"] || fallbackTitle, desc: t["요약"] || t["설명"] || "" };
   }));
 }
 

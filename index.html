@@ -7,7 +7,7 @@
 <meta name="description" content="Soft Electronics & Robotics Lab at Korea National University of Transportation — skin-adhesive patches, soft grippers, wearable devices, and tactile sensor standardization.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
+<link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -61,17 +61,20 @@
   </div>
 </section>
 
-<script src="data/site-data.js?v=9"></script>
-<script src="js/content.js?v=9"></script>
-<script src="js/common.js?v=9"></script>
+<script src="data/site-data.js?v=10"></script>
+<script src="js/content.js?v=10"></script>
+<script src="js/common.js?v=10"></script>
 <script>
 "use strict";
-// 연구 분야 카드 — 대표 이미지 + 설명 (site-data.js 의 SITE.research)
-document.getElementById("research-cards").innerHTML = window.SITE.research.map(r => `
-  <a class="card" href="research.html" style="color:inherit;text-decoration:none">
-    <img class="fig" src="${r.img}" alt="${r.title}" onerror="this.remove()" loading="lazy">
-    <p>${r.desc}</p>
-  </a>`).join("");
+// 연구 분야 카드 — research/ 폴더의 파일에서 자동으로 (Research 페이지와 같은 출처)
+loadResearch().then(list => {
+  document.getElementById("research-cards").innerHTML = list.map(r => `
+    <a class="card" href="research.html" style="color:inherit;text-decoration:none">
+      ${r.image ? `<img class="fig" src="${encodeURI(r.image)}" alt="${r.title}" onerror="this.remove()" loading="lazy">` : ""}
+      <h3 class="rt">${r.title}</h3>
+      <p>${r.desc}</p>
+    </a>`).join("");
+});
 
 // 협력 기관 회전 배너 — 목록을 두 번 이어붙여 끊김 없이 무한 순환
 (() => {

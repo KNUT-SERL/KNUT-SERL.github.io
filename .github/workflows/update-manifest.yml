@@ -16,6 +16,7 @@ on:
     paths:
       - "members/**"
       - "gallery/**"
+      - "research/**"
       - "images/professor.*"
       - "tools/**"
   workflow_dispatch: {}   # Actions 탭에서 수동 실행도 가능

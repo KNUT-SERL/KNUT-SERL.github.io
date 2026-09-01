@@ -146,5 +146,35 @@
    "image": "members/ALU-005-YusinLee.png"
   }
  ],
+ "research": [
+  {
+   "base": "R-001-SoftRobotElectronics",
+   "order": 1,
+   "title": "SoftRobotElectronics",
+   "txt": "research/R-001-SoftRobotElectronics.txt",
+   "image": "research/R-001-SoftRobotElectronics.jpg"
+  },
+  {
+   "base": "R-002-BioinspiredHapticSensors",
+   "order": 2,
+   "title": "BioinspiredHapticSensors",
+   "txt": "research/R-002-BioinspiredHapticSensors.txt",
+   "image": "research/R-002-BioinspiredHapticSensors.jpg"
+  },
+  {
+   "base": "R-003-XRSkinAdhesiveInterfaces",
+   "order": 3,
+   "title": "XRSkinAdhesiveInterfaces",
+   "txt": "research/R-003-XRSkinAdhesiveInterfaces.txt",
+   "image": "research/R-003-XRSkinAdhesiveInterfaces.jpg"
+  },
+  {
+   "base": "R-004-WearableBiosignalSensors",
+   "order": 4,
+   "title": "WearableBiosignalSensors",
+   "txt": "research/R-004-WearableBiosignalSensors.txt",
+   "image": "research/R-004-WearableBiosignalSensors.jpg"
+  }
+ ],
  "gallery": []
 }

@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=9";
+const ASSET_V = "?v=10";
 
 const MENU = [
   ["index.html", "Home"],
@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <p>Smart ICT Building E17, Room 507 · 50, Daehak-ro, Daesowon-myeon, Chungju-si,
          Chungcheongbuk-do, Republic of Korea<br>
          Tel. +82-43-841-5327 · <a href="mailto:dawankim@ut.ac.kr">dawankim@ut.ac.kr</a></p>
-      <p>웹페이지 관리자: <a href="mailto:saa4563123@naver.com">saa4563123@naver.com</a>
-         — 버그나 수정 사항이 있으면 이 주소로 연락해 주세요.</p>
+      <p>Website administrator: <a href="mailto:saa4563123@naver.com">saa4563123@naver.com</a>
+         — please contact this address to report bugs or request corrections.</p>
       <p>Copyright © 2026 Soft Electronics &amp; Robotics Lab., Korea National University of
          Transportation. All rights reserved.</p>
     </div>`;

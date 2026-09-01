@@ -6,7 +6,7 @@
 <title>Research — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
+<link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -18,23 +18,31 @@
 </section>
 
 <section class="sec">
-  <div class="wrap">
-    <div class="grid c2" id="research-list"></div>
-  </div>
+  <div class="wrap" id="research-list"></div>
 </section>
 
-<script src="data/site-data.js?v=9"></script>
-<script src="js/content.js?v=9"></script>
-<script src="js/common.js?v=9"></script>
+<script src="data/site-data.js?v=10"></script>
+<script src="js/content.js?v=10"></script>
+<script src="js/common.js?v=10"></script>
 <script>
 "use strict";
-// 연구 분야 카드 — 대표 이미지(원본 그대로) + 설명. 내용은 site-data.js 의 SITE.research 에서 수정
-document.getElementById("research-list").innerHTML = window.SITE.research.map(r => `
-  <div class="card">
-    <img class="fig" src="${r.img}" alt="${r.title}"
-         onerror="this.remove()" loading="lazy">
-    <p>${r.desc}</p>
-  </div>`).join("");
+/* 연구 분야 = research/ 폴더의 파일들.
+   'R-001-SoftRobotElectronics.jpg' + 같은 이름 .txt(제목·요약)를 올리면
+   순번 순서대로 아래에 한 줄씩 나타납니다 (README.md 참고). */
+document.addEventListener("DOMContentLoaded", async () => {
+  const el = document.getElementById("research-list");
+  const list = await loadResearch();
+  el.innerHTML = list.length ? list.map(r => `
+    <div class="rrow">
+      ${r.image ? `<img src="${encodeURI(r.image)}" alt="${r.title}" loading="lazy"
+                        onerror="this.remove()">` : ""}
+      <div>
+        <h3>${r.title}</h3>
+        <p>${r.desc}</p>
+      </div>
+    </div>`).join("")
+  : '<p style="color:var(--sub)">Research topics coming soon.</p>';
+});
 </script>
 </body>
 </html>
