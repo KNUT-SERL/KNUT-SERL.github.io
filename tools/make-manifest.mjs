@@ -54,13 +54,31 @@ const galleryList = [...shots.values()]
   .filter(e => e.image || (warn.push(`${e.base} — 이미지 없이 .txt만 있어 무시함`), false))
   .sort((a, b) => b.date.localeCompare(a.date) || a.order - b.order || a.base.localeCompare(b.base));
 
+/* ---- 연구 분야: research/R-순번-이름.(이미지|txt)  (날짜가 끼어 있어도 허용) ---- */
+const researchRe = new RegExp(`^R-(?:\\d{4}_\\d{2}_\\d{2}-)?(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
+const areas = new Map();
+for (const f of listDir("research")) {
+  const m = f.match(researchRe);
+  if (!m) { if (!f.startsWith(".") && !/안내|readme/i.test(f)) warn.push(`research/${f} — 이름 형식이 달라 무시함`); continue; }
+  const [, num, title, rawExt] = m;
+  const ext = rawExt.toLowerCase();
+  const base = f.slice(0, -(ext.length + 1));
+  const e = areas.get(base) || { base, order: +num, title, txt: null, images: {} };
+  if (ext === "txt") e.txt = `research/${f}`; else e.images[ext] = `research/${f}`;
+  areas.set(base, e);
+}
+const researchList = [...areas.values()]
+  .map(e => ({ base: e.base, order: e.order, title: e.title,
+               txt: e.txt, image: IMG_EXTS.map(x => e.images[x]).find(Boolean) || null }))
+  .sort((a, b) => a.order - b.order || a.base.localeCompare(b.base));
+
 /* ---- 교수 사진: images/professor.* ---- */
 const professor = IMG_EXTS.map(x => `images/professor.${x}`).find(existsSync) || null;
 
 /* ---- 저장 (내용이 같으면 건드리지 않음 → 불필요한 커밋 방지) ---- */
-const json = JSON.stringify({ professor, members: memberList, gallery: galleryList }, null, 1);
+const json = JSON.stringify({ professor, members: memberList, research: researchList, gallery: galleryList }, null, 1);
 const before = existsSync("data/manifest.json") ? readFileSync("data/manifest.json", "utf8") : "";
 if (before !== json) { writeFileSync("data/manifest.json", json); console.log("data/manifest.json 갱신됨"); }
 else console.log("data/manifest.json 변화 없음");
-console.log(`구성원 ${memberList.length}명 · 갤러리 ${galleryList.length}장 · 교수 사진 ${professor || "(없음 → 이니셜)"}`);
+console.log(`구성원 ${memberList.length}명 · 연구분야 ${researchList.length}개 · 갤러리 ${galleryList.length}장 · 교수 사진 ${professor || "(없음 → 이니셜)"}`);
 for (const w of warn) console.log("⚠ " + w);
