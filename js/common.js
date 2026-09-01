@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=11";
+const ASSET_V = "?v=12";
 
 const MENU = [
   ["index.html", "Home"],
@@ -87,6 +87,44 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/* ---- 카드 공용 도우미 (학생·졸업생 카드가 함께 사용) ---- */
+const initialsOf = n => n.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+// 사진: 목록(manifest)이 알려 준 실제 파일. 없으면 이니셜 아바타.
+function avatarHtml(s) {
+  return s.image
+    ? `<img class="avatar" src="${encodeURI(s.image)}" alt="${s.name}" data-initials="${initialsOf(s.name)}">`
+    : `<div class="avatar">${initialsOf(s.name)}</div>`;
+}
+
+// 로딩 실패 시: 일시적 문제면 한 번만 다시 시도, 그래도 안 되면 이니셜로
+function attachAvatarFallback(el) {
+  el.querySelectorAll("img.avatar").forEach(img => img.addEventListener("error", () => {
+    if (!img.dataset.retried) {
+      img.dataset.retried = "1";
+      setTimeout(() => { img.src = img.src.split("?")[0] + "?r=" + Date.now(); }, 900);
+      return;
+    }
+    const d = document.createElement("div");
+    d.className = "avatar";
+    d.textContent = img.dataset.initials || "";
+    img.replaceWith(d);
+  }));
+}
+
+/* 직책 태그 — 파일에는 한글로 적어도 화면에는 영문 배지로 표시됩니다.
+   (영문으로 직접 적으면 그대로 표시) */
+const TAG_EN = { "랩장": "LAB LEADER", "부랩장": "VICE LEADER", "페이지 관리자": "WEB ADMIN" };
+function tagsHtml(tags) {
+  if (!tags || !tags.length) return "";
+  const one = t => {
+    const label = TAG_EN[t] || t;
+    const cls = label === "LAB LEADER" ? " lead" : label === "VICE LEADER" ? " vice" : "";
+    return `<span class="tag${cls}">${label}</span>`;
+  };
+  return `<div class="tags">${tags.map(one).join("")}</div>`;
+}
+
 /* ---- 카드 높이 통일 ----
    내용 길이가 달라도 모든 카드를 가장 큰 카드 높이에 맞춰
    줄마다 들쭉날쭉해 보이지 않게 합니다. (상세 패널이 열린 카드는 예외) */
@@ -119,7 +157,6 @@ function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
    카드 아래로 상세 패널이 자연스럽게 펼쳐집니다. */
 function renderMembers(list, elId, emptyMsg) {
   const el = document.getElementById(elId);
-  const initials = n => n.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
   function detailHtml(s) {
     if (!s.bio && !s.pubs?.length && !s.patents?.length && !s.awards?.length) return "";
@@ -134,22 +171,14 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }
 
-  // 사진: 목록(manifest)이 알려 준 실제 파일을 그대로 사용. 없으면 이니셜 아바타.
-  const photoHtml = s => s.image
-    ? `<img class="avatar" src="${encodeURI(s.image)}" alt="${s.name}" data-initials="${initials(s.name)}">`
-    : `<div class="avatar">${initials(s.name)}</div>`;
-
-  // 직책 태그(랩장·부랩장·페이지 관리자 등) — 종류에 따라 모양을 달리해 한눈에 보이게
-  const tagHtml = t =>
-    `<span class="tag${t === "랩장" ? " lead" : t === "부랩장" ? " vice" : ""}">${t}</span>`;
-
   el.innerHTML = list.length ? list.map(s => {
     const d = detailHtml(s);
     // 힌트 줄은 모든 카드에 같은 높이로 자리만 잡아 두어 카드 크기가 서로 같아지게 함
     return `
     <div class="card person${d ? " hasdetail" : ""}">
-      ${photoHtml(s)}
-      <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}${(s.tags || []).map(tagHtml).join("")}</div>
+      ${avatarHtml(s)}
+      ${tagsHtml(s.tags)}
+      <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
       <div class="role">${s.role || ""}</div>
       <div class="info">${s.interests || ""}${s.email ? `<br><a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
       <div class="hint">${d ? "▾ CLICK FOR DETAILS" : "&nbsp;"}</div>
@@ -157,19 +186,7 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
 
-  // 로딩 실패 시: 배포 직후처럼 일시적인 문제일 수 있어 한 번만 다시 시도하고,
-  // 그래도 안 되면 이니셜 아바타로 대체합니다
-  el.querySelectorAll("img.avatar").forEach(img => img.addEventListener("error", () => {
-    if (!img.dataset.retried) {
-      img.dataset.retried = "1";
-      setTimeout(() => { img.src = img.src.split("?")[0] + "?r=" + Date.now(); }, 900);
-      return;
-    }
-    const d = document.createElement("div");
-    d.className = "avatar";
-    d.textContent = img.dataset.initials || "";
-    img.replaceWith(d);
-  }));
+  attachAvatarFallback(el);
 
   equalizeCards(el);   // 모든 카드를 같은 높이로
 

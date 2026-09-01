@@ -116,7 +116,7 @@ img { max-width: 100%; }
 
 /* ---------- 연구 분야 (Research 페이지: 좌측 이미지 + 우측 제목·요약) ---------- */
 .rrow {
-  display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: center;
+  display: grid; grid-template-columns: 290px 1fr; gap: 34px; align-items: center;
   padding: 28px 0; border-bottom: 1px solid var(--line);
 }
 .rrow:first-child { padding-top: 0; }
@@ -125,18 +125,19 @@ img { max-width: 100%; }
   width: 100%; height: auto; display: block; border-radius: 14px;
   background: #fff; border: 1px solid var(--line);
 }
-.rrow h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
-.rrow p { font-size: 15px; color: var(--sub); line-height: 1.75; }
+.rrow h3 { font-size: 23px; font-weight: 800; margin-bottom: 10px; }
+.rrow p { font-size: 16.5px; color: var(--sub); line-height: 1.8; }
 @media (max-width: 760px) { .rrow { grid-template-columns: 1fr; gap: 14px; } }
 /* 홈 화면 연구 카드의 제목 */
 .card h3.rt { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
 
 /* ---------- 멤버 카드 (호버 시 상세 패널 확장) ---------- */
 .person { text-align: left; position: relative; display: flex; flex-direction: column; }
-/* 직책 태그 (랩장·부랩장·페이지 관리자 등) — 이름 옆의 작은 배지 */
+/* 직책 태그 (LAB LEADER 등) — 이름 바로 위 한 줄에 배지로 표시 */
+.person .tags { margin: -4px 0 7px; display: flex; flex-wrap: wrap; gap: 6px; }
 .person .tag {
-  display: inline-block; margin-left: 7px; padding: 2px 9px 3px; border-radius: 20px;
-  font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; vertical-align: 2px;
+  display: inline-block; padding: 2px 9px 3px; border-radius: 20px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.6px;
   background: var(--soft); color: var(--accent); white-space: nowrap;
 }
 .person .tag.lead { background: var(--accent); color: #fff; }
