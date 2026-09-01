@@ -133,6 +133,12 @@ img { max-width: 100%; }
 
 /* ---------- 멤버 카드 (호버 시 상세 패널 확장) ---------- */
 .person { text-align: left; position: relative; display: flex; flex-direction: column; }
+/* 벽돌식 배치: 열린 카드만 길어지고 아래 카드들이 원래 크기 그대로 밀려남 */
+.masonry { position: relative; display: block !important; }
+.masonry .person {
+  position: absolute; box-sizing: border-box;
+  transition: top 0.35s ease, left 0.35s ease;
+}
 /* 직책 태그 (LAB LEADER 등) — 이름 바로 위 한 줄에 배지로 표시 */
 .person .tags { margin: -4px 0 7px; display: flex; flex-wrap: wrap; gap: 6px; }
 .person .tag {

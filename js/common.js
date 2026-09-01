@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=12";
+const ASSET_V = "?v=13";
 
 const MENU = [
   ["index.html", "Home"],
@@ -125,9 +125,58 @@ function tagsHtml(tags) {
   return `<div class="tags">${tags.map(one).join("")}</div>`;
 }
 
-/* ---- 카드 높이 통일 ----
-   내용 길이가 달라도 모든 카드를 가장 큰 카드 높이에 맞춰
-   줄마다 들쭉날쭉해 보이지 않게 합니다. (상세 패널이 열린 카드는 예외) */
+/* ---- 벽돌식(masonry) 배치 + 카드 높이 통일 ----
+   · 닫힌 카드는 모두 가장 큰 카드 높이로 맞춰 순서가 절대 뒤섞이지 않게 하고
+   · 상세 패널이 열린 카드만 아래로 늘어나며, 그 아래 카드들은
+     "기존 크기 그대로" 빈 자리를 채우며 자연스럽게 밀려 재배치됩니다
+     (1 2 3 / 4 5 6  →  1을 열면  1 2 3 / 1 4 5 / 6) */
+function masonryLayout(el) {
+  el.classList.add("masonry");
+  const cards = [...el.querySelectorAll(".person")];
+  if (!cards.length) return;
+  const gap = 22;
+  const twoCol = el.classList.contains("c2");
+
+  // 통일 높이는 열 너비가 바뀔 때만 다시 잰다.
+  // (패널이 닫히는 애니메이션 중에 재면 그 높이가 기준으로 굳어버리므로)
+  let lastW = -1, uniformH = 0;
+
+  function layout() {
+    const cw = el.clientWidth;
+    const n = cw <= 560 ? 1 : (cw <= 860 || twoCol) ? 2 : 3;   // 화면 폭에 따른 열 수
+    const w = (cw - gap * (n - 1)) / n;
+    cards.forEach(c => { c.style.width = w + "px"; });
+
+    // 닫힌 카드 높이를 최댓값으로 통일 (열린 카드는 내용만큼 늘어남)
+    if (Math.abs(w - lastW) > 0.5) {
+      lastW = w;
+      const closed = cards.filter(c => !c.classList.contains("open"));
+      closed.forEach(c => { c.style.minHeight = ""; });
+      uniformH = Math.max(...closed.map(c => c.offsetHeight));
+    }
+    cards.forEach(c => { c.style.minHeight = uniformH + "px"; });
+
+    const colH = Array(n).fill(0);
+    for (const c of cards) {
+      const i = colH.indexOf(Math.min(...colH));   // 가장 짧은 열에 배치
+      c.style.left = i * (w + gap) + "px";
+      c.style.top = colH[i] + "px";
+      colH[i] += c.offsetHeight + gap;
+    }
+    el.style.height = (Math.max(...colH) - gap) + "px";
+  }
+
+  // 카드 높이가 변할 때(패널 열림/닫힘, 창 크기 변경)마다 자동 재배치
+  const ro = new ResizeObserver(layout);
+  cards.forEach(c => ro.observe(c));
+  window.addEventListener("resize", layout);
+  layout();
+  // 글꼴 로딩으로 줄바꿈이 달라질 수 있으니 한 번 더 재측정
+  if (document.fonts?.ready) document.fonts.ready.then(() => { lastW = -1; layout(); });
+}
+
+/* ---- 카드 높이 통일 (졸업생 페이지처럼 펼침 패널이 없는 곳에서 사용) ----
+   내용 길이가 달라도 모든 카드를 가장 큰 카드 높이에 맞춥니다. */
 function equalizeCards(el) {
   const cards = [...el.querySelectorAll(".person")];
   if (cards.length < 2) return;
@@ -188,7 +237,7 @@ function renderMembers(list, elId, emptyMsg) {
 
   attachAvatarFallback(el);
 
-  equalizeCards(el);   // 모든 카드를 같은 높이로
+  if (list.length) masonryLayout(el);   // 균일 높이 + 벽돌식 배치
 
   // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
   el.querySelectorAll(".person.hasdetail").forEach(card => {
