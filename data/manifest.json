@@ -1,0 +1,150 @@
+{
+ "professor": "images/professor.png",
+ "members": [
+  {
+   "base": "MS-001-JunwonJang",
+   "prefix": "MS",
+   "order": 1,
+   "name": "JunwonJang",
+   "txt": "members/MS-001-JunwonJang.txt",
+   "image": "members/MS-001-JunwonJang.png"
+  },
+  {
+   "base": "MS-002-JunhoLee",
+   "prefix": "MS",
+   "order": 2,
+   "name": "JunhoLee",
+   "txt": "members/MS-002-JunhoLee.txt",
+   "image": "members/MS-002-JunhoLee.png"
+  },
+  {
+   "base": "MS-003-SubiJeon",
+   "prefix": "MS",
+   "order": 3,
+   "name": "SubiJeon",
+   "txt": "members/MS-003-SubiJeon.txt",
+   "image": "members/MS-003-SubiJeon.png"
+  },
+  {
+   "base": "MS-004-TaeyoungChang",
+   "prefix": "MS",
+   "order": 4,
+   "name": "TaeyoungChang",
+   "txt": "members/MS-004-TaeyoungChang.txt",
+   "image": "members/MS-004-TaeyoungChang.png"
+  },
+  {
+   "base": "MS-005-SangyoonKang",
+   "prefix": "MS",
+   "order": 5,
+   "name": "SangyoonKang",
+   "txt": "members/MS-005-SangyoonKang.txt",
+   "image": "members/MS-005-SangyoonKang.png"
+  },
+  {
+   "base": "MSBS-001-SeunghwanLee",
+   "prefix": "MSBS",
+   "order": 1,
+   "name": "SeunghwanLee",
+   "txt": "members/MSBS-001-SeunghwanLee.txt",
+   "image": "members/MSBS-001-SeunghwanLee.png"
+  },
+  {
+   "base": "BS-001-YounghunKim",
+   "prefix": "BS",
+   "order": 1,
+   "name": "YounghunKim",
+   "txt": "members/BS-001-YounghunKim.txt",
+   "image": "members/BS-001-YounghunKim.png"
+  },
+  {
+   "base": "BS-002-KangminLee",
+   "prefix": "BS",
+   "order": 2,
+   "name": "KangminLee",
+   "txt": "members/BS-002-KangminLee.txt",
+   "image": "members/BS-002-KangminLee.png"
+  },
+  {
+   "base": "BS-003-YeonwooChoi",
+   "prefix": "BS",
+   "order": 3,
+   "name": "YeonwooChoi",
+   "txt": "members/BS-003-YeonwooChoi.txt",
+   "image": "members/BS-003-YeonwooChoi.png"
+  },
+  {
+   "base": "BS-004-JinseoKim",
+   "prefix": "BS",
+   "order": 4,
+   "name": "JinseoKim",
+   "txt": "members/BS-004-JinseoKim.txt",
+   "image": "members/BS-004-JinseoKim.png"
+  },
+  {
+   "base": "BS-005-JihyeonByeon",
+   "prefix": "BS",
+   "order": 5,
+   "name": "JihyeonByeon",
+   "txt": "members/BS-005-JihyeonByeon.txt",
+   "image": "members/BS-005-JihyeonByeon.png"
+  },
+  {
+   "base": "BS-006-ChaeyeonJang",
+   "prefix": "BS",
+   "order": 6,
+   "name": "ChaeyeonJang",
+   "txt": "members/BS-006-ChaeyeonJang.txt",
+   "image": "members/BS-006-ChaeyeonJang.png"
+  },
+  {
+   "base": "BS-007-InhoJeong",
+   "prefix": "BS",
+   "order": 7,
+   "name": "InhoJeong",
+   "txt": "members/BS-007-InhoJeong.txt",
+   "image": "members/BS-007-InhoJeong.png"
+  },
+  {
+   "base": "ALU-001-JunyoungSim",
+   "prefix": "ALU",
+   "order": 1,
+   "name": "JunyoungSim",
+   "txt": "members/ALU-001-JunyoungSim.txt",
+   "image": "members/ALU-001-JunyoungSim.png"
+  },
+  {
+   "base": "ALU-002-JongheonJang",
+   "prefix": "ALU",
+   "order": 2,
+   "name": "JongheonJang",
+   "txt": "members/ALU-002-JongheonJang.txt",
+   "image": "members/ALU-002-JongheonJang.png"
+  },
+  {
+   "base": "ALU-003-HyeokjunGwon",
+   "prefix": "ALU",
+   "order": 3,
+   "name": "HyeokjunGwon",
+   "txt": "members/ALU-003-HyeokjunGwon.txt",
+   "image": "members/ALU-003-HyeokjunGwon.png"
+  },
+  {
+   "base": "ALU-004-HaejunBak",
+   "prefix": "ALU",
+   "order": 4,
+   "name": "HaejunBak",
+   "txt": "members/ALU-004-HaejunBak.txt",
+   "image": "members/ALU-004-HaejunBak.png"
+  },
+  {
+   "base": "ALU-005-YusinLee",
+   "prefix": "ALU",
+   "order": 5,
+   "name": "YusinLee",
+   "txt": "members/ALU-005-YusinLee.txt",
+   "image": "members/ALU-005-YusinLee.png"
+  }
+ ],
+ "gallery": []
+}

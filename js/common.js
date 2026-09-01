@@ -4,6 +4,11 @@
    세 번째 값이 있으면 드롭다운 하위 메뉴가 됩니다.
    ============================================================ */
 "use strict";
+
+/* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
+   (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
+const ASSET_V = "?v=8";
+
 const MENU = [
   ["index.html", "Home"],
   ["research.html", "Research"],
@@ -27,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   nav.className = "nav";
   nav.innerHTML = `
     <div class="in">
-      <a class="logo" href="index.html"><img src="logo.png" alt="SER Lab — Electronic Engineering Laboratory"></a>
+      <a class="logo" href="index.html"><img src="images/logo.png?v=7" alt="SER Lab — Electronic Engineering Laboratory"></a>
       <button class="burger" aria-label="menu">☰</button>
       <ul>${MENU.map(([href, label, sub]) => {
         const active = here === href || (sub && sub.some(([h]) => h === here));
@@ -54,7 +59,40 @@ document.addEventListener("DOMContentLoaded", () => {
          Transportation. All rights reserved.</p>
     </div>`;
   document.body.append(foot);
+
+  /* 교수 사진(#prof-photo): 목록(manifest)에 있는 실제 파일을 그대로 표시.
+     사진이 하나도 없으면 이니셜(DW)로 대체합니다. */
+  const prof = document.getElementById("prof-photo");
+  if (prof) {
+    const toInitials = () => {
+      const d = document.createElement("div");
+      d.className = prof.className;
+      d.textContent = prof.dataset.initials || "";
+      prof.replaceWith(d);
+    };
+    loadManifest().then(mf => {
+      if (!mf.professor) return toInitials();
+      prof.onerror = toInitials;
+      prof.src = encodeURI(mf.professor);
+    }).catch(toInitials);
+  }
 });
+
+/* ---- 과정 페이지 렌더링 ----
+   한 페이지에 여러 소그룹(예: 박사 코스 = 포닥 → 박사 → 석박사 연계)을
+   순서대로 배치합니다. 사람이 있는 소그룹이 2개 이상일 때만 소제목을 답니다. */
+function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
+  const wrap = document.getElementById(wrapId);
+  const filled = subgroups.filter(g => groups[g.prefix]?.length);
+  if (!filled.length) {
+    wrap.innerHTML = `<p style="color:var(--sub)">${emptyMsg}</p>`;
+    return;
+  }
+  wrap.innerHTML = filled.map((g, i) => `
+    ${filled.length > 1 ? `<h3 class="subhead">${g.label}</h3>` : ""}
+    <div class="grid c3" id="${wrapId}-g${i}"></div>`).join("");
+  filled.forEach((g, i) => renderMembers(groups[g.prefix], `${wrapId}-g${i}`, ""));
+}
 
 /* ---- 멤버 카드 렌더링 (professor 제외 각 멤버 페이지에서 사용) ----
    bio / pubs / awards 중 하나라도 있으면, 마우스를 올렸을 때(모바일은 터치)
@@ -76,12 +114,16 @@ function renderMembers(list, elId, emptyMsg) {
     </div>`;
   }
 
+  // 사진: 목록(manifest)이 알려 준 실제 파일을 그대로 사용. 없으면 이니셜 아바타.
+  const photoHtml = s => s.image
+    ? `<img class="avatar" src="${encodeURI(s.image)}" alt="${s.name}" data-initials="${initials(s.name)}">`
+    : `<div class="avatar">${initials(s.name)}</div>`;
+
   el.innerHTML = list.length ? list.map(s => {
     const d = detailHtml(s);
     return `
     <div class="card person${d ? " hasdetail" : ""}">
-      <img class="avatar" src="${s.photo || ""}" alt="${s.name}"
-           onerror="this.outerHTML='<div class=avatar>${initials(s.name)}</div>'">
+      ${photoHtml(s)}
       <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
       <div class="role">${s.role || ""}</div>
       <div class="info">${s.interests || ""}${s.email ? `<br><a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
@@ -89,6 +131,14 @@ function renderMembers(list, elId, emptyMsg) {
       ${d}
     </div>`;
   }).join("") : `<p style="color:var(--sub)">${emptyMsg}</p>`;
+
+  // 파일이 깨졌을 때 등 만약의 로딩 실패 시 이니셜로 대체
+  el.querySelectorAll("img.avatar").forEach(img => img.addEventListener("error", () => {
+    const d = document.createElement("div");
+    d.className = "avatar";
+    d.textContent = img.dataset.initials || "";
+    img.replaceWith(d);
+  }));
 
   // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
   el.querySelectorAll(".person.hasdetail").forEach(card => {

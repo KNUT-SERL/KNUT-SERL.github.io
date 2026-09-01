@@ -6,7 +6,7 @@
 <title>Ph.D. Course — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -19,16 +19,20 @@
 
 <section class="sec">
   <div class="wrap">
-    <div class="grid c3" id="cards"></div>
+    <div id="cards"></div>
   </div>
 </section>
 
-<script src="site-data.js?v=6"></script>
-<script src="common.js?v=6"></script>
+<script src="data/site-data.js?v=8"></script>
+<script src="js/content.js?v=8"></script>
+<script src="js/common.js?v=8"></script>
 <script>
+"use strict";
+// 구성원 = members/ 폴더의 파일들. 파일을 올리면 자동으로 카드가 생깁니다 (README.md 참고)
 document.addEventListener("DOMContentLoaded", () =>
-  renderMembers(window.SITE.phd, "cards",
-    'No Ph.D. students yet — we are recruiting! See <a href="contact.html">Join Us</a>.'));
+  loadMembers().then(M =>
+    renderMemberPage(M, [{ prefix: "PHD", label: "Postdoctoral Researchers" }, { prefix: "DR", label: "Ph.D. Students" }, { prefix: "DRMS", label: "Integrated M.S.–Ph.D." }],
+      "cards", 'No Ph.D. students yet — we are recruiting! See <a href="contact.html">Join Us</a>.')));
 </script>
 </body>
 </html>
