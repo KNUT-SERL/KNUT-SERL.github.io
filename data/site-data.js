@@ -1,10 +1,14 @@
 /* ============================================================================
-   ★★★  SER Lab 콘텐츠 데이터 파일 — 사이트 내용은 여기서만 수정하면 됩니다  ★★★
+   ★★★  SER Lab 콘텐츠 데이터 파일 — 연구분야·뉴스·갤러리·특허·협력기관  ★★★
 
    [수정 방법]
    1) 이 파일을 메모장(또는 GitHub 웹의 연필 아이콘)으로 연다
    2) 아래 섹션 중 바꿀 부분을 찾아 형식 그대로 고친다
    3) 저장 후 GitHub 저장소에 다시 업로드(덮어쓰기) → 1분 내 사이트 반영
+
+   [구성원(학생·졸업생)은 이 파일이 아닙니다]
+   한 사람 = 파일 하나로 data/members/ 에 들어 있습니다.
+   목록과 순서는 data/members-list.js 에서 관리합니다.
 
    [형식 규칙 — 이것만 지키면 안 깨집니다]
    · 글자 값은 반드시 따옴표로 감싼다:  name: "Junwon Jang",
@@ -44,196 +48,63 @@ window.SITE = {
     },
 
     // ── 논문 대표 이미지 (썸네일)
-    //    형식: "DOI(소문자)": "이미지 경로"  (이미지는 GitHub 저장소에 업로드)
+    //    형식: "DOI(소문자)": "이미지 경로"  (이미지는 images/ 폴더에 업로드)
     thumbs: {
-      // "10.3390/biomimetics10010001": "pub37.jpg",
+      // "10.3390/biomimetics10010001": "images/pubs/pub37.jpg",
     }
   },
 
   /* ==========================================================================
      [2] 연구 분야  →  research.html 카드 + 홈 화면의 4개 카드
      title(제목)·desc(설명)를 고치면 두 페이지에 동시에 반영됨
-     img 에 지정된 경로로 사진을 올리면 카드 상단에 표시 (없으면 아이콘만)
+     img 에 지정된 경로(images/research/)로 사진을 올리면 카드 상단에 표시
      ========================================================================== */
   research: [
     {
       title: "Soft Robot & Electronics",
       icon: "🤖",                              // 이모지 아이콘 (자유롭게 교체)
-      img: "soft-robot.jpg?v=6",
+      img: "images/research/soft-robot.jpg?v=7",
       desc: "Bioinspired soft sensors and actuators — pneumatic soft grippers with haptic "
           + "recognition frameworks and dome-structured tactile sensing arrays."
     },
     {
       title: "Bioinspired Haptic Sensors",
       icon: "🖐️",
-      img: "haptic.jpg?v=6",
+      img: "images/research/haptic.jpg?v=7",
       desc: "Haptic sensor systems inspired by human skin mechanoreceptors — from receptor-level "
           + "signal pathways to fingertip-integrated haptic sensing systems."
     },
     {
       title: "XR Skin-Adhesive Interfaces",
       icon: "🥽",
-      img: "xr.jpg?v=6",
+      img: "images/research/xr.jpg?v=7",
       desc: "Vibration-resistive, sweat-tolerant skin-adhesive haptic interfaces that deliver "
           + "realistic tactile feedback for immersive XR experiences."
     },
     {
       title: "Wearable Sensors for Biosignal Monitoring",
       icon: "⌚",
-      img: "wearable.jpg?v=6",
+      img: "images/research/wearable.jpg?v=7",
       desc: "Skin-conformal adhesive soft electronics with minimal residue and conformal contact "
           + "for long-term EMG and biosignal monitoring."
     }
   ],
 
   /* ==========================================================================
-     [3] 구성원 — 박사(phd) / 석사(ms) / 학부(bs) 페이지의 카드
+     [3] 구성원 (박사·석사·학부) 과 [4] 졸업생 → 이 파일에서 분리되었습니다
      --------------------------------------------------------------------------
-     ▸ 한 사람 = 중괄호 한 덩어리 { ... },   순서대로 카드가 나열됨
-     ▸ 각 칸의 의미:
-         name      영문 이름 (카드 제목)
-         kor       한글 이름 (괄호 안에 표시)
-         role      과정 표기 (예: "M.S. Student")
-         email     이메일 — 비우면("") 표시 안 됨
-         photo     사진 경로 —  폴더에 같은 이름으로 업로드.
-                   사진이 없으면 자동으로 이니셜 원형 아바타가 대신 표시됨
-         interests 카드에 항상 보이는 한 줄 (연구 키워드)
-     ▸ 아래 4개는 [마우스를 올리면 펼쳐지는 상세 패널]에 표시됩니다.
-       전부 비워두면 카드가 평범하게 나오고 패널 자체가 안 생깁니다:
-         bio       "Research" 항목 — 대표 연구 설명 1~2문장
-         pubs      "Selected Publications" — 논문 제목 목록 (기울임은 <i></i>)
-         patents   "Patents" — 특허 목록
-         awards    "Honors" — 수상 목록
-     ▸ 사람 추가: 아래 덩어리 하나를 복사해 붙이고 내용만 교체
-     ▸ 졸업 처리: 덩어리를 잘라내 [4] alumni 로 옮기고 형식을 맞춰줌
+     구성원은 이제 "한 사람 = 파일 하나" 로 관리합니다.
+
+         data/members/ms-jang-junwon.js      ← 석사 장준원
+         data/members/bs-kim-younghun.js     ← 학부 김영훈
+         data/members/alumni-lee-yusin.js    ← 졸업생 이유신
+                                             (파일 이름 규칙: 과정-성-이름.js)
+
+     · 사람 추가·수정·졸업 처리 : data/members/ 안의 해당 파일을 고칩니다
+     · 표시 순서와 목록          : data/members-list.js 에서 관리합니다
+     · 사진                      : images/members/성-이름.jpg (없으면 .png)
+     자세한 방법은 저장소의 GUIDE.md 를 보세요.
      ========================================================================== */
-
-  phd: [
-    /* 박사과정 입학자가 생기면 아래 주석을 풀고(앞의 // 제거) 내용 교체
-    {
-      name: "Hong Gildong", kor: "홍길동", role: "Ph.D. Student",
-      email: "hong@example.com", photo: "hong-gildong.jpg",
-      interests: "Soft robotics",
-      bio: "", pubs: [], patents: [], awards: []
-    },
-    */
-  ],
-
-  ms: [
-    {
-      name: "Junwon Jang", kor: "장준원", role: "M.S. Student",
-      email: "wertt1027@gmail.com", photo: "jang-junwon.jpg",
-      interests: "Tactile sensors, soft grippers",
-      bio: "Octopus-inspired soft grippers and their sensing frameworks for intelligent object handling.",
-      pubs: [
-        "Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence — <i>Biomimetics</i>, 2025 (co-first author)",
-        "Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — 2025"
-      ],
-      patents: [],
-      awards: []
-    },
-    {
-      name: "Junho Lee", kor: "이준호", role: "M.S. Student",
-      email: "wnsgh1916@naver.com", photo: "lee-junho.jpg",
-      interests: "Soft robotics, soft grippers",
-      bio: "Bioinspired suction interfaces for strain-guided, adaptive object handling.",
-      pubs: [
-        "Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — 2025 (first author)",
-        "Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence — <i>Biomimetics</i>, 2025"
-      ],
-      patents: [],
-      awards: []
-    },
-    {
-      name: "Subi Jeon", kor: "전수비", role: "M.S. Student",
-      email: "jxxnsub@gmail.com", photo: "jeon-subi.jpg",
-      interests: "Flexible electronic devices (patch type), conductive masks",
-      bio: "",
-      pubs: [
-        "Amphibian toe pad-mimicking wearable plant gas sensor for nitrogen dioxide detection — 2025"
-      ],
-      patents: [],
-      awards: []
-    },
-    {
-      name: "Taeyoung Chang", kor: "장태영", role: "M.S. Student",
-      email: "changtae0329@gmail.com", photo: "chang-taeyoung.jpg",
-      interests: "Robot vision, manipulation, tactile sensors",
-      bio: "",
-      pubs: [
-        "Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — 2025"
-      ],
-      patents: [],
-      awards: []
-    },
-    {
-      name: "Sangyoon Kang", kor: "강상윤", role: "M.S. Student",
-      email: "kanghan2000@naver.com", photo: "kang-sangyoon.jpg",
-      interests: "Soft robotic gripper development, entrepreneurship activities",
-      bio: "", pubs: [], patents: [], awards: []
-    },
-    {
-      name: "Seunghwan Lee", kor: "이승환", role: "M.S. Student (B.S.–M.S. Combined)",  // 학석사 연계과정
-      email: "saa4563123@naver.com", photo: "lee-seunghwan.jpg",
-      interests: "Robot control, bio-inspired robotics",
-      bio: "", pubs: [], patents: [], awards: []
-    }
-  ],
-
-  bs: [
-    {
-      name: "Younghun Kim", kor: "김영훈", role: "Undergraduate Researcher",
-      email: "tommy102030@naver.com", photo: "kim-younghun.jpg",
-      interests: "Bio-inspired robots (limpet), microfluidic control systems, soft electronic patch fabrication",
-    },
-    {
-      name: "Kangmin Lee", kor: "이강민", role: "Undergraduate Researcher",
-      email: "ckkm1112@gmail.com", photo: "lee-kangmin.jpg",
-      interests: "Bioelectronics",
-    },
-    {
-      name: "Yeonwoo Choi", kor: "최연우", role: "Undergraduate Researcher",
-      email: "choiyeonwoo12@naver.com", photo: "choi-yeonwoo.jpg",
-      interests: "Wearable sensing systems",
-    },
-    {
-      name: "Jinseo Kim", kor: "김진서", role: "Undergraduate Researcher",
-      email: "sky201210@naver.com", photo: "kim-jinseo.jpg",
-      interests: "Software testing",
-    },
-    {
-      name: "Jihyeon Byeon", kor: "변지현", role: "Undergraduate Researcher",
-      email: "", photo: "byeon-jihyeon.jpg",   // email "" → 표시 안 됨
-      interests: "", bio: "", pubs: [], patents: [], awards: []
-    },
-    {
-      name: "Chaeyeon Jang", kor: "장채연", role: "Undergraduate Researcher",
-      email: "", photo: "jang-chaeyeon.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
-    },
-    {
-      name: "Inho Jeong", kor: "정인호", role: "Undergraduate Researcher",
-      email: "", photo: "jeong-inho.jpg",
-      interests: "", bio: "", pubs: [], patents: [], awards: []
-    }
-  ],
-
-  /* ==========================================================================
-     [4] 졸업생  →  alumni.html
-     각 칸: name/kor(이름), degree(취득 학위), email, now(현재 소속 — 비우면 표시 안 됨)
-     ========================================================================== */
-  alumni: [
-    { name: "Junyoung Sim", kor: "심준영", degree: "B.S. (Electronics)",
-      email: "shimjuny123@gmail.com", now: "KRISS — UST Tactile Standards Research Group (촉감표준연구단)" },
-    { name: "Jongheon Jang", kor: "장종헌", degree: "B.S. (Electronics)",
-      email: "qkdkew123@naver.com", now: "Yukyung — Control S/W Development" },
-    { name: "Hyeokjun Gwon", kor: "권혁준", degree: "B.S. (Electronics)",
-      email: "kwonhyeokjun12@naver.com", now: "Egtronics — Charger H/W Development" },
-    { name: "Haejun Bak", kor: "박해준", degree: "B.S. (Electronics)",
-      email: "hjpak2000@gmail.com", now: "Kalman Corp. — Robot Electrical System H/W" },
-    { name: "Yusin Lee", kor: "이유신", degree: "B.S. (Electronics)",
-      email: "leeyushin5029@gmail.com", now: "Bluu Inc. — Tech Support, IT Dept." }
-  ],
 
   /* ==========================================================================
      [5] 특허  →  publications.html 의 Patents 탭 (논문과 같은 디자인)
@@ -283,7 +154,7 @@ window.SITE = {
       date: "2025-01",
       title: "Paper published in Biomimetics",
       text: "\"Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence\" has been published.",
-      img: ""   // 사진을 넣으려면:  에 업로드 후 "파일명.jpg"
+      img: ""   // 사진을 넣으려면 images/news/ 에 올리고 "images/news/파일명.jpg"
     },
     {
       date: "2023-03",
@@ -295,23 +166,23 @@ window.SITE = {
 
   /* ==========================================================================
      [7] 갤러리  →  gallery.html
-     사진을  에 올린 뒤 아래에 한 줄 추가
+     사진을 images/gallery/ 에 올린 뒤 아래에 한 줄 추가
      ========================================================================== */
   gallery: [
-    // { src: "2025-workshop.jpg", caption: "Lab workshop, Summer 2025" },
+    // { src: "images/gallery/2025-workshop.jpg", caption: "Lab workshop, Summer 2025" },
   ],
 
   /* ==========================================================================
      [8] 협력 기관 회전 배너  →  홈 하단
-     배열 순서 = 배너에 흐르는 순서.  로고는  에 업로드
+     배열 순서 = 배너에 흐르는 순서.  로고는 images/partners/ 에 업로드
      ========================================================================== */
   partners: [
-    { name: "한국표준과학연구원 KRISS", img: "kriss.png",      url: "https://www.kriss.re.kr" },
-    { name: "한국전자통신연구원 ETRI",  img: "etri.png",       url: "https://www.etri.re.kr" },
-    { name: "경찰대학",                 img: "police.png",     url: "https://www.police.ac.kr" },
-    { name: "LG생활건강",               img: "lghnh.png",      url: "https://www.lghnh.com" },
-    { name: "콜마비앤에이치",           img: "kolmarbnh.png",  url: "https://www.kolmarbnh.co.kr" },
-    { name: "MIMETICS",                 img: "mimetics.png",   url: "https://mimetics.co.kr" },
-    { name: "Physionics",               img: "physionics.png", url: "https://www.physionics.co.kr" }
+    { name: "한국표준과학연구원 KRISS", img: "images/partners/kriss.png?v=7",      url: "https://www.kriss.re.kr" },
+    { name: "한국전자통신연구원 ETRI",  img: "images/partners/etri.png?v=7",       url: "https://www.etri.re.kr" },
+    { name: "경찰대학",                 img: "images/partners/police.png?v=7",     url: "https://www.police.ac.kr" },
+    { name: "LG생활건강",               img: "images/partners/lghnh.png?v=7",      url: "https://www.lghnh.com" },
+    { name: "콜마비앤에이치",           img: "images/partners/kolmarbnh.png?v=7",  url: "https://www.kolmarbnh.co.kr" },
+    { name: "MIMETICS",                 img: "images/partners/mimetics.png?v=7",   url: "https://mimetics.co.kr" },
+    { name: "Physionics",               img: "images/partners/physionics.png?v=7", url: "https://www.physionics.co.kr" }
   ]
 };
