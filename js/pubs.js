@@ -164,14 +164,22 @@ async function renderPatents() {
   const years = Object.keys(byYear).sort((a, b) => b - a);
   $p.innerHTML = years.map(y => `
     <div class="yearhead"><b>${y}</b></div>
-    ${byYear[y].map(p => `
+    ${byYear[y].map(p => {
+      // 미국 특허는 자동으로 금색 뱃지, data/patents.txt 의 '뱃지:' 값은 파란 뱃지로
+      const isUS = /\bUS\b|미국/i.test(p.country);
+      const badges = [
+        ...(isUS ? [`<span class="bdg top">US PATENT</span>`] : []),
+        ...(p.badges || []).map(b => `<span class="bdg man">${esc(b)}</span>`)
+      ].join("");
+      return `
       <div class="pat-item">
         <div class="num">${p.no}</div>
         <div>
           <h3>${esc(p.title)}</h3>
-          <p>${esc(p.inventors)}${p.inventors ? " · " : ""}${p.number ? `<b>${esc(p.number)}</b> · ` : ""}${esc(p.country || "")}</p>
+          <p>${esc(p.inventors)}${p.inventors ? " · " : ""}${p.number ? `<b>${esc(p.number)}</b>` : ""}${!isUS && p.country ? `${p.number ? " · " : ""}${esc(p.country)}` : ""}${badges}</p>
         </div>
-      </div>`).join("")}
+      </div>`;
+    }).join("")}
   `).join("");
 }
 

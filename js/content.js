@@ -126,7 +126,7 @@ async function manifestFromApi() {
 
 /* ---- 구성원 ----
    반환: { PHD:[], DR:[], DRMS:[], MS:[], MSBS:[], BS:[], INT:[], ALU:[] } */
-const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재"];
+const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그"];
 let membersPromise = null;
 function loadMembers() {
   return membersPromise ??= (async () => {
@@ -145,7 +145,9 @@ function loadMembers() {
         role: t["직함"] || DEFAULT_ROLE[e.prefix] || "",
         degree: t["학위"] || "", now: t["현재"] || "",
         email: t["이메일"] || "", interests: t["키워드"] || "", bio: t["소개"] || "",
-        pubs: t["논문"] || [], patents: t["특허"] || [], awards: t["수상"] || []
+        pubs: t["논문"] || [], patents: t["특허"] || [], awards: t["수상"] || [],
+        // 태그: 랩장·부랩장·페이지 관리자 등 — 쉼표로 여러 개 가능, 카드 이름 옆 배지로 표시
+        tags: (t["태그"] || "").split(",").map(x => x.trim()).filter(Boolean)
       };
     }));
     for (const m of entries) groups[m.prefix]?.push(m);
@@ -186,10 +188,12 @@ async function loadResearch() {
 /* ---- 특허: 번호가 큰 것(최신)이 앞 ---- */
 async function loadPatents() {
   const recs = parseBlocks(await fetchText("data/patents.txt"),
-    "번호", ["번호", "연도", "제목", "발명자", "등록번호", "국가"]);
+    "번호", ["번호", "연도", "제목", "발명자", "등록번호", "국가", "뱃지"]);
   return recs.map((r, i) => ({
     no: +r["번호"] || i + 1, year: +r["연도"] || 0, title: r["제목"] || "",
-    inventors: r["발명자"] || "", number: r["등록번호"] || "", country: r["국가"] || ""
+    inventors: r["발명자"] || "", number: r["등록번호"] || "", country: r["국가"] || "",
+    // 뱃지: 쉼표로 여러 개 — 특허 항목에 파란 배지로 표시 (US Patent 는 자동으로 금색 배지)
+    badges: (r["뱃지"] || "").split(",").map(x => x.trim()).filter(Boolean)
   })).sort((a, b) => b.no - a.no);
 }
 
