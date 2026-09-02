@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=21";
+const ASSET_V = "?v=22";
 
 const MENU = [
   ["index.html", "Home"],
@@ -55,16 +55,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const foot = document.createElement("footer");
   foot.className = "site";
+  // 푸터: 왼쪽 학교 로고(images/knut-logo.png, 흰 판 위) + 연구실 이름·주소 / 아래 관리자·저작권
   foot.innerHTML = `
     <div class="in">
-      <b>Soft Electronics &amp; Robotics Lab.</b>
-      <p>Smart ICT Building E17, Room 507 · 50, Daehak-ro, Daesowon-myeon, Chungju-si,
-         Chungcheongbuk-do, Republic of Korea<br>
-         Tel. +82-43-841-5327 · <a href="mailto:dawankim@ut.ac.kr">dawankim@ut.ac.kr</a></p>
-      <p>Website administrator: <a href="mailto:saa4563123@naver.com">saa4563123@naver.com</a>
-         — please contact this address to report bugs or request corrections.</p>
-      <p>Copyright © 2026 Soft Electronics &amp; Robotics Lab., Korea National University of
-         Transportation. All rights reserved.</p>
+      <div class="foot-main">
+        <a class="foot-logo" href="https://www.ut.ac.kr" target="_blank" rel="noopener"
+           title="Korea National University of Transportation">
+          <img src="images/knut-logo.png" alt="Korea National University of Transportation"></a>
+        <div class="foot-lab">
+          <b>Soft Electronics &amp; Robotics Lab.</b>
+          <p>Smart ICT Building E17, Room 507 · 50, Daehak-ro, Daesowon-myeon, Chungju-si,
+             Chungcheongbuk-do, Republic of Korea<br>
+             Tel. +82-43-841-5327 · <a href="mailto:dawankim@ut.ac.kr">dawankim@ut.ac.kr</a></p>
+        </div>
+      </div>
+      <div class="foot-sub">
+        <p>Website administrator: <a href="mailto:saa4563123@naver.com">saa4563123@naver.com</a>
+           — please contact this address to report bugs or request corrections.</p>
+        <p>Copyright © 2026 Soft Electronics &amp; Robotics Lab., Korea National University of
+           Transportation. All rights reserved.</p>
+      </div>
     </div>`;
   document.body.append(foot);
   initGoTo();                    // 검색 결과에서 넘어온 경우 해당 항목으로 이동·강조

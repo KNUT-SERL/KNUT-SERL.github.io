@@ -440,6 +440,20 @@ footer.site .in { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
 footer.site b { color: #dbe6f5; font-size: 15px; }
 footer.site p { margin-top: 8px; }
 footer.site a { color: #b9cbe4; }
+/* 위쪽: 학교 로고(흰 판) + 연구실 이름·주소를 가로로 나란히 (좁은 화면에서는 세로로 쌓임) */
+footer.site .foot-main { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+footer.site .foot-logo {
+  flex: 0 0 auto; display: flex; background: #fff; border-radius: 10px; padding: 12px 18px;
+  transition: opacity .15s;
+}
+footer.site .foot-logo:hover { opacity: .9; }
+footer.site .foot-logo img { height: 84px; width: auto; display: block; }
+footer.site .foot-lab { flex: 1 1 320px; min-width: 0; }
+footer.site .foot-lab p { margin-top: 6px; }
+/* 아래쪽: 관리자 연락처·저작권 (얇은 구분선) */
+footer.site .foot-sub { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); }
+footer.site .foot-sub p { margin-top: 6px; }
+@media (max-width: 560px) { footer.site .foot-logo img { height: 70px; } }
 
 /* ---------- 사이트 검색 (js/search.js) ---------- */
 .search-overlay {
