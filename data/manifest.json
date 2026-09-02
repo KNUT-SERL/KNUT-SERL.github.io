@@ -217,8 +217,7 @@
    "name": "신입-학부연구생-환영-회식",
    "txt": "gallery/G-2025-002-신입-학부연구생-환영-회식/제목.txt",
    "images": [
-    "gallery/G-2025-002-신입-학부연구생-환영-회식/01.jpg",
-    "gallery/G-2025-002-신입-학부연구생-환영-회식/02.jpg"
+    "gallery/G-2025-002-신입-학부연구생-환영-회식/01.jpg"
    ]
   },
   {
@@ -230,7 +229,8 @@
    "images": [
     "gallery/G-2025-003-IEIE-하계학술대회-제주/01.jpg",
     "gallery/G-2025-003-IEIE-하계학술대회-제주/02.jpg",
-    "gallery/G-2025-003-IEIE-하계학술대회-제주/03.jpg"
+    "gallery/G-2025-003-IEIE-하계학술대회-제주/03.jpg",
+    "gallery/G-2025-003-IEIE-하계학술대회-제주/04.jpg"
    ]
   },
   {
@@ -239,7 +239,12 @@
    "order": 4,
    "name": "ICEIC-오사카",
    "txt": "gallery/G-2025-004-ICEIC-오사카/제목.txt",
-   "images": []
+   "images": [
+    "gallery/G-2025-004-ICEIC-오사카/01.png",
+    "gallery/G-2025-004-ICEIC-오사카/02.png",
+    "gallery/G-2025-004-ICEIC-오사카/03.png",
+    "gallery/G-2025-004-ICEIC-오사카/04.png"
+   ]
   },
   {
    "base": "G-2024-001-캡스톤-디자인-포스터-발표",
