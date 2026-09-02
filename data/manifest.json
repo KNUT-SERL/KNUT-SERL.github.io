@@ -197,5 +197,55 @@
    "image": "research/R-007-MicroneedleDrugDetection.webp"
   }
  ],
- "gallery": []
+ "gallery": [],
+ "awards": [
+  {
+   "year": "2024",
+   "order": 1,
+   "title": "Best of Best Class 경진대회 입상",
+   "image": "awards/A-2024-001-Best of Best Class 경진대회 입상.png"
+  },
+  {
+   "year": "2024",
+   "order": 2,
+   "title": "URP 포스터 경진대회 은상",
+   "image": "awards/A-2024-002-URP 포스터 경진대회 은상.png"
+  },
+  {
+   "year": "2024",
+   "order": 3,
+   "title": "캡스톤디자인 계획서 경진대회 대상",
+   "image": "awards/A-2024-003-캡스톤디자인 계획서 경진대회 대상.png"
+  },
+  {
+   "year": "2024",
+   "order": 4,
+   "title": "IDF 드림 메이커 해커톤 스마트디바이스상",
+   "image": "awards/A-2024-004-IDF 드림 메이커 해커톤 스마트디바이스상.png"
+  },
+  {
+   "year": "2023",
+   "order": 1,
+   "title": "K-Tour Idea Challenge 대상",
+   "image": "awards/A-2023-001-K-Tour Idea Challenge 대상.png"
+  },
+  {
+   "year": "2023",
+   "order": 2,
+   "title": "ICT 스마트 디바이스톤 우수상",
+   "image": "awards/A-2023-002-ICT 스마트 디바이스톤 우수상.png"
+  },
+  {
+   "year": "2023",
+   "order": 3,
+   "title": "IP PBL 창업캠프 글로벌인재상",
+   "image": "awards/A-2023-003-IP PBL 창업캠프 글로벌인재상.png"
+  },
+  {
+   "year": "2023",
+   "order": 4,
+   "title": "IDF 스마트 모빌리티 해커톤 대상",
+   "image": "awards/A-2023-004-IDF 스마트 모빌리티 해커톤 대상.png"
+  }
+ ]
 }

@@ -187,6 +187,19 @@ G-2026_09_01-001-연구실OT.txt     ← 제목·설명 (선택)
 - **링크**를 채우면 제목 옆에 `LINK ↗` 표시가 붙습니다. 펼쳐지는 소식은 `LINK ↗` 글자를 누르면, 그 외 소식은 칸 아무 곳이나 누르면 해당 주소가 새 탭으로 열립니다
 - 본문·링크·사진 줄은 비워 두거나 아예 지워도 됩니다
 
+### 수상 상장 — `awards/` 폴더
+
+각 연도 칸 **맨 위에 같은 규격으로 가로 나열**되는 상장들입니다. 구성원·갤러리처럼 파일만 올리면 됩니다:
+
+```
+awards/A-2024-001-URP 포스터 경진대회 은상.png
+       └ A-연도-순번-상장 이름 (이름이 사진 아래에 그대로 표시됨)
+```
+
+- 순번(001, 002…)이 그 연도 안에서의 나열 순서입니다 (왼쪽부터)
+- 상장 전체가 보이도록 흰 카드 안에 맞춰 표시되고, 누르면 원본이 새 탭으로 열립니다
+- 이름을 고치려면 파일 이름을 바꾸면 됩니다 (.jpg 도 가능)
+
 ---
 
 ## 4. 특허 — `data/patents.txt`
@@ -326,12 +339,12 @@ R-001-SoftRobotElectronics.txt     ← 제목과 요약
 
 **고쳤는데 화면이 그대로예요**
 - 1~2분 기다린 뒤 `Ctrl+F5` (Mac: `Cmd+Shift+R`)
-- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=16` → `?v=17`,
-  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=16"` → `"?v=17"`
+- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=17` → `?v=18`,
+  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=17"` → `"?v=18"`
 
 **구성원/갤러리 파일을 올렸는데 안 나와요**
 - 파일 이름이 규칙과 정확히 같은지 확인 (붙임표 `-` 위치, 순번 세 자리 `001`, 확장자 소문자)
-- 올바른 폴더(`members/`, `research/`, `gallery/`) 안에 올렸는지 확인
+- 올바른 폴더(`members/`, `research/`, `gallery/`, `awards/`) 안에 올렸는지 확인
 - 저장소 **Actions 탭**을 열어 `update-manifest`가 초록색 ✓인지 확인.
   빨간 ✗이면 그 실행을 눌러 로그를 확인하고, 되면 **Re-run jobs**를 눌러 재실행
 - Actions 탭에서 `update-manifest` → **Run workflow** 버튼으로 언제든 수동 실행할 수 있습니다
@@ -351,7 +364,7 @@ R-001-SoftRobotElectronics.txt     ← 제목과 요약
 
 ## (참고) 사이트가 자동으로 돌아가는 원리
 
-`members/`·`research/`·`gallery/`에 파일이 올라오면 GitHub Actions(`update-manifest`)가 폴더를 훑어
+`members/`·`research/`·`gallery/`·`awards/`에 파일이 올라오면 GitHub Actions(`update-manifest`)가 폴더를 훑어
 사이트가 읽는 목록(`data/manifest.json`)을 자동으로 갱신하고, 사진 없는 구성원에게
 자리표시 그림을 만들어 줍니다. 이 과정은 자동이므로 **`data/manifest.json`과
 `tools/`, `js/`, `.github/` 안의 파일은 직접 고칠 필요가 없습니다.**
