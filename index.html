@@ -7,7 +7,7 @@
 <meta name="description" content="Soft Electronics & Robotics Lab at Korea National University of Transportation — skin-adhesive patches, soft grippers, wearable devices, and tactile sensor standardization.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=19">
+<link rel="stylesheet" href="css/style.css?v=20">
 </head>
 <body>
 
@@ -55,15 +55,15 @@
   </div>
 </section>
 
-<section class="sec alt">
+<section class="sec alt partners">
   <div class="wrap">
     <div class="marquee" id="partner-marquee"><div class="track"></div></div>
   </div>
 </section>
 
-<script src="data/site-data.js?v=19"></script>
-<script src="js/content.js?v=19"></script>
-<script src="js/common.js?v=19"></script>
+<script src="data/site-data.js?v=20"></script>
+<script src="js/content.js?v=20"></script>
+<script src="js/common.js?v=20"></script>
 <script>
 "use strict";
 // 연구 분야 카드 — research/ 폴더의 파일에서 자동으로 (Research 페이지와 같은 출처)
@@ -86,7 +86,7 @@ loadResearch().then(list => {
     </a>`).join("");
   const track = document.querySelector("#partner-marquee .track");
   track.innerHTML = one + one;
-  track.style.setProperty("--dur", (window.SITE.partners.length * 8) + "s");   // 로고 1개당 8초 (크기에 맞춘 속도)
+  track.style.setProperty("--dur", (window.SITE.partners.length * 4.5) + "s");   // 로고 1개당 4.5초 (크기에 맞춘 속도)
 })();
 
 // 최근 논문 3편 자동 로딩
