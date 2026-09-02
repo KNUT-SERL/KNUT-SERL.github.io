@@ -73,12 +73,12 @@ window.SITE = {
      배열 순서 = 배너에 흐르는 순서.  로고는 images/partners/ 에 업로드
      ========================================================================== */
   partners: [
-    { name: "한국표준과학연구원 KRISS", img: "images/partners/kriss.png?v=7",      url: "https://www.kriss.re.kr" },
-    { name: "한국전자통신연구원 ETRI",  img: "images/partners/etri.png?v=7",       url: "https://www.etri.re.kr" },
-    { name: "경찰대학",                 img: "images/partners/police.png?v=7",     url: "https://www.police.ac.kr" },
-    { name: "LG생활건강",               img: "images/partners/lghnh.png?v=7",      url: "https://www.lghnh.com" },
-    { name: "콜마비앤에이치",           img: "images/partners/kolmarbnh.png?v=7",  url: "https://www.kolmarbnh.co.kr" },
-    { name: "MIMETICS",                 img: "images/partners/mimetics.png?v=7",   url: "https://mimetics.co.kr" },
-    { name: "Physionics",               img: "images/partners/physionics.png?v=7", url: "https://www.physionics.co.kr" }
+    { name: "한국표준과학연구원 KRISS", img: "images/partners/kriss.webp?v=18",      url: "https://www.kriss.re.kr" },
+    { name: "한국전자통신연구원 ETRI",  img: "images/partners/etri.webp?v=18",       url: "https://www.etri.re.kr" },
+    { name: "경찰대학",                 img: "images/partners/police.webp?v=18",     url: "https://www.police.ac.kr" },
+    { name: "LG생활건강",               img: "images/partners/lghnh.webp?v=18",      url: "https://www.lghnh.com" },
+    { name: "콜마비앤에이치",           img: "images/partners/kolmarbnh.webp?v=18",  url: "https://www.kolmarbnh.co.kr" },
+    { name: "MIMETICS",                 img: "images/partners/mimetics.png?v=18",   url: "https://mimetics.co.kr" },
+    { name: "Physionics",               img: "images/partners/physionics.png?v=18", url: "https://www.physionics.co.kr" }
   ]
 };
