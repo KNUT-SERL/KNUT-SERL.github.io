@@ -42,13 +42,13 @@
 제목: Self-healing adhesive patch developed with SKKU
 내용: 성균관대 방창현 교수 공동연구팀이 자가치유 접착 패치를 개발했습니다.
 링크:
-사진: images/news/2024-self-healing-patch.jpg
+사진: images/news/2024-skku-joint-team.jpg
 
 날짜: 2024
 제목: Self-healing electronic patch for soft robots and e-skin
 내용: 김다완 교수팀이 유연로봇 전자피부용 자가치유 전자패치를 개발했습니다.
 링크:
-사진:
+사진: images/news/2024-self-healing-patch.jpg
 
 날짜: 2024
 제목: Selected for the NRF Global Basic Research Laboratory program
@@ -74,7 +74,7 @@
 내용: 한국교통대가 '2025 이공분야 학문후속세대 지원사업'에 16명(총 2억 7천만 원 규모)을 선정한 가운데, 김다완 교수팀에서는 석사과정 전수비·장준원 학생이 석사과정생 연구장려금 지원 대상자로 선정되었습니다.
 본문: 석·박사과정생과 박사후연구원을 대상으로 총 2억 7천만 원의 연구비를 지원하는 사업입니다.<br><br>석사과정생 연구장려금 지원사업에는 전자공학과 이세훈·전수비·장준원·김선웅, 나노화학소재공학과 어진·김주항·유광재, 항공·기계설계학과 김유신·방준범, 환경공학과 김재빈·박유준, 건축공학과 여남구, 교통·에너지융합학과 김시란·권태우 등이 선정되었습니다.<br><br>관련 보도: 충청일보 · 베리타스알파 · 교수신문
 링크:
-사진:
+사진: images/news/2025-research-support-program.png
 
 날짜: 2025
 제목: Grand Prize at K-RISE Capstone X-Road 2025 (AI Modality)
