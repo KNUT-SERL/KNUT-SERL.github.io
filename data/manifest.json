@@ -216,7 +216,10 @@
    "order": 2,
    "name": "신입-학부연구생-환영-회식",
    "txt": "gallery/G-2025-002-신입-학부연구생-환영-회식/제목.txt",
-   "images": []
+   "images": [
+    "gallery/G-2025-002-신입-학부연구생-환영-회식/01.jpg",
+    "gallery/G-2025-002-신입-학부연구생-환영-회식/02.jpg"
+   ]
   },
   {
    "base": "G-2025-003-IEIE-하계학술대회-제주",
@@ -224,7 +227,11 @@
    "order": 3,
    "name": "IEIE-하계학술대회-제주",
    "txt": "gallery/G-2025-003-IEIE-하계학술대회-제주/제목.txt",
-   "images": []
+   "images": [
+    "gallery/G-2025-003-IEIE-하계학술대회-제주/01.jpg",
+    "gallery/G-2025-003-IEIE-하계학술대회-제주/02.jpg",
+    "gallery/G-2025-003-IEIE-하계학술대회-제주/03.jpg"
+   ]
   },
   {
    "base": "G-2025-004-ICEIC-오사카",
