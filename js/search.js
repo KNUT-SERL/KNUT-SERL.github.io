@@ -1,5 +1,5 @@
 /* ============================================================
-   사이트 검색 — 내비 🔍 버튼 · Ctrl+K · '/' 로 열기, Esc 로 닫기
+   사이트 검색 — 내비 🔍 버튼 · Ctrl+K · '/' 로 열기, × 버튼 · Esc · 바깥 클릭으로 닫기
    서버 없이 브라우저 안에서 동작합니다. 처음 검색할 때 사이트의 콘텐츠 파일
    (구성원·연구·뉴스·상장·특허·갤러리·고정 페이지)을 읽어 색인을 만들고,
    논문은 OpenAlex 에서 실시간으로 함께 찾습니다.
@@ -102,7 +102,9 @@
         <div class="search-head">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input type="search" placeholder="Search the site… (keyword or sentence)" autocomplete="off" spellcheck="false">
-          <button class="search-close" type="button" aria-label="Close">Esc</button>
+          <button class="search-close" type="button" aria-label="Close" title="Close (Esc)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
         </div>
         <div class="search-results">${HINT}</div>
       </div>`;
