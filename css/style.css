@@ -444,13 +444,12 @@ footer.site a { color: #b9cbe4; }
 footer.site .foot-main { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 footer.site .foot-logo { flex: 0 0 auto; display: flex; opacity: .92; transition: opacity .15s; }
 footer.site .foot-logo:hover { opacity: 1; }
-footer.site .foot-logo img { height: 92px; width: auto; display: block; }
+footer.site .foot-logo img { height: 64px; width: auto; display: block; }  /* 오른쪽 글자 3줄(이름·주소·전화)의 잉크 높이에 맞춤 */
 footer.site .foot-lab { flex: 1 1 320px; min-width: 0; }
 footer.site .foot-lab p { margin-top: 6px; }
 /* 아래쪽: 관리자 연락처·저작권 (얇은 구분선) */
 footer.site .foot-sub { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); }
 footer.site .foot-sub p { margin-top: 6px; }
-@media (max-width: 560px) { footer.site .foot-logo img { height: 76px; } }
 
 /* ---------- 사이트 검색 (js/search.js) ---------- */
 .search-overlay {
