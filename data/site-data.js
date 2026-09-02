@@ -78,7 +78,7 @@ window.SITE = {
     { name: "경찰대학",                 img: "images/partners/police.webp?v=18",     url: "https://www.police.ac.kr" },
     { name: "LG생활건강",               img: "images/partners/lghnh.webp?v=18",      url: "https://www.lghnh.com" },
     { name: "콜마비앤에이치",           img: "images/partners/kolmarbnh.webp?v=18",  url: "https://www.kolmarbnh.co.kr" },
-    { name: "MIMETICS",                 img: "images/partners/mimetics.png?v=18",   url: "https://mimetics.co.kr" },
-    { name: "Physionics",               img: "images/partners/physionics.png?v=18", url: "https://www.physionics.co.kr" }
+    { name: "MIMETICS",                 img: "images/partners/mimetics.webp?v=18",   url: "https://mimetics.co.kr" },
+    { name: "Physionics",               img: "images/partners/physionics.webp?v=18", url: "https://www.physionics.co.kr" }
   ]
 };
