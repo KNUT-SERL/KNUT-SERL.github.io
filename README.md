@@ -25,7 +25,7 @@
 | 교수 프로필(글·사진) | `professor.html` + `images/professor.jpg` | [8장](#8-교수-프로필) |
 | 홈 화면 문구 | `index.html` | [9장](#9-홈-화면-문구) |
 | 연락처·지도·모집 안내 | `contact.html` | [10장](#10-연락처-페이지) |
-| 상단 메뉴·푸터·로고 | `js/common.js` + `images/logo.png` · `images/knut-logo-white.png` | [11장](#11-메뉴푸터로고) |
+| 상단 메뉴·푸터·로고·탭 아이콘 | `js/common.js` + `images/logo.png` · `images/knut-logo-white.png` · `images/favicon-*.png` | [11장](#11-메뉴푸터로고) |
 | 사이트 검색 | 자동 — 할 일 없음 | [검색](#사이트-검색-자동) |
 | 색상 등 디자인 | `css/style.css` | [12장](#12-디자인-색상) |
 | 문제가 생겼을 때 | — | [13장](#13-문제-해결) |
@@ -378,6 +378,10 @@ R-001-SoftRobotElectronics.txt     ← 제목과 요약
 ## 11. 메뉴·푸터·로고
 
 - **로고 이미지**: `images/logo.png` 를 같은 이름으로 덮어쓰기 (가로로 긴 투명 PNG 권장)
+- **탭 아이콘(파비콘)**: 로고의 R + 궤도·점 부분을 정사각형으로 만든 `images/favicon-32.png`(32×32),
+  `images/favicon-192.png`(192×192), `images/apple-touch-icon.png`(180×180, iOS 홈 화면), 그리고 저장소 맨 위의
+  `favicon.ico`. 바꾸려면 같은 이름·같은 크기로 덮어쓰기 — 각 `.html` 머리의 `<link rel="icon" …>` 줄이 이 파일들을 가리킵니다.
+  브라우저가 탭 아이콘을 오래 기억하므로 바꾼 뒤에는 탭을 닫았다 다시 열어야 보일 수 있습니다
 - **상단 메뉴**: `js/common.js` 맨 위 `MENU` 목록 — `["파일명.html", "표시될 이름"]` 형식.
   세 번째 값이 있는 항목(Members)은 드롭다운 하위 메뉴입니다
 - **푸터(하단 주소·저작권)**: 같은 파일에서 `Soft Electronics` 를 검색하면 나오는 부분.
