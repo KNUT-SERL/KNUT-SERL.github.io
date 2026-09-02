@@ -81,3 +81,31 @@
 내용: 김다완 교수팀이 K-RISE Capstone X-Road 2025 AI 모달리티 부문에서 최우수상을 수상했습니다.
 링크:
 사진:
+
+날짜: 2023
+제목: Grand Prize at the 2023 K-Tour Idea Challenge
+내용: Soft Potato 팀이 지역 관광 활성화를 위한 2023 K-Tour Idea Challenge에서 대상을 수상했습니다.
+본문: 국립한국교통대학교 LINC 3.0 사업단이 주최한 지역 관광 활성화 공모전에서 Soft Potato 팀(이준호·이승환·장준원·권혁준·전수비)이 뛰어난 아이디어로 대상을 수상했습니다. (2023. 10. 27.)
+링크:
+사진: images/news/2023-ktour-idea-challenge.png
+
+날짜: 2023
+제목: Excellence Award at the 2023 ICT Smart Devicethon
+내용: Softpotato 팀이 2023년 ICT 스마트 디바이스톤에서 우수상을 수상했습니다.
+본문: (재)충북과학기술혁신원이 주최한 「2023년 ICT 스마트 디바이스톤」에서 Softpotato 팀(이준호·이승환·장준원·권혁준·전수비)이 우수상을 수상했습니다. (2023. 10. 27.)
+링크:
+사진: images/news/2023-ict-devicethon.png
+
+날짜: 2023
+제목: Global Talent Award at the 2023 IP PBL Startup Camp
+내용: 장준원 학생이 2023 지식재산기반 문제해결 IP PBL 창업캠프에서 글로벌인재상을 수상했습니다.
+본문: 가톨릭관동대학교·고려대학교 세종캠퍼스·서울과학기술대학교·국립한국교통대학교가 주관한 「2023 지식재산기반 문제해결 IP PBL 창업캠프」에서 전자공학과 장준원 학생이 글로벌인재상을 수상했습니다. (2023. 11. 24.)
+링크:
+사진: images/news/2023-ip-pbl-camp.png
+
+날짜: 2023
+제목: Grand Prize at the 2023 IDF Smart Mobility Hackathon
+내용: Dream.Lab 팀이 2023년 IDF 스마트 모빌리티 해커톤에서 대상을 수상했습니다.
+본문: 한국교통대학교 총장상인 「2023년 IDF 스마트 모빌리티 해커톤」에서 Dream.Lab 팀(이유신·이준호·장준원·전현진·박원빈)이 우수한 성적으로 대상을 수상했습니다. (2023. 12. 1.)
+링크:
+사진: images/news/2023-idf-hackathon.png
