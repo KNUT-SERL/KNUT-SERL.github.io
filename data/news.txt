@@ -36,13 +36,13 @@
 제목: LINC 3.0 industry–academia agreement with Mimetics
 내용: 미메틱스가 성균관대·한국교통대·한국기술교육대와 산학공동 기술개발과제 LINC 3.0 협약을 체결했습니다.
 링크:
-사진:
+사진: images/news/2024-mimetics-linc.jpg
 
 날짜: 2024
 제목: Self-healing adhesive patch developed with SKKU
 내용: 성균관대 방창현 교수 공동연구팀이 자가치유 접착 패치를 개발했습니다.
 링크:
-사진:
+사진: images/news/2024-self-healing-patch.jpg
 
 날짜: 2024
 제목: Self-healing electronic patch for soft robots and e-skin
@@ -61,13 +61,13 @@
 내용: 학부생의 전공 자율성 제고를 위해 연구실 기반 활동을 지원하는 국립대학육성사업 U-LAB에 김다완 교수팀이 선발되었습니다.
 본문: 학부생 전공 자율성 제고를 위한 연구실 기반 활동 지원을 통해 학생들의 전공 학습의 특별한 기회를 마련하고, 대학 교육의 만족도를 증대하기 위한 프로그램입니다.
 링크:
-사진:
+사진: images/news/2025-ulab-selection.png
 
 날짜: 2025
 제목: Selected for the 2025 Fall Career Exploration Credit Program
 내용: 창의적이고 자기주도적인 진로탐색 기회를 제공하는 진로탐색학점제(2025학년도 2학기)에 김다완 교수팀이 선발되었습니다.
 링크:
-사진:
+사진: images/news/2025-career-exploration.png
 
 날짜: 2025
 제목: Two M.S. students win Next-Generation Researcher fellowships
@@ -80,4 +80,4 @@
 제목: Grand Prize at K-RISE Capstone X-Road 2025 (AI Modality)
 내용: 김다완 교수팀이 K-RISE Capstone X-Road 2025 AI 모달리티 부문에서 최우수상을 수상했습니다.
 링크:
-사진:
+사진: images/news/2025-krise-capstone-xroad.jpg
