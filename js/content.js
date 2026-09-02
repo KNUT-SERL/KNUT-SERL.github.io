@@ -13,7 +13,7 @@
 const PREFIX_ORDER = ["PHD", "DR", "DRMS", "MS", "MSBS", "BS", "INT", "ALU"];
 const IMG_EXTS = ["jpg", "jpeg", "webp", "png"];
 const MEMBER_RE = new RegExp(`^(${PREFIX_ORDER.join("|")})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
-const GALLERY_RE = new RegExp(`^G-(\\d{4})_(\\d{2})_(\\d{2})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
+const GALLERY_DIR_RE = /^G-(\d{4})-(\d{3})-(.+)$/;   // gallery/ 안의 행사 폴더 이름 (G-연도-순번-이름)
 const RESEARCH_RE = new RegExp(`^R-(?:\\d{4}_\\d{2}_\\d{2}-)?(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
 const AWARD_RE = new RegExp(`^A-(\\d{4})-(\\d{3})-(.+?)\\.(${IMG_EXTS.join("|")})$`, "i");
 
@@ -90,10 +90,11 @@ async function manifestFromApi() {
   const host = location.hostname;                       // knut-serl.github.io → 저장소 이름
   if (!host.endsWith(".github.io")) return { professor: null, members: [], gallery: [] };
   const repo = `${host.split(".")[0]}/${host}`;
-  const ls = async dir => {
+  const lsRaw = async dir => {
     const r = await fetch(`https://api.github.com/repos/${repo}/contents/${dir}`);
-    return r.ok ? (await r.json()).map(f => f.name) : [];
+    return r.ok ? r.json() : [];
   };
+  const ls = async dir => (await lsRaw(dir)).map(f => f.name);
   const collect = (names, re, dir, makeKey) => {
     const map = new Map();
     for (const f of names) {
@@ -110,14 +111,19 @@ async function manifestFromApi() {
       return { ...rest, image: IMG_EXTS.map(x => images[x]).find(Boolean) || null };
     });
   };
-  const [mem, gal, res, awd, img] = await Promise.all([ls("members"), ls("gallery"), ls("research"), ls("awards"), ls("images")]);
+  const [mem, galRaw, res, awd, img] = await Promise.all([ls("members"), lsRaw("gallery"), ls("research"), ls("awards"), ls("images")]);
   const members = collect(mem, MEMBER_RE, "members",
       (m, base) => ({ base, prefix: m[1].toUpperCase(), order: +m[2], name: m[3] }))
     .sort((a, b) => PREFIX_ORDER.indexOf(a.prefix) - PREFIX_ORDER.indexOf(b.prefix) || a.order - b.order);
-  const gallery = collect(gal, GALLERY_RE, "gallery",
-      (m, base) => ({ base, date: `${m[1]}-${m[2]}-${m[3]}`, order: +m[4], title: m[5] }))
-    .filter(e => e.image)
-    .sort((a, b) => b.date.localeCompare(a.date) || a.order - b.order);
+  // 갤러리: 행사 폴더(G-연도-순번-이름)마다 안의 파일 목록을 한 번 더 조회
+  const imgFileRe = new RegExp(`\\.(${IMG_EXTS.join("|")})$`, "i");
+  const natural = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+  const gallery = (await Promise.all(galRaw.filter(f => f.type === "dir" && GALLERY_DIR_RE.test(f.name)).map(async d => {
+      const m = d.name.match(GALLERY_DIR_RE), files = await ls(`gallery/${d.name}`);
+      const txt = files.find(x => /^제목\.txt$/i.test(x)) || files.find(x => /\.txt$/i.test(x));
+      return { base: d.name, year: m[1], order: +m[2], name: m[3], txt: txt ? `gallery/${d.name}/${txt}` : null,
+               images: files.filter(x => imgFileRe.test(x)).sort(natural).map(x => `gallery/${d.name}/${x}`) };
+    }))).sort((a, b) => b.year.localeCompare(a.year) || a.order - b.order);
   const research = collect(res, RESEARCH_RE, "research",
       (m, base) => ({ base, order: +m[1], title: m[2] }))
     .sort((a, b) => a.order - b.order);
@@ -161,16 +167,19 @@ function loadMembers() {
 }
 
 /* ---- 갤러리: [{ image, date, order, title, desc }] (최신 날짜가 앞) ---- */
+/* ---- 갤러리 ----
+   gallery/G-연도-순번-이름/ 폴더 하나가 행사 하나. 안의 제목.txt(제목·영문)와 사진들을 읽습니다.
+   반환: [{ base, year, order, title, titleEn, images:[…] }]  (연도 내림차순 → 순번 오름차순) */
 async function loadGallery() {
   const mf = await loadManifest();
-  return Promise.all(mf.gallery.map(async e => {
+  return Promise.all((mf.gallery || []).map(async e => {
     let t = {};
     if (e.txt) {
-      try { t = parseKV(await fetchText(e.txt), ["제목", "설명"]); }
-      catch (err) { console.warn("갤러리 설명을 읽지 못했습니다:", e.txt, err.message); }
+      try { t = parseKV(await fetchText(e.txt), ["제목", "영문"]); }
+      catch (err) { console.warn("갤러리 제목을 읽지 못했습니다:", e.txt, err.message); }
     }
-    return { base: e.base, image: e.image, date: e.date, order: e.order,
-             title: t["제목"] || e.title, desc: t["설명"] || "" };
+    return { base: e.base, year: e.year, order: e.order, images: e.images || [],
+             title: t["제목"] || String(e.name || "").replace(/-/g, " "), titleEn: t["영문"] || "" };
   }));
 }
 

@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=25">
+<link rel="stylesheet" href="css/style.css?v=26">
 </head>
 <body>
 
@@ -21,9 +21,7 @@
 </section>
 
 <section class="sec" style="padding-top:28px">
-  <div class="wrap" id="gal-wrap">
-    <p id="gal-empty" style="display:none;color:var(--sub)">Photos coming soon.</p>
-  </div>
+  <div class="wrap" id="gal-wrap"></div>
 </section>
 
 <!-- 사진 확대 보기 -->
@@ -35,64 +33,90 @@
   <button class="next" aria-label="next">›</button>
 </div>
 
-<script src="data/site-data.js?v=25"></script>
-<script src="js/content.js?v=25"></script>
-<script src="js/common.js?v=25"></script>
+<script src="data/site-data.js?v=26"></script>
+<script src="js/content.js?v=26"></script>
+<script src="js/common.js?v=26"></script>
 <script>
 "use strict";
-/* 갤러리 = gallery/ 폴더의 파일들.
-   'G-2026_09_01-001-연구실OT.png' 처럼 이름을 지어 올리면 자동으로 나타나고,
-   같은 이름의 .txt 를 함께 올리면 제목·설명이 붙습니다 (README.md 참고). */
+/* 갤러리 = gallery/ 안의 행사 폴더(G-연도-순번-이름)들.
+   연도별로 묶고, 행사마다 국문 제목 → 영문 제목 → 사진 가로 띠 순으로 보여줍니다 (README.md 2장). */
 document.addEventListener("DOMContentLoaded", async () => {
   const wrap = document.getElementById("gal-wrap");
-  const items = await loadGallery();          // 최신 날짜가 앞
-  if (!items.length) { document.getElementById("gal-empty").style.display = "block"; return; }
+  const events = await loadGallery();               // 연도 내림차순 → 순번 오름차순
+  if (!events.length) { wrap.innerHTML = `<p class="gal-none">Photos coming soon.</p>`; return; }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  const fmt = d => d.replaceAll("-", ".");
   const byYear = {};
-  items.forEach((g, i) => { g._i = i; (byYear[g.date.slice(0, 4)] ??= []).push(g); });
+  events.forEach(ev => (byYear[ev.year] ??= []).push(ev));
+  wrap.innerHTML = Object.keys(byYear).sort((a, b) => b - a).map(y => `
+    <div class="news-year"><b>${y}</b></div>
+    ${byYear[y].map(ev => `
+    <section class="gal-event" id="${esc(ev.base)}" data-base="${esc(ev.base)}">
+      <div class="gal-head">
+        <div>
+          <h3>${esc(ev.title)}</h3>
+          ${ev.titleEn ? `<p>${esc(ev.titleEn)}</p>` : ""}
+        </div>
+        ${ev.images.length ? `<span class="gal-count">${ev.images.length} photo${ev.images.length > 1 ? "s" : ""}</span>` : ""}
+      </div>
+      ${ev.images.length ? `
+      <div class="gal-strip-wrap">
+        <button class="gal-arrow prev" type="button" aria-label="Scroll left" hidden>‹</button>
+        <div class="gal-strip">
+          ${ev.images.map((src, i) => `<figure><img src="${encodeURI(src)}" alt="${esc(ev.title)} — photo ${i + 1}" loading="lazy"
+                onerror="this.closest('figure').remove()"></figure>`).join("")}
+        </div>
+        <button class="gal-arrow next" type="button" aria-label="Scroll right" hidden>›</button>
+      </div>` : `<div class="gal-soon">Photos coming soon</div>`}
+    </section>`).join("")}`).join("");
 
-  wrap.insertAdjacentHTML("afterbegin", Object.keys(byYear).sort((a, b) => b - a).map(y => `
-    <div class="yearhead"><b>${y}</b></div>
-    <div class="gal" style="margin-bottom:34px">
-      ${byYear[y].map(g => `
-      <figure data-i="${g._i}" id="${g.base}">
-        <img src="${encodeURI(g.image)}" alt="${g.title}" loading="lazy"
-             onerror="this.closest('figure').remove()">
-        <figcaption>
-          <span class="d">${fmt(g.date)}</span>
-          <b>${g.title}</b>
-          ${g.desc ? `<p>${g.desc}</p>` : ""}
-        </figcaption>
-      </figure>`).join("")}
-    </div>`).join(""));
+  /* ---- 사진 띠: 넘칠 때만 좌우 화살표·가장자리 흐림 ---- */
+  const wraps = [...wrap.querySelectorAll(".gal-strip-wrap")];
+  const update = w => {
+    const s = w.querySelector(".gal-strip"), over = s.scrollWidth > s.clientWidth + 2;
+    const atStart = s.scrollLeft <= 2, atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 2;
+    w.querySelector(".prev").hidden = !over || atStart;
+    w.querySelector(".next").hidden = !over || atEnd;
+    w.classList.toggle("fade-l", over && !atStart);
+    w.classList.toggle("fade-r", over && !atEnd);
+  };
+  wraps.forEach(w => {
+    const s = w.querySelector(".gal-strip");
+    s.addEventListener("scroll", () => update(w), { passive: true });
+    w.querySelector(".prev").onclick = () => s.scrollBy({ left: -s.clientWidth * 0.8, behavior: "smooth" });
+    w.querySelector(".next").onclick = () => s.scrollBy({ left: s.clientWidth * 0.8, behavior: "smooth" });
+    s.querySelectorAll("img").forEach(im => im.addEventListener("load", () => update(w)));   // 사진이 늦게 로드되면 폭이 바뀜
+    update(w);
+  });
+  window.addEventListener("resize", () => wraps.forEach(update));
 
-  /* ---- 확대 보기 (클릭 → 크게, ←/→ 이동, ESC 닫기) ---- */
+  /* ---- 확대 보기: 클릭 → 크게, ←/→ 로 같은 행사 사진 넘기기, ESC 닫기 ---- */
   const lb = document.getElementById("lb");
   const lbImg = lb.querySelector("img"), lbCap = lb.querySelector(".cap");
-  let cur = 0;
-  const show = i => {
-    cur = (i + items.length) % items.length;
-    const g = items[cur];
-    lbImg.src = encodeURI(g.image);
-    lbCap.innerHTML = `<b><span class="d">${fmt(g.date)}</span>${g.title}</b>${g.desc ? `<p>${g.desc}</p>` : ""}`;
-    lb.classList.add("on");
-    lb.setAttribute("aria-hidden", "false");
+  let curEv = null, cur = 0;
+  const show = (ev, i) => {
+    curEv = ev; cur = (i + ev.images.length) % ev.images.length;
+    lbImg.src = encodeURI(ev.images[cur]);
+    lbCap.innerHTML = `<b>${esc(ev.title)}</b>${ev.titleEn ? `<p>${esc(ev.titleEn)}</p>` : ""}<span class="n">${cur + 1} / ${ev.images.length}</span>`;
+    lb.classList.add("on"); lb.setAttribute("aria-hidden", "false");
   };
   const hide = () => { lb.classList.remove("on"); lb.setAttribute("aria-hidden", "true"); lbImg.src = ""; };
   wrap.addEventListener("click", e => {
-    const f = e.target.closest("figure[data-i]");
-    if (f) show(+f.dataset.i);
+    const f = e.target.closest(".gal-strip figure");
+    if (!f) return;
+    const ev = events.find(x => x.base === f.closest(".gal-event").dataset.base);
+    const i = ev ? ev.images.findIndex(src => encodeURI(src) === f.querySelector("img").getAttribute("src")) : -1;
+    if (i >= 0) show(ev, i);
   });
   lb.querySelector(".x").onclick = hide;
-  lb.querySelector(".prev").onclick = e => { e.stopPropagation(); show(cur - 1); };
-  lb.querySelector(".next").onclick = e => { e.stopPropagation(); show(cur + 1); };
+  lb.querySelector(".prev").onclick = e => { e.stopPropagation(); show(curEv, cur - 1); };
+  lb.querySelector(".next").onclick = e => { e.stopPropagation(); show(curEv, cur + 1); };
   lb.addEventListener("click", e => { if (e.target === lb || e.target === lbImg) hide(); });
   document.addEventListener("keydown", e => {
     if (!lb.classList.contains("on")) return;
     if (e.key === "Escape") hide();
-    if (e.key === "ArrowLeft") show(cur - 1);
-    if (e.key === "ArrowRight") show(cur + 1);
+    if (e.key === "ArrowLeft") show(curEv, cur - 1);
+    if (e.key === "ArrowRight") show(curEv, cur + 1);
   });
 });
 </script>

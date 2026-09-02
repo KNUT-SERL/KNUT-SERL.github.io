@@ -8,7 +8,7 @@
 - 관련 데이터 파일의 머리 주석(`data/news.txt`, `data/patents.txt`, `gallery/형식-안내.txt` 등)도 같이 맞춘다.
 
 ## 2. 콘텐츠는 "파일만 올리면 되는" 방식
-- 폴더 방식: `members/`(PREFIX-NNN-Name), `research/`(R-NNN-이름), `gallery/`(G-날짜-NNN-제목), `awards/`(A-연도-NNN-이름)
+- 폴더 방식: `members/`(PREFIX-NNN-Name), `research/`(R-NNN-이름), `gallery/`(G-연도-NNN-이름/ 폴더 = 행사 하나, 안에 제목.txt + 사진들), `awards/`(A-연도-NNN-이름)
 - 텍스트 방식: `data/news.txt`, `data/patents.txt` (맨 아래에 이어 붙이면 화면에는 최신이 위)
 - 새 콘텐츠 종류를 추가하면 `tools/make-manifest.mjs`, `js/content.js`(파서·API 폴백),
   `.github/workflows/update-manifest.yml`의 감시 경로에 함께 등록한다.
