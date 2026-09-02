@@ -6,7 +6,7 @@
 <title>Gallery — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20">
+<link rel="stylesheet" href="css/style.css?v=21">
 </head>
 <body>
 
@@ -32,9 +32,9 @@
   <button class="next" aria-label="next">›</button>
 </div>
 
-<script src="data/site-data.js?v=20"></script>
-<script src="js/content.js?v=20"></script>
-<script src="js/common.js?v=20"></script>
+<script src="data/site-data.js?v=21"></script>
+<script src="js/content.js?v=21"></script>
+<script src="js/common.js?v=21"></script>
 <script>
 "use strict";
 /* 갤러리 = gallery/ 폴더의 파일들.
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <div class="yearhead"><b>${y}</b></div>
     <div class="gal" style="margin-bottom:34px">
       ${byYear[y].map(g => `
-      <figure data-i="${g._i}">
+      <figure data-i="${g._i}" id="${g.base}">
         <img src="${encodeURI(g.image)}" alt="${g.title}" loading="lazy"
              onerror="this.closest('figure').remove()">
         <figcaption>
