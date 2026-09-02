@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=22";
+const ASSET_V = "?v=23";
 
 const MENU = [
   ["index.html", "Home"],
@@ -55,13 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const foot = document.createElement("footer");
   foot.className = "site";
-  // 푸터: 왼쪽 학교 로고(images/knut-logo.png, 흰 판 위) + 연구실 이름·주소 / 아래 관리자·저작권
+  // 푸터: 왼쪽 학교 로고(images/knut-logo-white.png, 남색 바탕용 흰색 버전) + 연구실 이름·주소 / 아래 관리자·저작권
   foot.innerHTML = `
     <div class="in">
       <div class="foot-main">
         <a class="foot-logo" href="https://www.ut.ac.kr" target="_blank" rel="noopener"
            title="Korea National University of Transportation">
-          <img src="images/knut-logo.png" alt="Korea National University of Transportation"></a>
+          <img src="images/knut-logo-white.png" alt="Korea National University of Transportation"></a>
         <div class="foot-lab">
           <b>Soft Electronics &amp; Robotics Lab.</b>
           <p>Smart ICT Building E17, Room 507 · 50, Daehak-ro, Daesowon-myeon, Chungju-si,
