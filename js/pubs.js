@@ -172,7 +172,7 @@ async function renderPatents() {
         ...(p.badges || []).map(b => `<span class="bdg man">${esc(b)}</span>`)
       ].join("");
       return `
-      <div class="pat-item">
+      <div class="pat-item" id="pat-${p.no}">
         <div class="num">${p.no}</div>
         <div>
           <h3>${esc(p.title)}</h3>

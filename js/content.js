@@ -145,7 +145,7 @@ function loadMembers() {
       }
       const name = t["이름"] || e.name.replace(/([a-z])([A-Z])/g, "$1 $2");   // 파일명에서 복원
       return {
-        prefix: e.prefix, order: e.order, image: e.image,
+        base: e.base, prefix: e.prefix, order: e.order, image: e.image,
         name, kor: t["한글"] || "",
         role: t["직함"] || DEFAULT_ROLE[e.prefix] || "",
         degree: t["학위"] || "", now: t["현재"] || "",
@@ -169,7 +169,7 @@ async function loadGallery() {
       try { t = parseKV(await fetchText(e.txt), ["제목", "설명"]); }
       catch (err) { console.warn("갤러리 설명을 읽지 못했습니다:", e.txt, err.message); }
     }
-    return { image: e.image, date: e.date, order: e.order,
+    return { base: e.base, image: e.image, date: e.date, order: e.order,
              title: t["제목"] || e.title, desc: t["설명"] || "" };
   }));
 }
@@ -185,7 +185,7 @@ async function loadResearch() {
     }
     // 파일명 "SoftRobotElectronics" → 제목이 비었을 때 "Soft Robot Electronics" 로 복원
     const fallbackTitle = e.title.replace(/([a-z])([A-Z])/g, "$1 $2");
-    return { image: e.image, order: e.order,
+    return { base: e.base, image: e.image, order: e.order,
              title: t["제목"] || fallbackTitle, desc: t["요약"] || t["설명"] || "" };
   }));
 }
@@ -197,6 +197,14 @@ async function loadAwards() {
   for (const a of mf.awards || []) (byYear[a.year] ??= []).push(a);
   return byYear;
 }
+
+/* ---- 검색 결과에서 항목으로 이동할 때 쓰는 고정 id (뉴스·상장은 파일명이 없어 내용으로 만듦) ---- */
+function newsId(n) {
+  const s = (n.date || "") + "|" + (n.title || "");
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return "news-" + h.toString(36);
+}
+function awardId(a) { return "award-" + String(a.image || a.title).replace(/[^A-Za-z0-9가-힣]+/g, "-"); }
 
 /* ---- 특허: 번호가 큰 것(최신)이 앞 ---- */
 async function loadPatents() {

@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=20";
+const ASSET_V = "?v=21";
 
 const MENU = [
   ["index.html", "Home"],
@@ -43,9 +43,15 @@ document.addEventListener("DOMContentLoaded", () => {
         </li>`;
       }).join("")}
       </ul>
+      <button class="search-btn" type="button" aria-label="Search" title="Search (Ctrl+K)">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
     </div>`;
   document.body.prepend(nav);
   nav.querySelector(".burger").onclick = () => nav.querySelector(".in > ul").classList.toggle("open");
+  // 사이트 검색: js/search.js 를 뒤늦게 불러오고, 버튼은 로딩 전에 눌러도 동작하게
+  const searchReady = loadScript("js/search.js" + ASSET_V);
+  nav.querySelector(".search-btn").addEventListener("click", () => searchReady.then(() => window.SERSearch?.open()));
 
   const foot = document.createElement("footer");
   foot.className = "site";
@@ -61,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
          Transportation. All rights reserved.</p>
     </div>`;
   document.body.append(foot);
+  initGoTo();                    // 검색 결과에서 넘어온 경우 해당 항목으로 이동·강조
 
   /* 교수 사진(#prof-photo): 목록(manifest)에 있는 실제 파일을 그대로 표시.
      사진이 하나도 없으면 이니셜(DW)로 대체합니다. */
@@ -224,7 +231,7 @@ function renderMembers(list, elId, emptyMsg) {
     const d = detailHtml(s);
     // 힌트 줄은 모든 카드에 같은 높이로 자리만 잡아 두어 카드 크기가 서로 같아지게 함
     return `
-    <div class="card person${d ? " hasdetail" : ""}">
+    <div class="card person${d ? " hasdetail" : ""}" id="${s.base || ""}">
       ${avatarHtml(s)}
       ${tagsHtml(s.tags)}
       <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
@@ -249,4 +256,63 @@ function renderMembers(list, elId, emptyMsg) {
     });
   });
 
+}
+
+/* ---- 스크립트를 뒤늦게 불러오기 (사이트 검색 등) ---- */
+function loadScript(src) {
+  return new Promise(resolve => {
+    const el = document.createElement("script");
+    el.src = src; el.onload = () => resolve(true); el.onerror = () => resolve(false);
+    document.head.append(el);
+  });
+}
+
+/* ---- 검색 결과에서 넘어온 경우 ----
+   ?go=항목id  → 그 항목이 그려질 때까지 기다렸다가 스크롤·강조하고, 펼침 카드면 펼침
+   ?q=검색어   → 항목 안(또는 페이지 전체)에서 검색어를 찾아 형광펜 표시 */
+function initGoTo() {
+  const params = new URLSearchParams(location.search);
+  const go = params.get("go"), q = (params.get("q") || "").trim();
+  if (!go && !q) return;
+  const start = Date.now();
+  (function tick() {
+    if (go && go.startsWith("pat-")) {                          // 특허는 Patents 탭 안에 있음
+      const pat = document.getElementById("pat-list");
+      if (pat && pat.style.display === "none") document.getElementById("tab-pat")?.click();
+    }
+    const el = go ? document.getElementById(go) : null;
+    if (el) { revealTarget(el, q); return; }
+    if (!go && q && highlightText(q, document.body)) return;
+    if (Date.now() - start < 8000) setTimeout(tick, 150);
+    else if (q) highlightText(q, document.body);                // id 를 못 찾으면 글자라도 찾아 강조
+  })();
+}
+function revealTarget(el, q) {
+  if (el.classList.contains("hasdetail") || el.classList.contains("hasmore")) el.classList.add("open");
+  el.classList.add("hl-target");
+  setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+  if (q) setTimeout(() => highlightText(q, el), 120);
+  setTimeout(() => el.classList.remove("hl-target"), 3500);
+}
+function highlightText(q, root) {
+  const tries = [q, ...q.split(/\s+/).filter(t => t.length >= 2)];   // 전체 문구 → 단어 순으로 시도
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement && n.parentElement.closest("nav, footer, script, style, .search-overlay, mark, .hint")
+      ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const nodes = []; let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  for (const t of tries) {
+    const tl = t.toLowerCase();
+    for (const node of nodes) {
+      const i = node.nodeValue.toLowerCase().indexOf(tl);
+      if (i < 0) continue;
+      const range = document.createRange();
+      range.setStart(node, i); range.setEnd(node, i + t.length);
+      const mark = document.createElement("mark"); mark.className = "hl-mark";
+      range.surroundContents(mark);
+      mark.scrollIntoView({ behavior: "smooth", block: "center" });
+      return true;
+    }
+  }
+  return false;
 }

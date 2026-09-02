@@ -12,6 +12,8 @@
 - 텍스트 방식: `data/news.txt`, `data/patents.txt` (맨 아래에 이어 붙이면 화면에는 최신이 위)
 - 새 콘텐츠 종류를 추가하면 `tools/make-manifest.mjs`, `js/content.js`(파서·API 폴백),
   `.github/workflows/update-manifest.yml`의 감시 경로에 함께 등록한다.
+- 사이트 검색(`js/search.js`)은 위 로더로 색인을 만들므로, 새 콘텐츠 종류는 `build()`에도 추가하고
+  렌더링되는 항목 요소에 고정 `id`를 붙여 `?go=` 이동이 되게 한다.
 
 ## 3. 캐시 버전
 - JS/CSS를 바꾸면 모든 `.html`의 `?v=N`과 `js/common.js`의 `ASSET_V`를 같은 숫자로 올리고,
