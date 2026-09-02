@@ -342,8 +342,9 @@ img { max-width: 100%; }
 @keyframes marquee-scroll { to { transform: translateX(-50%); } }
 .marquee a { display: flex; align-items: center; text-decoration: none; }
 .marquee img {
-  height: 48px; width: auto; max-width: 230px; object-fit: contain;
+  height: 144px; width: auto; max-width: 460px; object-fit: contain;   /* 투명 배경 PNG 권장 */
 }
+@media (max-width: 560px) { .marquee img { height: 96px; max-width: 300px; } }
 .marquee .txt {   /* 로고 이미지가 없을 때의 텍스트 대체 */
   padding: 10px 22px; border: 1px solid var(--line); border-radius: 99px;
   font-size: 15px; font-weight: 700; color: var(--sub); background: #fff; white-space: nowrap;

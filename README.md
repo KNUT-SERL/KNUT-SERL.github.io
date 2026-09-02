@@ -327,7 +327,9 @@ R-001-SoftRobotElectronics.txt     ← 제목과 요약
 
 홈 화면 하단에 흐르는 로고 배너입니다.
 
-1. 로고 이미지를 `images/partners/`에 업로드 (투명 배경 PNG 권장)
+1. 로고 이미지를 `images/partners/`에 업로드 — **투명 배경 PNG 권장**. 흰 배경 파일을 그대로 올리면
+   배너 바탕과 구분되는 흰 띠가 보입니다 (개발자는 `node tools/make-transparent.mjs 파일` 로 투명 처리 가능).
+   배너에서는 높이 144px 로 표시되므로 가로가 긴 형태(예: 3:1)가 잘 어울립니다
 2. `data/site-data.js`의 `partners:` 목록에 한 줄 추가:
    ```js
    { name: "기관 이름", img: "images/partners/파일명.png", url: "https://기관주소" },
@@ -395,8 +397,8 @@ R-001-SoftRobotElectronics.txt     ← 제목과 요약
 
 **고쳤는데 화면이 그대로예요**
 - 1~2분 기다린 뒤 `Ctrl+F5` (Mac: `Cmd+Shift+R`)
-- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=18` → `?v=19`,
-  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=18"` → `"?v=19"`
+- 그래도 안 되면 캐시 번호를 올립니다: 모든 `.html` 파일 안의 `?v=19` → `?v=20`,
+  그리고 `js/common.js` 맨 위 `const ASSET_V = "?v=19"` → `"?v=20"`
 
 **구성원/갤러리 파일을 올렸는데 안 나와요**
 - 파일 이름이 규칙과 정확히 같은지 확인 (붙임표 `-` 위치, 순번 세 자리 `001`, 확장자 소문자)
