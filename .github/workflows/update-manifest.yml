@@ -17,6 +17,7 @@ on:
       - "members/**"
       - "gallery/**"
       - "research/**"
+      - "awards/**"
       - "images/professor.*"
       - "tools/**"
   workflow_dispatch: {}   # Actions 탭에서 수동 실행도 가능

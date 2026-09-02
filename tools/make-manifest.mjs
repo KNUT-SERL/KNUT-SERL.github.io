@@ -72,13 +72,23 @@ const researchList = [...areas.values()]
                txt: e.txt, image: IMG_EXTS.map(x => e.images[x]).find(Boolean) || null }))
   .sort((a, b) => a.order - b.order || a.base.localeCompare(b.base));
 
+/* ---- 수상 상장: awards/A-연도-순번-상장이름.(이미지) ---- */
+const awardRe = new RegExp(`^A-(\\d{4})-(\\d{3})-(.+?)\\.(${IMG_EXTS.join("|")})$`, "i");
+const awardList = [];
+for (const f of listDir("awards")) {
+  const m = f.match(awardRe);
+  if (!m) { if (!f.startsWith(".") && !/안내|readme/i.test(f)) warn.push(`awards/${f} — 이름 형식이 달라 무시함`); continue; }
+  awardList.push({ year: m[1], order: +m[2], title: m[3], image: `awards/${f}` });
+}
+awardList.sort((a, b) => b.year.localeCompare(a.year) || a.order - b.order);
+
 /* ---- 교수 사진: images/professor.* ---- */
 const professor = IMG_EXTS.map(x => `images/professor.${x}`).find(existsSync) || null;
 
 /* ---- 저장 (내용이 같으면 건드리지 않음 → 불필요한 커밋 방지) ---- */
-const json = JSON.stringify({ professor, members: memberList, research: researchList, gallery: galleryList }, null, 1);
+const json = JSON.stringify({ professor, members: memberList, research: researchList, gallery: galleryList, awards: awardList }, null, 1);
 const before = existsSync("data/manifest.json") ? readFileSync("data/manifest.json", "utf8") : "";
 if (before !== json) { writeFileSync("data/manifest.json", json); console.log("data/manifest.json 갱신됨"); }
 else console.log("data/manifest.json 변화 없음");
-console.log(`구성원 ${memberList.length}명 · 연구분야 ${researchList.length}개 · 갤러리 ${galleryList.length}장 · 교수 사진 ${professor || "(없음 → 이니셜)"}`);
+console.log(`구성원 ${memberList.length}명 · 연구분야 ${researchList.length}개 · 갤러리 ${galleryList.length}장 · 상장 ${awardList.length}장 · 교수 사진 ${professor || "(없음 → 이니셜)"}`);
 for (const w of warn) console.log("⚠ " + w);

@@ -15,6 +15,7 @@ const IMG_EXTS = ["jpg", "jpeg", "webp", "png"];
 const MEMBER_RE = new RegExp(`^(${PREFIX_ORDER.join("|")})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
 const GALLERY_RE = new RegExp(`^G-(\\d{4})_(\\d{2})_(\\d{2})-(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
 const RESEARCH_RE = new RegExp(`^R-(?:\\d{4}_\\d{2}_\\d{2}-)?(\\d{3})-(.+?)\\.(txt|${IMG_EXTS.join("|")})$`, "i");
+const AWARD_RE = new RegExp(`^A-(\\d{4})-(\\d{3})-(.+?)\\.(${IMG_EXTS.join("|")})$`, "i");
 
 /* 접두사 → 기본 직함 (프로필의 '직함:' 을 비워 두면 이 값이 쓰임) */
 const DEFAULT_ROLE = {
@@ -109,7 +110,7 @@ async function manifestFromApi() {
       return { ...rest, image: IMG_EXTS.map(x => images[x]).find(Boolean) || null };
     });
   };
-  const [mem, gal, res, img] = await Promise.all([ls("members"), ls("gallery"), ls("research"), ls("images")]);
+  const [mem, gal, res, awd, img] = await Promise.all([ls("members"), ls("gallery"), ls("research"), ls("awards"), ls("images")]);
   const members = collect(mem, MEMBER_RE, "members",
       (m, base) => ({ base, prefix: m[1].toUpperCase(), order: +m[2], name: m[3] }))
     .sort((a, b) => PREFIX_ORDER.indexOf(a.prefix) - PREFIX_ORDER.indexOf(b.prefix) || a.order - b.order);
@@ -120,8 +121,12 @@ async function manifestFromApi() {
   const research = collect(res, RESEARCH_RE, "research",
       (m, base) => ({ base, order: +m[1], title: m[2] }))
     .sort((a, b) => a.order - b.order);
+  const awards = awd.map(f => f.match(AWARD_RE))
+    .filter(Boolean)
+    .map(m => ({ year: m[1], order: +m[2], title: m[3], image: `awards/${m[0]}` }))
+    .sort((a, b) => b.year.localeCompare(a.year) || a.order - b.order);
   const profFile = IMG_EXTS.map(x => `professor.${x}`).find(x => img.includes(x));
-  return { professor: profFile ? `images/${profFile}` : null, members, research, gallery };
+  return { professor: profFile ? `images/${profFile}` : null, members, research, gallery, awards };
 }
 
 /* ---- 구성원 ----
@@ -183,6 +188,14 @@ async function loadResearch() {
     return { image: e.image, order: e.order,
              title: t["제목"] || fallbackTitle, desc: t["요약"] || t["설명"] || "" };
   }));
+}
+
+/* ---- 수상 상장: 연도별 { "2024": [{title, image}...] } (순번 순) ---- */
+async function loadAwards() {
+  const mf = await loadManifest();
+  const byYear = {};
+  for (const a of mf.awards || []) (byYear[a.year] ??= []).push(a);
+  return byYear;
 }
 
 /* ---- 특허: 번호가 큰 것(최신)이 앞 ---- */

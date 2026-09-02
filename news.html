@@ -6,7 +6,7 @@
 <title>News — SER Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=16">
+<link rel="stylesheet" href="css/style.css?v=17">
 </head>
 <body>
 
@@ -21,18 +21,19 @@
   <div class="wrap" id="news-list"></div>
 </section>
 
-<script src="data/site-data.js?v=16"></script>
-<script src="js/content.js?v=16"></script>
-<script src="js/common.js?v=16"></script>
+<script src="data/site-data.js?v=17"></script>
+<script src="js/content.js?v=17"></script>
+<script src="js/common.js?v=17"></script>
 <script>
 "use strict";
 /* 뉴스 = data/news.txt. 파일 맨 아래에 소식을 이어 붙이면 여기에는 최신순으로 표시됩니다.
    '링크:' 를 채운 소식은 제목 옆에 LINK 표시가 붙고, 내용 칸을 누르면 그 주소로 이동합니다. */
 document.addEventListener("DOMContentLoaded", async () => {
   const el = document.getElementById("news-list");
-  let list = [];
+  let list = [], awards = {};
   try { list = await loadNews(); }
   catch (e) { el.innerHTML = `<p style="color:var(--sub)">뉴스 목록(data/news.txt)을 읽지 못했습니다.</p>`; return; }
+  try { awards = await loadAwards(); } catch (e) { console.warn("상장 목록을 읽지 못했습니다:", e.message); }
 
   // 연도별로 묶어 표시 (Publications 페이지와 같은 형식, 최신 연도가 위).
   // 사진이 있으면 왼쪽에 일정한 규격의 썸네일로, 본문·사진이 있는 소식은
@@ -68,14 +69,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       </div>
     </div>`;
   };
+  // 상장 스트립 — 연도 칸 맨 위에 같은 규격으로 가로 나열, 아래에 상장 이름
+  const strip = y => (awards[y] || []).length ? `
+    <div class="award-strip">${awards[y].map(a => `
+      <a class="award" href="${encodeURI(a.image)}" target="_blank" rel="noopener" title="${a.title}">
+        <span class="img"><img src="${encodeURI(a.image)}" alt="${a.title}" loading="lazy"
+             onerror="this.closest('a').remove()"></span>
+        <span class="cap">${a.title}</span>
+      </a>`).join("")}
+    </div>` : "";
+
   const byYear = {};
   for (const n of list) {
     const y = (String(n.date).match(/^\d{4}/) || ["기타"])[0];
     (byYear[y] ??= []).push(n);
   }
+  for (const y of Object.keys(awards)) byYear[y] ??= [];   // 상장만 있는 연도도 표시
   const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
-  el.innerHTML = list.length ? years.map(y => `
+  el.innerHTML = years.length ? years.map(y => `
     <div class="news-year"><b>${y}</b></div>
+    ${strip(y)}
     ${byYear[y].map(item).join("")}`).join("") : `<p style="color:var(--sub)">No news yet.</p>`;
 
   // 클릭으로 펼치고 닫기 — 한 번에 하나만 열림 (링크 클릭은 방해하지 않음)
