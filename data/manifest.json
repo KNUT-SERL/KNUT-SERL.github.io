@@ -197,7 +197,60 @@
    "image": "research/R-007-MicroneedleDrugDetection.webp"
   }
  ],
- "gallery": [],
+ "gallery": [
+  {
+   "base": "G-2025-001-IEIE-추계학술대회-광주",
+   "year": "2025",
+   "order": 1,
+   "name": "IEIE-추계학술대회-광주",
+   "txt": "gallery/G-2025-001-IEIE-추계학술대회-광주/제목.txt",
+   "images": [
+    "gallery/G-2025-001-IEIE-추계학술대회-광주/01.jpg",
+    "gallery/G-2025-001-IEIE-추계학술대회-광주/02.webp",
+    "gallery/G-2025-001-IEIE-추계학술대회-광주/03.jpg"
+   ]
+  },
+  {
+   "base": "G-2025-002-신입-학부연구생-환영-회식",
+   "year": "2025",
+   "order": 2,
+   "name": "신입-학부연구생-환영-회식",
+   "txt": "gallery/G-2025-002-신입-학부연구생-환영-회식/제목.txt",
+   "images": []
+  },
+  {
+   "base": "G-2025-003-IEIE-하계학술대회-제주",
+   "year": "2025",
+   "order": 3,
+   "name": "IEIE-하계학술대회-제주",
+   "txt": "gallery/G-2025-003-IEIE-하계학술대회-제주/제목.txt",
+   "images": []
+  },
+  {
+   "base": "G-2025-004-ICEIC-오사카",
+   "year": "2025",
+   "order": 4,
+   "name": "ICEIC-오사카",
+   "txt": "gallery/G-2025-004-ICEIC-오사카/제목.txt",
+   "images": []
+  },
+  {
+   "base": "G-2024-001-캡스톤-디자인-포스터-발표",
+   "year": "2024",
+   "order": 1,
+   "name": "캡스톤-디자인-포스터-발표",
+   "txt": "gallery/G-2024-001-캡스톤-디자인-포스터-발표/제목.txt",
+   "images": []
+  },
+  {
+   "base": "G-2023-001-i-crops-샌프란시스코-파견",
+   "year": "2023",
+   "order": 1,
+   "name": "i-crops-샌프란시스코-파견",
+   "txt": "gallery/G-2023-001-i-crops-샌프란시스코-파견/제목.txt",
+   "images": []
+  }
+ ],
  "awards": [
   {
    "year": "2024",

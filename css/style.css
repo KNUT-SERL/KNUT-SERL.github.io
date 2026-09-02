@@ -283,20 +283,49 @@ img { max-width: 100%; }
   letter-spacing: 0.5px; vertical-align: 2px;
 }
 
-/* ---------- 갤러리 ---------- */
-.gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 860px) { .gal { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .gal { grid-template-columns: 1fr; } }
-.gal figure {
-  border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff;
-  cursor: zoom-in; transition: transform 0.18s ease, box-shadow 0.18s ease;
+/* ---------- 갤러리 (연도 → 행사: 국문 제목·영문 제목 → 사진 가로 띠) ---------- */
+.gal-event { margin: 22px 0 38px; scroll-margin-top: 90px; }
+.gal-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.gal-head h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.2px; line-height: 1.35; }
+.gal-head p { margin-top: 4px; font-size: 14px; color: var(--sub); }
+.gal-count {
+  flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--sub); background: var(--soft);
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; white-space: nowrap; margin-bottom: 2px;
 }
-.gal figure:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(20,40,80,0.12); }
-.gal img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-.gal figcaption { padding: 11px 14px 12px; font-size: 13px; color: var(--sub); }
-.gal figcaption b { display: block; font-size: 14px; color: var(--ink); }
-.gal figcaption .d { font-size: 11.5px; color: var(--accent); font-weight: 700; letter-spacing: 0.4px; }
-.gal figcaption p { margin-top: 3px; }
+.gal-strip-wrap { position: relative; }
+.gal-strip {
+  display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x proximity; padding: 2px 2px 10px;
+  scrollbar-width: thin; scrollbar-color: #c9d2df transparent;
+}
+.gal-strip figure {
+  flex: 0 0 auto; height: 210px; border-radius: 12px; overflow: hidden; background: var(--soft);
+  border: 1px solid var(--line); scroll-snap-align: start; cursor: zoom-in;
+}
+.gal-strip img { height: 100%; width: auto; display: block; transition: transform .25s ease; }
+.gal-strip figure:hover img { transform: scale(1.03); }
+/* 더 있음을 알리는 가장자리 흐림 + 화살표 (넘칠 때만 표시) */
+.gal-strip-wrap::before, .gal-strip-wrap::after {
+  content: ""; position: absolute; top: 2px; bottom: 10px; width: 48px; pointer-events: none; opacity: 0; transition: opacity .2s; z-index: 1;
+}
+.gal-strip-wrap::before { left: 0; background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); }
+.gal-strip-wrap::after { right: 0; background: linear-gradient(270deg, #fff, rgba(255,255,255,0)); }
+.gal-strip-wrap.fade-l::before, .gal-strip-wrap.fade-r::after { opacity: 1; }
+.gal-arrow {
+  position: absolute; top: calc(50% - 4px); transform: translateY(-50%); z-index: 2; width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--line); background: rgba(255,255,255,.96); color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(20,40,80,.14); display: flex; align-items: center; justify-content: center; padding-bottom: 3px;
+}
+.gal-arrow:hover { color: var(--accent); }
+.gal-arrow.prev { left: 8px; }
+.gal-arrow.next { right: 8px; }
+.gal-arrow[hidden] { display: none; }
+@media (hover: none) { .gal-arrow { display: none; } }
+.gal-soon {
+  height: 96px; border: 1px dashed #d5dce6; border-radius: 12px; background: var(--soft);
+  display: flex; align-items: center; justify-content: center; color: #9aa7b8; font-size: 13.5px;
+}
+.gal-none { color: var(--sub); }
+@media (max-width: 560px) { .gal-strip figure { height: 150px; } .gal-head h3 { font-size: 17px; } .gal-head p { font-size: 13px; } }
 
 /* 갤러리 확대 보기(라이트박스) */
 .lightbox {
@@ -313,6 +342,7 @@ img { max-width: 100%; }
 .lightbox .cap b { font-size: 16px; }
 .lightbox .cap .d { color: #9fb4d8; font-size: 12.5px; font-weight: 700; letter-spacing: 0.5px; margin-right: 8px; }
 .lightbox .cap p { color: #c6d2e8; font-size: 13.5px; margin-top: 4px; }
+.lightbox .cap .n { display: block; color: #9fb4d8; font-size: 12.5px; font-weight: 700; letter-spacing: .5px; margin-top: 8px; }
 .lightbox button {
   position: absolute; border: 0; cursor: pointer; color: #fff; background: rgba(255,255,255,0.12);
   border-radius: 50%; width: 44px; height: 44px; font-size: 20px; line-height: 1;

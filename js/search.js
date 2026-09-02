@@ -39,7 +39,7 @@
       loadAwards().then(by => { for (const [y, list] of Object.entries(by)) list.forEach(a => add("award", a.title, y, "news.html", awardId(a))); }),
       loadPatents().then(l => l.forEach(p => add("patent", p.title,
         [p.year, p.inventors, p.number, p.country, ...(p.badges || [])].filter(Boolean).join(" · "), "publications.html", "pat-" + p.no))),
-      loadGallery().then(l => l.forEach(g => add("gallery", g.title, [g.date, g.desc].filter(Boolean).join(" · "), "gallery.html", g.base))),
+      loadGallery().then(l => l.forEach(g => add("gallery", g.title, [g.year, g.titleEn, g.images.length ? `${g.images.length} photos` : ""].filter(Boolean).join(" · "), "gallery.html", g.base))),
       ...STATIC_PAGES.map(([file, label]) => fetch(file, { cache: "no-cache" }).then(r => r.text()).then(html => {
         const doc = new DOMParser().parseFromString(html, "text/html");
         doc.querySelectorAll("section").forEach(sec => {
