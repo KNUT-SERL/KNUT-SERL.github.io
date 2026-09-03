@@ -503,6 +503,7 @@ footer.site .foot-sub p { margin-top: 6px; }
 .search-close svg { width: 20px; height: 20px; }
 .search-results { max-height: 62vh; overflow-y: auto; padding: 8px; }
 .search-hint { padding: 22px 12px; color: var(--sub); font-size: 14px; text-align: center; }
+.search-hint .kw { display: block; margin-top: 6px; font-size: 13px; color: #9aa7b8; letter-spacing: .2px; }   /* 검색 대상 목록은 둘째 줄에 */
 .search-group { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); padding: 12px 10px 6px; }
 .search-group span { color: #aab2bf; margin-left: 4px; }
 .search-item { display: block; padding: 9px 10px; border-radius: 10px; color: inherit; text-decoration: none; }

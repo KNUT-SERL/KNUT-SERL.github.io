@@ -14,7 +14,8 @@
   const GROUPS = [["member", "Members"], ["research", "Research"], ["news", "News"], ["award", "Awards"],
                   ["patent", "Patents"], ["pub", "Publications"], ["gallery", "Gallery"], ["page", "Pages"]];
   const STATIC_PAGES = [["index.html", "Home"], ["professor.html", "Professor"], ["contact.html", "Contact"]];
-  const HINT = `<div class="search-hint">Type a keyword or sentence — members, research, news, awards, patents, publications, gallery…</div>`;
+  // 안내 문구: 1줄 안내 + 2줄 검색 대상 목록 (목록은 항상 새 줄에서 시작)
+  const HINT = `<div class="search-hint">Type a keyword or sentence<span class="kw">members · research · news · awards · patents · publications · gallery</span></div>`;
 
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const strip = s => String(s ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();

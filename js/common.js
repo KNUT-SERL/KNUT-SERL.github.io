@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=27";
+const ASSET_V = "?v=28";
 
 const MENU = [
   ["index.html", "Home"],
