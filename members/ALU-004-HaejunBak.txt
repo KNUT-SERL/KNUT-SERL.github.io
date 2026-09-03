@@ -6,6 +6,8 @@
 
 이름: Haejun Bak
 한글: 박해준
+# 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
+저자명:
 학위: B.S. (Electronics)
 이메일: hjpak2000@gmail.com
 현재: Kalman Corp. — Robot Electrical System H/W

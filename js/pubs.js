@@ -31,6 +31,30 @@ function toBibtex(w) {
   ].filter(Boolean).join("\n");
 }
 
+/* ---- 저자 목록에서 굵게 표시할 이름 ----
+   교수님은 OpenAlex 저자 ID로, 연구실 구성원(졸업생 포함)은 members/ 프로필의 '이름:'과 '저자명:'으로 찾습니다.
+   비교할 때 대소문자·띄어쓰기·붙임표·점은 무시하고, "이름 성" / "성 이름" / "성, 이름" 순서를 모두 허용합니다. */
+const normName = s => {
+  let t = String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  if (t.includes(",")) { const [last, first] = t.split(",", 2); t = `${first} ${last}`; }   // "Jang, Junwon" → "junwon jang"
+  return t.replace(/[^a-z]/g, "");
+};
+let memberKeys = new Set();
+async function loadMemberKeys() {
+  const keys = new Set();
+  try {
+    const groups = await loadMembers();
+    for (const list of Object.values(groups)) for (const m of list) for (const v of (m.authorNames || [m.name])) {
+      const tok = String(v).split(/[\s\-.]+/).map(normName).filter(Boolean);
+      if (!tok.length) continue;
+      keys.add(tok.join(""));                                                    // 이름 성  (Junwon Jang)
+      if (tok.length > 1) keys.add(tok[tok.length - 1] + tok.slice(0, -1).join(""));   // 성 이름  (Jang Junwon)
+    }
+  } catch (e) { console.warn("구성원 이름을 읽지 못해 교수님 이름만 굵게 표시합니다:", e.message); }
+  return keys;
+}
+const isMemberAuthor = a => memberKeys.has(normName(a.author?.display_name)) || memberKeys.has(normName(a.raw_author_name));
+
 async function fetchJournalStats(works) {
   const ids = [...new Set(works.map(w => w.primary_location?.source?.id).filter(Boolean))]
     .map(u => u.split("/").pop());
@@ -47,6 +71,7 @@ async function fetchJournalStats(works) {
 
 async function load() {
   const $w = document.getElementById("pub-list");
+  const keysP = loadMemberKeys();                 // 구성원 이름은 논문 목록과 동시에 읽어 둔다
   try {
     let works = [], cursor = "*";
     while (works.length < 600 && cursor) {
@@ -62,6 +87,7 @@ async function load() {
       !w.is_paratext && TYPES.includes(w.type) &&
       !CFG.exclude.includes((w.id || "").split("/").pop()));
     await fetchJournalStats(list);
+    memberKeys = await keysP;
     render(list, $w);
   } catch (e) {
     $w.innerHTML = `<div class="notice">The live publication list could not be loaded right now
@@ -125,7 +151,7 @@ function item(w) {
     if (eq.has(nm)) n += "†";
     if (a.is_corresponding) n += "*";
     const id = (a.author?.id || "").split("/").pop();
-    return id === CFG.authorId ? `<b>${n}</b>` : n;
+    return id === CFG.authorId || isMemberAuthor(a) ? `<b>${n}</b>` : n;   // 교수님 + 연구실 구성원 굵게
   }).join(", ");
 
   return `

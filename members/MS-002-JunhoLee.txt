@@ -6,6 +6,8 @@
 
 이름: Junho Lee
 한글: 이준호
+# 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
+저자명:
 직함: M.S. Student
 이메일: wnsgh1916@naver.com
 키워드: Soft robotics, soft grippers

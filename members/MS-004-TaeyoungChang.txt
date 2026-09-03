@@ -6,6 +6,8 @@
 
 이름: Taeyoung Chang
 한글: 장태영
+# 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
+저자명:
 직함: M.S. Student
 이메일: changtae0329@gmail.com
 키워드: Robot vision, manipulation, tactile sensors

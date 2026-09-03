@@ -6,6 +6,8 @@
 
 이름: Junyoung Sim
 한글: 심준영
+# 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
+저자명:
 학위: B.S. (Electronics)
 이메일: shimjuny123@gmail.com
 현재: KRISS — UST Tactile Standards Research Group (촉감표준연구단)
