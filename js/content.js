@@ -137,7 +137,7 @@ async function manifestFromApi() {
 
 /* ---- 구성원 ----
    반환: { PHD:[], DR:[], DRMS:[], MS:[], MSBS:[], BS:[], INT:[], ALU:[] } */
-const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그"];
+const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그", "저자명"];
 let membersPromise = null;
 function loadMembers() {
   return membersPromise ??= (async () => {
@@ -153,6 +153,8 @@ function loadMembers() {
       return {
         base: e.base, prefix: e.prefix, order: e.order, image: e.image,
         name, kor: t["한글"] || "",
+        // 저자명: 논문에 실리는 다른 표기들(쉼표 구분) — Publications 저자 목록에서 굵게 표시할 때 이름과 함께 비교
+        authorNames: [name, ...String(t["저자명"] || "").split(",").map(x => x.trim()).filter(Boolean)],
         role: t["직함"] || DEFAULT_ROLE[e.prefix] || "",
         degree: t["학위"] || "", now: t["현재"] || "",
         email: t["이메일"] || "", interests: t["키워드"] || "", bio: t["소개"] || "",

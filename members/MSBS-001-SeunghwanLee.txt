@@ -6,6 +6,8 @@
 
 이름: Seunghwan Lee
 한글: 이승환
+# 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
+저자명:
 직함: M.S. Student (B.S.–M.S. Combined)
 이메일: saa4563123@naver.com
 키워드: Robot control, bio-inspired robotics
