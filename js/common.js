@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=35";
+const ASSET_V = "?v=36";
 
 const MENU = [
   ["index.html", "Home"],
@@ -225,7 +225,7 @@ function renderMembers(list, elId, emptyMsg) {
   const el = document.getElementById(elId);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-  /* 논문 목록 = OpenAlex 자동 목록(교수님과 함께 쓴 연구실 논문) + 프로필 '논문:'에 직접 적은 항목.
+  /* 논문 목록 = OpenAlex 자동 목록(교수님과 함께 쓴 연구실 논문, '스칼라:'를 적은 구성원만) + 프로필 '논문:'에 직접 적은 항목.
      같은 논문이 양쪽에 있으면 자동 항목(DOI 링크 포함)만 남깁니다. 자동 목록이 없으면 직접 적은 목록만. */
   const normText = s => String(s || "").replace(/<[^>]+>/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
   function pubsHtml(s, auto) {
@@ -236,10 +236,7 @@ function renderMembers(list, elId, emptyMsg) {
       ...manual.map(p => `<li>${p}</li>`)
     ];
     if (!items.length) return "";
-    const head = auto.length
-      ? `Publications <span class="auto" title="Lab papers are added automatically from OpenAlex">auto · OpenAlex</span>`
-      : "Selected Publications";
-    return `<h4>${head}</h4><ul>${items.join("")}</ul>`;
+    return `<h4>Selected Publications</h4><ul>${items.join("")}</ul>`;
   }
   /* 창업: "회사명 — 역할" → 회사명만 굵게. 창업내용: 항목은 그 아래 점 목록 */
   function startupHtml(s) {
@@ -295,10 +292,12 @@ function renderMembers(list, elId, emptyMsg) {
     if (!wasOpen) card.classList.add("open");
   });
 
-  /* 논문 자동 목록 — 연구실 논문(OpenAlex)을 받아 각 구성원이 저자로 든 논문을 상세 패널에 채운다.
-     OpenAlex 응답이 없으면 프로필에 직접 적은 목록만 그대로 보인다. */
-  if (list.length && typeof loadLabWorks === "function") loadLabWorks().then(works => {
-    for (const s of list) {
+  /* 논문 자동 목록 — 프로필에 '스칼라:'(Google Scholar 주소)를 적은 구성원만 대상.
+     연구실 논문(OpenAlex)에서 그 사람이 저자로 든 논문을 상세 패널에 채운다.
+     '스칼라:'가 비어 있거나 OpenAlex 응답이 없으면 프로필에 직접 적은 목록만 그대로 보인다. */
+  const autoTargets = list.filter(s => s.scholar);
+  if (autoTargets.length && typeof loadLabWorks === "function") loadLabWorks().then(works => {
+    for (const s of autoTargets) {
       const auto = memberWorks(works, s);
       if (!auto.length) continue;
       const card = s.base ? el.querySelector(`[id="${s.base}"]`) : null;
