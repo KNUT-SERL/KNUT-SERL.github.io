@@ -10,12 +10,13 @@
 저자명:
 직함: M.S. Student (B.S.–M.S. Combined)
 이메일: saa4563123@naver.com
-키워드:
+키워드: Robot Control System, Biomimetic Robotics
 
 # 아래 4칸은 카드를 클릭하면 펼쳐지는 상세 패널입니다. 전부 비우면 패널이 생기지 않습니다.
 # 목록 칸(논문/특허/수상)은 바로 아랫줄부터 '- '로 시작하는 줄을 여러 개 적으면 됩니다.
 소개:
 논문:
+- LTE-Cat. M1 conformity test in sounding rocket communication systems — <i>The Journal of the Convergence on Culture Technology</i>, 10(4), 589–594, 2024
 
 특허:
 
