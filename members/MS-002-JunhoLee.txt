@@ -17,7 +17,6 @@
 소개:
 논문:
 - A bio-inspired tactile sensing framework for vision-free grip classification and adaptive manipulation via ensemble learning — <i>Sensors and Actuators A: Physical</i>, 2026
-- A Bio-Inspired Tactile Sensing Framework for Vision-Free Grip Classification and Adaptive Manipulation via Ensemble Learning — <i>SSRN Electronic Journal</i>, 2026
 - Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence — <i>Biomimetics</i>, 2025
 - Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — <i>Biomimetics</i>, 2025
 특허:
