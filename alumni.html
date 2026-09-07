@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=33">
+<link rel="stylesheet" href="css/style.css?v=34">
 </head>
 <body>
 
@@ -26,9 +26,9 @@
   </div>
 </section>
 
-<script src="data/site-data.js?v=33"></script>
-<script src="js/content.js?v=33"></script>
-<script src="js/common.js?v=33"></script>
+<script src="data/site-data.js?v=34"></script>
+<script src="js/content.js?v=34"></script>
+<script src="js/common.js?v=34"></script>
 <script>
 "use strict";
 // 졸업생 = members/ 폴더의 ALU- 파일들. 순번(001, 002…)이 곧 졸업 순서입니다.
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => loadMembers().then(M => {
       ${tagsHtml(a.tags)}
       <div class="nm">${a.name} <span style="font-weight:400;color:var(--sub)">(${a.kor})</span></div>
       <div class="role">${a.degree}</div>
-      <div class="info">${a.now || ""}${a.now && a.email ? "<br>" : ""}${a.email ? `<a href="mailto:${a.email}">${a.email}</a>` : ""}</div>
+      <div class="info">${a.now || ""}${a.now && (a.email || a.scholar) ? "<br>" : ""}${[a.email ? `<a href="mailto:${a.email}">${a.email}</a>` : "", a.scholar ? `<a href="${a.scholar}" target="_blank" rel="noopener">Google Scholar</a>` : ""].filter(Boolean).join(" · ")}</div>
     </div>`).join("");
   attachAvatarFallback(el);   // 사진이 안 열리면 한 번 재시도 후 이니셜로
   equalizeCards(el);          // 카드 높이 통일

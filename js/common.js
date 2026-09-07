@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=33";
+const ASSET_V = "?v=34";
 
 const MENU = [
   ["index.html", "Home"],
@@ -223,19 +223,41 @@ function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
    카드 아래로 상세 패널이 자연스럽게 펼쳐집니다. */
 function renderMembers(list, elId, emptyMsg) {
   const el = document.getElementById(elId);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-  function detailHtml(s) {
-    if (!s.bio && !s.pubs?.length && !s.patents?.length && !s.awards?.length) return "";
+  /* 논문 목록 = OpenAlex 자동 목록(교수님과 함께 쓴 연구실 논문) + 프로필 '논문:'에 직접 적은 항목.
+     같은 논문이 양쪽에 있으면 자동 항목(DOI 링크 포함)만 남깁니다. 자동 목록이 없으면 직접 적은 목록만. */
+  const normText = s => String(s || "").replace(/<[^>]+>/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  function pubsHtml(s, auto) {
+    const manual = (s.pubs || []).filter(p =>
+      !auto.some(w => { const t = normText(w.title); return t.length >= 12 && normText(p).includes(t); }));
+    const items = [
+      ...auto.map(w => `<li>${w.doi ? `<a href="${esc(w.doi)}" target="_blank" rel="noopener">${esc(w.title)}</a>` : esc(w.title)}${w.venue ? ` — <i>${esc(w.venue)}</i>` : ""}${w.year ? `, ${w.year}` : ""}</li>`),
+      ...manual.map(p => `<li>${p}</li>`)
+    ];
+    if (!items.length) return "";
+    const head = auto.length
+      ? `Publications <span class="auto" title="Lab papers are added automatically from OpenAlex">auto · OpenAlex</span>`
+      : "Selected Publications";
+    return `<h4>${head}</h4><ul>${items.join("")}</ul>`;
+  }
+  function detailHtml(s, auto = []) {
+    const pubs = pubsHtml(s, auto);
+    if (!s.bio && !pubs && !s.patents?.length && !s.awards?.length) return "";
     return `<div class="detail">
       ${s.bio ? `<h4>Research</h4><p>${s.bio}</p>` : ""}
-      ${s.pubs?.length ? `<h4>Selected Publications</h4>
-        <ul>${s.pubs.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
+      ${pubs}
       ${s.patents?.length ? `<h4>Patents</h4>
         <ul>${s.patents.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
       ${s.awards?.length ? `<h4>Honors</h4>
         <ul>${s.awards.map(a => `<li>${a}</li>`).join("")}</ul>` : ""}
     </div>`;
   }
+  /* 이메일 · Google Scholar(프로필 '스칼라:') 링크 줄 */
+  const linksHtml = s => [
+    s.email ? `<a href="mailto:${esc(s.email)}">${esc(s.email)}</a>` : "",
+    s.scholar ? `<a href="${esc(s.scholar)}" target="_blank" rel="noopener">Google Scholar</a>` : ""
+  ].filter(Boolean).join(" · ");
 
   el.innerHTML = list.length ? list.map(s => {
     const d = detailHtml(s);
@@ -246,7 +268,7 @@ function renderMembers(list, elId, emptyMsg) {
       ${tagsHtml(s.tags)}
       <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
       <div class="role">${s.role || ""}</div>
-      <div class="info">${s.interests || ""}${s.email ? `${s.interests ? "<br>" : ""}<a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
+      <div class="info">${s.interests || ""}${linksHtml(s) ? `${s.interests ? "<br>" : ""}${linksHtml(s)}` : ""}</div>
       <div class="hint">${d ? "▾ CLICK FOR DETAILS" : "&nbsp;"}</div>
       ${d}
     </div>`;
@@ -256,16 +278,30 @@ function renderMembers(list, elId, emptyMsg) {
 
   if (list.length) masonryLayout(el);   // 균일 높이 + 벽돌식 배치
 
-  // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음)
-  el.querySelectorAll(".person.hasdetail").forEach(card => {
-    card.addEventListener("click", e => {
-      if (e.target.closest("a")) return;
-      const wasOpen = card.classList.contains("open");
-      el.querySelectorAll(".person.open").forEach(c => c.classList.remove("open"));
-      if (!wasOpen) card.classList.add("open");
-    });
+  // 클릭으로 열고 닫기 (링크 클릭은 방해하지 않음) — 나중에 패널이 생기는 카드도 되도록 목록에 한 번만 건다
+  el.addEventListener("click", e => {
+    const card = e.target.closest(".person.hasdetail");
+    if (!card || !el.contains(card) || e.target.closest("a")) return;
+    const wasOpen = card.classList.contains("open");
+    el.querySelectorAll(".person.open").forEach(c => c.classList.remove("open"));
+    if (!wasOpen) card.classList.add("open");
   });
 
+  /* 논문 자동 목록 — 연구실 논문(OpenAlex)을 받아 각 구성원이 저자로 든 논문을 상세 패널에 채운다.
+     OpenAlex 응답이 없으면 프로필에 직접 적은 목록만 그대로 보인다. */
+  if (list.length && typeof loadLabWorks === "function") loadLabWorks().then(works => {
+    for (const s of list) {
+      const auto = memberWorks(works, s);
+      if (!auto.length) continue;
+      const card = s.base ? el.querySelector(`[id="${s.base}"]`) : null;
+      if (!card) continue;
+      const d = detailHtml(s, auto), old = card.querySelector(".detail");
+      if (old) old.outerHTML = d; else card.insertAdjacentHTML("beforeend", d);
+      card.classList.add("hasdetail");
+      const hint = card.querySelector(".hint");
+      if (hint) hint.textContent = "▾ CLICK FOR DETAILS";
+    }
+  }).catch(e => console.warn("구성원 논문 자동 목록을 불러오지 못했습니다 (직접 적은 목록만 표시):", e.message));
 }
 
 /* ---- 스크립트를 뒤늦게 불러오기 (사이트 검색 등) ---- */

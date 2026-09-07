@@ -33,27 +33,17 @@ function toBibtex(w) {
 
 /* ---- 저자 목록에서 굵게 표시할 이름 ----
    교수님은 OpenAlex 저자 ID로, 연구실 구성원(졸업생 포함)은 members/ 프로필의 '이름:'과 '저자명:'으로 찾습니다.
-   비교할 때 대소문자·띄어쓰기·붙임표·점은 무시하고, "이름 성" / "성 이름" / "성, 이름" 순서를 모두 허용합니다. */
-const normName = s => {
-  let t = String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-  if (t.includes(",")) { const [last, first] = t.split(",", 2); t = `${first} ${last}`; }   // "Jang, Junwon" → "junwon jang"
-  return t.replace(/[^a-z]/g, "");
-};
+   이름 비교 규칙(normName · memberNameKeys · authorMatches)은 js/content.js 에 있고 구성원 카드의 논문 자동 목록과 같습니다. */
 let memberKeys = new Set();
 async function loadMemberKeys() {
   const keys = new Set();
   try {
     const groups = await loadMembers();
-    for (const list of Object.values(groups)) for (const m of list) for (const v of (m.authorNames || [m.name])) {
-      const tok = String(v).split(/[\s\-.]+/).map(normName).filter(Boolean);
-      if (!tok.length) continue;
-      keys.add(tok.join(""));                                                    // 이름 성  (Junwon Jang)
-      if (tok.length > 1) keys.add(tok[tok.length - 1] + tok.slice(0, -1).join(""));   // 성 이름  (Jang Junwon)
-    }
+    for (const list of Object.values(groups)) for (const m of list) for (const k of memberNameKeys(m)) keys.add(k);
   } catch (e) { console.warn("구성원 이름을 읽지 못해 교수님 이름만 굵게 표시합니다:", e.message); }
   return keys;
 }
-const isMemberAuthor = a => memberKeys.has(normName(a.author?.display_name)) || memberKeys.has(normName(a.raw_author_name));
+const isMemberAuthor = a => authorMatches(a, memberKeys);
 
 async function fetchJournalStats(works) {
   const ids = [...new Set(works.map(w => w.primary_location?.source?.id).filter(Boolean))]
