@@ -9,7 +9,7 @@
 # 논문에 다른 표기로 실리는 이름이 있으면 쉼표로 적습니다 (예: Jun-Won Jang, J. W. Jang) — 저자 목록 굵게 표시용
 저자명:
 직함: Undergraduate Researcher
-이메일: 
+이메일: qazwsx0828-@naver.com
 키워드: Manipulator Control, Communication Systems
 
 # 아래 4칸은 카드를 클릭하면 펼쳐지는 상세 패널입니다. 전부 비우면 패널이 생기지 않습니다.
