@@ -209,24 +209,30 @@ img { max-width: 100%; }
 }
 .prof h3 { font-size: 24px; font-weight: 800; }
 .prof .role { color: var(--accent); font-weight: 700; margin: 4px 0 14px; }
-.prof dl { margin-top: 22px; }
+.prof dl { margin-top: 28px; }
 .prof dt {
   font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase;
-  letter-spacing: 1px; margin: 18px 0 6px;
+  letter-spacing: 1px; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
 }
-.prof dd { font-size: 14.5px; color: var(--ink); margin-left: 0; padding-left: 0; }
-.prof dd + dd { margin-top: 4px; }
-.prof dd span { color: var(--sub); }
+.prof dt:first-child { margin-top: 0; }
+.prof dd { font-size: 15px; line-height: 1.55; color: var(--ink); margin-left: 0; padding-left: 0; }
+.prof dd + dd { margin-top: 9px; }
+.prof dd.lead { font-size: 16.5px; line-height: 1.65; }              /* 연구 분야 소개 문단 */
+.prof dd span { color: var(--sub); }                                  /* 보조 설명(학위 논문 제목 등)은 회색 */
 .prof dd b { font-weight: 700; }
-.prof dd.more { margin-top: 10px; }
+/* 역할 꼬리표: <span class="tag">PI</span> */
+.prof dd .tag {
+  display: inline-block; padding: 1px 8px 2px; border-radius: 20px; margin-left: 6px; vertical-align: 2px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; background: var(--soft); color: var(--accent); white-space: nowrap;
+}
 /* 연도가 있는 항목: 왼쪽 연도 칸(회색) + 오른쪽 내용. <dd class="dated"><time>연도</time><div>내용</div></dd> */
-.prof dd.dated { display: grid; grid-template-columns: 136px 1fr; gap: 0 14px; }
-.prof dd.dated time { color: var(--sub); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.prof dd.dated { display: grid; grid-template-columns: 136px 1fr; gap: 0 18px; }
+.prof dd.dated time { color: var(--sub); font-size: 14px; padding-top: 1px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .prof dd.dated > div { min-width: 0; }
 @media (max-width: 560px) {
   .prof dd.dated { grid-template-columns: 1fr; }
-  .prof dd.dated time { font-size: 13px; }
-  .prof dd.dated + dd.dated { margin-top: 10px; }
+  .prof dd.dated time { font-size: 13px; padding-top: 0; }
+  .prof dd.dated + dd.dated { margin-top: 12px; }
 }
 
 /* ---------- 뉴스 (연도별 그룹) ---------- */
