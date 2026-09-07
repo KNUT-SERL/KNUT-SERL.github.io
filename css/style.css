@@ -187,9 +187,6 @@ img { max-width: 100%; }
   font-size: 11px; font-weight: 800; color: var(--accent);
   text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px;
 }
-.person .detail h4 .auto {                                  /* "auto · OpenAlex" 표시 (논문 자동 목록) */
-  font-size: 10px; font-weight: 600; color: var(--sub); text-transform: none; letter-spacing: 0; margin-left: 6px;
-}
 .person .detail p { font-size: 13.5px; color: var(--ink); }
 .person .detail p.startup b { font-weight: 700; }                    /* 창업 회사명 */
 .person .detail p.startup + ul { margin-top: 2px; }

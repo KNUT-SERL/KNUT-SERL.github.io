@@ -10,6 +10,6 @@
 저자명:
 학위: B.S. (Electronics)
 이메일: leeyushin5029@gmail.com
-# Google Scholar 프로필 주소가 있으면 적습니다 — 카드에 링크로 표시
+# Google Scholar 프로필 주소 — 카드에 링크로 표시되고, 적은 사람만 논문 목록이 OpenAlex에서 자동으로 채워집니다
 스칼라:
 현재: Bluu Inc. — Tech Support, IT Dept.
