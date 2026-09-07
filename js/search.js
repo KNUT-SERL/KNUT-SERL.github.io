@@ -31,7 +31,7 @@
       loadMembers().then(groups => {
         for (const [prefix, list] of Object.entries(groups)) for (const m of list)
           add("member", m.name + (m.kor ? ` (${m.kor})` : ""),
-              [m.role, m.degree, m.now, m.interests, m.bio, ...(m.pubs || []), ...(m.patents || []),
+              [m.role, m.degree, m.now, m.interests, m.bio, m.startup, ...(m.startupItems || []), ...(m.pubs || []), ...(m.patents || []),
                ...(m.awards || []), ...(m.tags || []), m.email].filter(Boolean).join(" · "),
               PAGE_OF[prefix] || "professor.html", m.base);
       }),
