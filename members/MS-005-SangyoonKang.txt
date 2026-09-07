@@ -12,13 +12,23 @@
 이메일: kanghan2000@naver.com
 # Google Scholar 프로필 주소가 있으면 적습니다 — 카드에 링크로 표시
 스칼라:
-키워드:
+키워드: Entrepreneurship Activities, Soft Robotics
 
-# 아래 4칸은 카드를 클릭하면 펼쳐지는 상세 패널입니다. 전부 비우면 패널이 생기지 않습니다.
-# 목록 칸(논문/특허/수상)은 바로 아랫줄부터 '- '로 시작하는 줄을 여러 개 적으면 됩니다.
+# 아래 칸들은 카드를 클릭하면 펼쳐지는 상세 패널입니다 (소개 → 창업 → 논문 → 특허 → 수상 순). 전부 비우면 패널이 생기지 않습니다.
+# 목록 칸(창업내용/논문/특허/수상)은 바로 아랫줄부터 '- '로 시작하는 줄을 여러 개 적으면 됩니다.
 # 논문: 교수님과 함께 쓴 연구실 논문은 OpenAlex에서 자동으로 채워집니다 — 그 밖의 논문만 적으면 됩니다.
 소개:
+# 창업 이력이 있을 때만: 창업: 에 "회사명 — 역할", 창업내용: 아랫줄에 '- ' 항목들 → 카드에 Startup 칸 + FOUNDER 배지 자동
+창업: EverPaws — Founder & Project Lead
+창업내용:
+- Pet-tech product development
+- Multimodal sensing & AI
+- Business model & commercialization
 논문:
+- Development of a Vision-Based Food Classification and ROS Control System Using an Elephant-Trunk-Inspired Soft Gripper and a Mobile Platform — <i>문화기술의 융합</i>, 2026
+- Development of a Vision-Based Food Classification ROS Control System Using a Soft Gripper — <i>대한전자공학회 학술대회</i>, 2026
+- ROS-Integrated Control System of a Bio-Inspired Elephant-Trunk Soft Gripper — <i>대한전자공학회 학술대회</i>, 2025
+- Strain Gauge-Based Tactile Sensors for Surface Characterization Using Diverse Gesture Patterns — <i>The International Journal of Advanced Smart Convergence</i>, 2025
 
 특허:
 

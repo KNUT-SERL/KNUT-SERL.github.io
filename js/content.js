@@ -137,7 +137,7 @@ async function manifestFromApi() {
 
 /* ---- 구성원 ----
    반환: { PHD:[], DR:[], DRMS:[], MS:[], MSBS:[], BS:[], INT:[], ALU:[] } */
-const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그", "저자명", "스칼라"];
+const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "창업", "창업내용", "논문", "특허", "수상", "학위", "현재", "태그", "저자명", "스칼라"];
 let membersPromise = null;
 function loadMembers() {
   return membersPromise ??= (async () => {
@@ -146,7 +146,7 @@ function loadMembers() {
     const entries = await Promise.all(mf.members.map(async e => {
       let t = {};
       if (e.txt) {
-        try { t = parseKV(await fetchText(e.txt), MEMBER_KEYS, ["논문", "특허", "수상"]); }
+        try { t = parseKV(await fetchText(e.txt), MEMBER_KEYS, ["창업내용", "논문", "특허", "수상"]); }
         catch (err) { console.warn("프로필을 읽지 못했습니다:", e.txt, err.message); }
       }
       const name = t["이름"] || e.name.replace(/([a-z])([A-Z])/g, "$1 $2");   // 파일명에서 복원
@@ -158,9 +158,16 @@ function loadMembers() {
         role: t["직함"] || DEFAULT_ROLE[e.prefix] || "",
         degree: t["학위"] || "", now: t["현재"] || "",
         email: t["이메일"] || "", scholar: t["스칼라"] || "", interests: t["키워드"] || "", bio: t["소개"] || "",
+        // 창업: "회사명 — 역할" 한 줄 + 창업내용: 항목들 → 상세 패널의 Startup 칸 (논문 위)
+        startup: t["창업"] || "", startupItems: t["창업내용"] || [],
         pubs: t["논문"] || [], patents: t["특허"] || [], awards: t["수상"] || [],
-        // 태그: 랩장·부랩장·페이지 관리자 등 — 쉼표로 여러 개 가능, 카드 이름 옆 배지로 표시
-        tags: (t["태그"] || "").split(",").map(x => x.trim()).filter(Boolean)
+        // 태그: 랩장·부랩장·페이지 관리자 등 — 쉼표로 여러 개 가능, 카드 이름 옆 배지로 표시.
+        // 창업: 이 채워져 있으면 FOUNDER 배지가 자동으로 붙는다
+        tags: (() => {
+          const tags = (t["태그"] || "").split(",").map(x => x.trim()).filter(Boolean);
+          if (t["창업"] && !tags.some(x => /^(창업|founder)$/i.test(x))) tags.push("창업");
+          return tags;
+        })()
       };
     }));
     for (const m of entries) groups[m.prefix]?.push(m);

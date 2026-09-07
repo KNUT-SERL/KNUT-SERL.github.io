@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=34";
+const ASSET_V = "?v=35";
 
 const MENU = [
   ["index.html", "Home"],
@@ -131,12 +131,12 @@ function attachAvatarFallback(el) {
 
 /* 직책 태그 — 파일에는 한글로 적어도 화면에는 영문 배지로 표시됩니다.
    (영문으로 직접 적으면 그대로 표시) */
-const TAG_EN = { "랩장": "LAB LEADER", "부랩장": "VICE LEADER", "페이지 관리자": "WEB ADMIN" };
+const TAG_EN = { "랩장": "LAB LEADER", "부랩장": "VICE LEADER", "페이지 관리자": "WEB ADMIN", "창업": "FOUNDER" };
 function tagsHtml(tags) {
   if (!tags || !tags.length) return "";
   const one = t => {
     const label = TAG_EN[t] || t;
-    const cls = label === "LAB LEADER" ? " lead" : label === "VICE LEADER" ? " vice" : "";
+    const cls = label === "LAB LEADER" ? " lead" : label === "VICE LEADER" ? " vice" : label === "FOUNDER" ? " founder" : "";
     return `<span class="tag${cls}">${label}</span>`;
   };
   return `<div class="tags">${tags.map(one).join("")}</div>`;
@@ -241,11 +241,19 @@ function renderMembers(list, elId, emptyMsg) {
       : "Selected Publications";
     return `<h4>${head}</h4><ul>${items.join("")}</ul>`;
   }
+  /* 창업: "회사명 — 역할" → 회사명만 굵게. 창업내용: 항목은 그 아래 점 목록 */
+  function startupHtml(s) {
+    if (!s.startup) return "";
+    const m = s.startup.match(/^(.+?)\s+[—–-]\s+(.+)$/);
+    const line = m ? `<b>${m[1]}</b> — ${m[2]}` : `<b>${s.startup}</b>`;
+    return `<h4>Startup</h4><p class="startup">${line}</p>${s.startupItems?.length ? `<ul>${s.startupItems.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}`;
+  }
   function detailHtml(s, auto = []) {
-    const pubs = pubsHtml(s, auto);
-    if (!s.bio && !pubs && !s.patents?.length && !s.awards?.length) return "";
+    const pubs = pubsHtml(s, auto), startup = startupHtml(s);
+    if (!s.bio && !startup && !pubs && !s.patents?.length && !s.awards?.length) return "";
     return `<div class="detail">
       ${s.bio ? `<h4>Research</h4><p>${s.bio}</p>` : ""}
+      ${startup}
       ${pubs}
       ${s.patents?.length ? `<h4>Patents</h4>
         <ul>${s.patents.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
