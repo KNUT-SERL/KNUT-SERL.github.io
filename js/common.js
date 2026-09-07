@@ -7,7 +7,7 @@
 
 /* 캐시 갱신용 버전 문자열 — 파일을 고쳤는데 사이트가 옛 내용을 보여주면 숫자를 올리세요.
    (HTML 안의 ?v=7 도 같은 숫자로 함께 올려 주면 됩니다.) */
-const ASSET_V = "?v=29";
+const ASSET_V = "?v=30";
 
 const MENU = [
   ["index.html", "Home"],
@@ -221,11 +221,6 @@ function renderMemberPage(groups, subgroups, wrapId, emptyMsg) {
 /* ---- 멤버 카드 렌더링 (professor 제외 각 멤버 페이지에서 사용) ----
    bio / pubs / awards 중 하나라도 있으면, 마우스를 올렸을 때(모바일은 터치)
    카드 아래로 상세 패널이 자연스럽게 펼쳐집니다. */
-/* 프로필의 '키워드:' — 쉼표로 나누어 줄마다 하나씩 표시 */
-function interestLines(s) {
-  return String(s || "").split(",").map(x => x.trim()).filter(Boolean).join("<br>");
-}
-
 function renderMembers(list, elId, emptyMsg) {
   const el = document.getElementById(elId);
 
@@ -251,7 +246,7 @@ function renderMembers(list, elId, emptyMsg) {
       ${tagsHtml(s.tags)}
       <div class="nm">${s.name}${s.kor ? ` <span style="font-weight:400;color:var(--sub)">(${s.kor})</span>` : ""}</div>
       <div class="role">${s.role || ""}</div>
-      <div class="info">${interestLines(s.interests)}${s.email ? `${s.interests ? "<br>" : ""}<a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
+      <div class="info">${s.interests || ""}${s.email ? `${s.interests ? "<br>" : ""}<a href="mailto:${s.email}">${s.email}</a>` : ""}</div>
       <div class="hint">${d ? "▾ CLICK FOR DETAILS" : "&nbsp;"}</div>
       ${d}
     </div>`;
