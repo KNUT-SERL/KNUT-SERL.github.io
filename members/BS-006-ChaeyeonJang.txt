@@ -10,7 +10,7 @@
 저자명:
 직함: Undergraduate Researcher
 이메일: 
-키워드:
+키워드: Manipulator Control, Communication Systems
 
 # 아래 4칸은 카드를 클릭하면 펼쳐지는 상세 패널입니다. 전부 비우면 패널이 생기지 않습니다.
 # 목록 칸(논문/특허/수상)은 바로 아랫줄부터 '- '로 시작하는 줄을 여러 개 적으면 됩니다.
