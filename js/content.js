@@ -137,7 +137,7 @@ async function manifestFromApi() {
 
 /* ---- 구성원 ----
    반환: { PHD:[], DR:[], DRMS:[], MS:[], MSBS:[], BS:[], INT:[], ALU:[] } */
-const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그", "저자명"];
+const MEMBER_KEYS = ["이름", "한글", "직함", "이메일", "키워드", "소개", "논문", "특허", "수상", "학위", "현재", "태그", "저자명", "스칼라"];
 let membersPromise = null;
 function loadMembers() {
   return membersPromise ??= (async () => {
@@ -157,7 +157,7 @@ function loadMembers() {
         authorNames: [name, ...String(t["저자명"] || "").split(",").map(x => x.trim()).filter(Boolean)],
         role: t["직함"] || DEFAULT_ROLE[e.prefix] || "",
         degree: t["학위"] || "", now: t["현재"] || "",
-        email: t["이메일"] || "", interests: t["키워드"] || "", bio: t["소개"] || "",
+        email: t["이메일"] || "", scholar: t["스칼라"] || "", interests: t["키워드"] || "", bio: t["소개"] || "",
         pubs: t["논문"] || [], patents: t["특허"] || [], awards: t["수상"] || [],
         // 태그: 랩장·부랩장·페이지 관리자 등 — 쉼표로 여러 개 가능, 카드 이름 옆 배지로 표시
         tags: (t["태그"] || "").split(",").map(x => x.trim()).filter(Boolean)
@@ -166,6 +166,69 @@ function loadMembers() {
     for (const m of entries) groups[m.prefix]?.push(m);
     return groups;
   })();
+}
+
+/* ---- 저자 이름 비교 (Publications 굵게 표시 · 구성원 카드 논문 자동 목록에서 함께 사용) ----
+   대소문자·띄어쓰기·붙임표·점은 무시하고, "이름 성" / "성 이름" / "성, 이름" 순서를 모두 같은 사람으로 봅니다. */
+const normName = s => {
+  let t = String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  if (t.includes(",")) { const [last, first] = t.split(",", 2); t = `${first} ${last}`; }   // "Jang, Junwon" → "junwon jang"
+  return t.replace(/[^a-z]/g, "");
+};
+/* 구성원 한 명의 '이름:' + '저자명:' 표기들을 비교용 키 집합으로 */
+function memberNameKeys(m) {
+  const keys = new Set();
+  for (const v of (m.authorNames || [m.name])) {
+    const tok = String(v).split(/[\s\-.]+/).map(normName).filter(Boolean);
+    if (!tok.length) continue;
+    keys.add(tok.join(""));                                                    // 이름 성  (Junwon Jang)
+    if (tok.length > 1) keys.add(tok[tok.length - 1] + tok.slice(0, -1).join(""));   // 성 이름  (Jang Junwon)
+  }
+  return keys;
+}
+/* OpenAlex 저자 항목(authorship)이 keys 의 사람인가 */
+const authorMatches = (a, keys) => keys.has(normName(a.author?.display_name)) || keys.has(normName(a.raw_author_name));
+
+/* ---- 연구실 논문 전체 (OpenAlex, 교수님 저자 ID 기준) ----
+   구성원 카드의 논문 자동 목록에 씁니다. 한 번 받으면 1시간 동안 브라우저(sessionStorage)에 두고 재사용.
+   반환: [{ id, doi, title, year, venue, authors:[{display_name, raw_author_name}] }]  (최신이 앞) */
+const LAB_WORK_TYPES = ["article", "review", "preprint", "book-chapter"];
+let labWorksPromise = null;
+function loadLabWorks() {
+  return labWorksPromise ??= (async () => {
+    const cfg = window.SITE?.pub;
+    if (!cfg?.authorId) return [];
+    const CK = "serlab-works-v1";
+    try {
+      const hit = JSON.parse(sessionStorage.getItem(CK) || "null");
+      if (hit && hit.author === cfg.authorId && Date.now() - hit.at < 3600e3) return hit.works;
+    } catch {}
+    const works = [];
+    let cursor = "*";
+    while (cursor && works.length < 600) {
+      const r = await fetch(`https://api.openalex.org/works?filter=authorships.author.id:${cfg.authorId}` +
+        `&per-page=200&cursor=${cursor}&sort=publication_date:desc` +
+        `&select=id,doi,display_name,publication_year,type,is_paratext,primary_location,authorships&mailto=${cfg.mailto}`);
+      if (!r.ok) throw new Error("OpenAlex HTTP " + r.status);
+      const d = await r.json();
+      for (const w of d.results || []) {
+        if (w.is_paratext || !LAB_WORK_TYPES.includes(w.type)) continue;
+        if ((cfg.exclude || []).includes((w.id || "").split("/").pop())) continue;
+        works.push({ id: w.id, doi: w.doi || "", title: w.display_name || "", year: w.publication_year || "",
+                     venue: w.primary_location?.source?.display_name || (w.type === "preprint" ? "Preprint" : ""),
+                     authors: (w.authorships || []).map(a => ({ display_name: a.author?.display_name || "", raw_author_name: a.raw_author_name || "" })) });
+      }
+      cursor = d.meta?.next_cursor;
+      if (!(d.results || []).length) break;
+    }
+    try { sessionStorage.setItem(CK, JSON.stringify({ author: cfg.authorId, at: Date.now(), works })); } catch {}
+    return works;
+  })();
+}
+/* 구성원 m 이 저자로 들어간 연구실 논문만 */
+function memberWorks(works, m) {
+  const keys = memberNameKeys(m);
+  return works.filter(w => w.authors.some(a => authorMatches(a, keys)));
 }
 
 /* ---- 갤러리: [{ image, date, order, title, desc }] (최신 날짜가 앞) ---- */

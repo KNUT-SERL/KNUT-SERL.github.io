@@ -10,4 +10,6 @@
 저자명:
 학위: B.S. (Electronics)
 이메일: leeyushin5029@gmail.com
+# Google Scholar 프로필 주소가 있으면 적습니다 — 카드에 링크로 표시
+스칼라:
 현재: Bluu Inc. — Tech Support, IT Dept.
