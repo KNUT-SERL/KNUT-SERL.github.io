@@ -1,0 +1,15 @@
+{
+  "name": "SER Lab 사이트 관리자",
+  "short_name": "SER 관리자",
+  "description": "SER Lab 홈페이지(GitHub Pages)의 구성원·갤러리·뉴스·특허·상장·이미지를 화면에서 관리합니다.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0e1a2b",
+  "lang": "ko",
+  "icons": [
+    { "src": "../images/favicon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "../images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
