@@ -22,6 +22,10 @@
 창업:
 창업내용:
 논문:
+- A bio-inspired tactile sensing framework for vision-free grip classification and adaptive manipulation via ensemble learning — <i>Sensors and Actuators A: Physical</i>, 2026
+- Development of a Vision-Based Food Classification and ROS Control System Using an Elephant-Trunk-Inspired Soft Gripper and a Mobile Platform — <i>문화기술의 융합</i>, 2026
+- Bioinspired Hierarchical Soft Gripper with Hexagonal and Suction Interfaces for Strain-Guided Object Handling — <i>Biomimetics</i>, 2025
+
 특허:
 
 수상:
