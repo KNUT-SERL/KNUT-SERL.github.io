@@ -18,13 +18,13 @@
 제목: SER Lab opens at Korea National University of Transportation
 내용: The Soft Electronics & Robotics Lab. begins its journey in the Department of Electronics Engineering.
 링크:
-사진: 
+사진:
 
 날짜: 2025-01
 제목: Paper published in Biomimetics
 내용: "Design and Sensing Frameworks of Soft Octopus-Inspired Grippers Toward Artificial Intelligence" has been published.
 링크:
-사진: 
+사진:
 
 날짜: 2024
 제목: LINC 3.0 leadership program for professional women in Chungju
@@ -81,3 +81,9 @@
 내용: 김다완 교수팀이 K-RISE Capstone X-Road 2025 AI 모달리티 부문에서 최우수상을 수상했습니다.
 링크:
 사진: images/news/2025-krise-capstone-xroad.jpg
+
+날짜: 2026
+제목: Selected for the 2026 Fall Career Exploration Credit Program
+내용: 창의적이고 자기주도적인 진로탐색 기회를 제공하는 진로탐색학점제(2026학년도 2학기)에 김다완 교수팀이 선발되었습니다.
+링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardArticle.do?nttId=1122867
+사진: images/news/2026-selected-for-the-2026-fall-career-explor-mw4zb0sf.png
