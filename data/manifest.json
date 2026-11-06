@@ -325,8 +325,14 @@
   {
    "year": "2023",
    "order": 4,
+   "title": "K Tour Idea Challenge 본선 최우수상",
+   "image": "awards/A-2023-004-K Tour Idea Challenge 본선 최우수상.jpg"
+  },
+  {
+   "year": "2023",
+   "order": 5,
    "title": "IDF 스마트 모빌리티 해커톤 대상",
-   "image": "awards/A-2023-004-IDF 스마트 모빌리티 해커톤 대상.png"
+   "image": "awards/A-2023-005-IDF 스마트 모빌리티 해커톤 대상.png"
   }
  ]
 }
