@@ -94,14 +94,14 @@
 링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardArticle.do?nttId=1122867
 사진: images/news/2026-selected-for-the-2026-fall-career-explor-mw4zb0sf.png
 
-날짜: 2026
-제목: Selected for the 2026 Advanced Course of Undergraduate Research Program(Advanced URP)
-내용: URP 과정을 통해 연구한 과제에 대한 심도있는 후속 연구를 지원하는 심화 학부생연구참여프로그램(2026학년도)에 김다완 교수팀이 선발되었습니다.
-링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000001195/selectBoardArticle.do?nttId=1123048
-사진: images/news/2026-selected-for-the-2026-advanced-course-of-mw50ckmi.jpg
-
 날짜: 2023
 제목: Grand Prize at K-tour Idea Challenge
 내용: 김다완 교수팀이 K-tour Idea Challenge 2023 본선에서 최우수상(한국관광공사 사장상)을 수상했습니다.
 링크: https://www.veritas-a.com/news/articleView.html?idxno=481449
 사진: images/news/2023-grand-prize-at-k-tour-idea-challenge-mw50ll4m.jpg
+
+날짜: 2026
+제목: Selected for the 2026 Advanced Course of Undergraduate Research Program(Advanced URP)
+내용: URP 과정을 통해 연구한 과제에 대한 심도있는 후속 연구를 지원하는 심화 학부생연구참여프로그램(2026학년도)에 김다완 교수팀이 선발되었습니다.
+링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000001195/selectBoardArticle.do?nttId=1123048
+사진: images/news/2026-selected-for-the-2026-advanced-course-of-mw50ckmi.jpg
