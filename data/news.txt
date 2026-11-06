@@ -83,16 +83,16 @@
 사진: images/news/2025-krise-capstone-xroad.jpg
 
 날짜: 2026
-제목: Selected for the 2026 Fall Career Exploration Credit Program
-내용: 창의적이고 자기주도적인 진로탐색 기회를 제공하는 진로탐색학점제(2026학년도 2학기)에 김다완 교수팀이 선발되었습니다.
-링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardArticle.do?nttId=1122867
-사진: images/news/2026-selected-for-the-2026-fall-career-explor-mw4zb0sf.png
-
-날짜: 2026
 제목: Selected for the 2026 Undergraduate Research Program(URP)
 내용: 산업체 전문가와 전공과 연관된 다양한 과제를 수행하는 기회를 제공하는 학부생연구참여프로그램(2026학년도)에 김다완 교수팀이 선발되었습니다.
 링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000001195/selectBoardArticle.do?nttId=1121615
 사진: images/news/2026-selected-for-the-2026-undergraduate-rese-mw505ze1.png
+
+날짜: 2026
+제목: Selected for the 2026 Fall Career Exploration Credit Program
+내용: 창의적이고 자기주도적인 진로탐색 기회를 제공하는 진로탐색학점제(2026학년도 2학기)에 김다완 교수팀이 선발되었습니다.
+링크: https://www.ut.ac.kr/cop/bbs/BBSMSTR_000000000059/selectBoardArticle.do?nttId=1122867
+사진: images/news/2026-selected-for-the-2026-fall-career-explor-mw4zb0sf.png
 
 날짜: 2026
 제목: Selected for the 2026 Advanced Course of Undergraduate Research Program(Advanced URP)
